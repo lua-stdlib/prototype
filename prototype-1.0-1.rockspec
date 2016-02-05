@@ -1,5 +1,5 @@
 package = "prototype"
-version = "git-1"
+version = "1.0-1"
 
 description = {
   summary = "Prototype Oriented Programming with Lua",
