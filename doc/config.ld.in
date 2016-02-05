@@ -1,0 +1,43 @@
+-- -*- lua -*-
+title = "prototype @PACKAGE_VERSION@ Reference"
+project = "prototype @PACKAGE_VERSION@"
+description = [[
+# Prototype Oriented Programming with Lua
+
+A straight forward prototype-based object system, and a selection of
+useful objects built on it.
+
+This is a collection of light-weight libraries for Lua 5.1 (including
+LuaJIT), 5.2 and 5.3 written in pure Lua, comprising:
+
+## LICENSE
+
+The code is copyright by its respective authors, and released under the
+MIT license (the same license as Lua itself).  There is no warranty.
+]]
+
+dir = "."
+
+file = {
+  "../lib/std/container.lua",
+  "../lib/std/object.lua",
+  "../lib/std/list.lua",
+  "../lib/std/set.lua",
+  "../lib/std/strbuf.lua",
+  "../lib/std/tree.lua",
+}
+
+new_type ("prototype", "Object_System", true)
+
+function postprocess_html(s)
+  s = s:gsub("<h1>%s*Prototype (.-)</p>", '<h1>Module %1</h1>')
+  s = s:gsub("<h2>Object_System</h2>", '<h2>Object System</h2>')
+  return s
+end
+
+new_type ("object", "Objects", false, "Fields")
+new_type ("init", "Initialisation", false, "Parameters")
+
+format = "markdown"
+backtick_references = false
+sort = false
