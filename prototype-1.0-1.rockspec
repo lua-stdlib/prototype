@@ -22,11 +22,13 @@ dependencies = {
 build = {
   type = "builtin",
   modules = {
-    ["std.container"]	= "lib/std/container.lua",
-    ["std.list"]	= "lib/std/list.lua",
-    ["std.object"]	= "lib/std/object.lua",
-    ["std.set"]		= "lib/std/set.lua",
-    ["std.strbuf"]	= "lib/std/strbuf.lua",
-    ["std.tree"]	= "lib/std/tree.lua",
+    prototype			= "lib/prototype/init.lua",
+    ["prototype._base"]		= "lib/prototype/_base.lua",
+    ["prototype.container"]	= "lib/prototype/container.lua",
+    ["prototype.list"]		= "lib/prototype/list.lua",
+    ["prototype.object"]	= "lib/prototype/object.lua",
+    ["prototype.set"]		= "lib/prototype/set.lua",
+    ["prototype.strbuf"]	= "lib/prototype/strbuf.lua",
+    ["prototype.tree"]		= "lib/prototype/tree.lua",
   },
 }
