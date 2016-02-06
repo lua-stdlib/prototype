@@ -10,6 +10,7 @@ luadir	= lib/prototype
 SOURCES =				\
 	$(luadir)/_base.lua		\
 	$(luadir)/container.lua		\
+	$(luadir)/init.lua		\
 	$(luadir)/list.lua		\
 	$(luadir)/object.lua		\
 	$(luadir)/set.lua		\
