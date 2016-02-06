@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>prototype 1.0 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>prototype 1.0</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Functions">Functions </a></li>
+</ul>
+
+
+<h2>Object System</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><strong>prototype.container</strong></li>
+  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
+  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
+  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
+  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
+  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>prototype.container</code></h1>
+<p>Container prototype.</h1>
+<p>
+
+
+<p> This module supplies the root prototype object from which every other
+ object is descended.  There are no classes as such, rather new objects
+ are created by cloning an existing object, and then changing or adding
+ to the clone. Further objects can then be made by cloning the changed
+ object, and so on.</p>
+
+<p> The functionality of a container based object is entirely defined by its
+ <em>meta</em>methods. However, since we can store <em>any</em> object in a container,
+ we cannot rely on the <code>__index</code> metamethod, because it is only a
+ fallback for when that key is not already in the container itself. Of
+ course that does not entirely preclude the use of <code>__index</code> with
+ containers, so long as this limitation is observed.</p>
+
+<p> When making your own prototypes, derive from <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+ if you want to access the contents of your containers with the <code>[]</code>
+ operator, otherwise from <a href="../object_system/prototype.object.html#prototype">prototype.object.prototype</a> if you want to access
+ the functionality of your objects with named object methods.</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ `-&gt; Container
+</pre>
+
+</p>
+
+
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Container prototype.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__call">prototype:__call (...)</a></td>
+	<td class="summary">Return a clone of this container and its metatable.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__tostring">prototype:__tostring ()</a></td>
+	<td class="summary">Return a compact string representation of this object.</td>
+	</tr>
+</table>
+<h2><a href="#Functions">Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#mapfields">mapfields (new, src[, map={}])</a></td>
+	<td class="summary">Return <em>new</em> with references to the fields of <em>src</em> merged in.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    Container prototype.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_init</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
+         object initialisation
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "Container")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Container = <span class="global">require</span> <span class="string">"prototype.container"</span>.prototype
+ <span class="keyword">local</span> Graph = Container { _type = <span class="string">"Graph"</span> }
+ <span class="keyword">local</span> <span class="keyword">function</span> nodes (graph)
+   <span class="keyword">local</span> n = <span class="number">0</span>
+   <span class="keyword">for</span> _ <span class="keyword">in</span> std.<span class="global">pairs</span> (graph) <span class="keyword">do</span> n = n + <span class="number">1</span> <span class="keyword">end</span>
+   <span class="keyword">return</span> n
+ <span class="keyword">end</span>
+ <span class="keyword">local</span> g = Graph { <span class="string">"node1"</span>, <span class="string">"node2"</span> }
+ <span class="global">assert</span> (nodes (g) == <span class="number">2</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:__call"></a>
+    <strong>prototype:__call (...)</strong>
+    </dt>
+    <dd>
+    Return a clone of this container and its metatable. </p>
+
+<p> Like any Lua table, a container is essentially a collection of
+ <code>field_n = value_n</code> pairs, except that field names beginning with
+ an underscore <code>_</code> are usually kept in that container's metatable
+ where they define the behaviour of a container object rather than
+ being part of its actual contents.  In general, cloned objects
+ also clone the behaviour of the object they cloned, unless...</p>
+
+<p> When calling <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>, you pass a single table
+ argument with additional fields (and values) to be merged into the
+ clone. Any field names beginning with an underscore <code>_</code> are copied
+ to the clone's metatable, and all other fields to the cloned
+ container itself.  For instance, you can change the name of the
+ cloned object by setting the <code>_type</code> field in the argument table.</p>
+
+<p> The <code>_init</code> private field is also special: When set to a sequence of
+ field names, unnamed fields in the call argument table are assigned
+ to those field names in subsequent clones, like the example below.</p>
+
+<p> Alternatively, you can set the <code>_init</code> private field of a cloned
+ container object to a function instead of a sequence, in which case
+ all the arguments passed when <em>it</em> is called/cloned (including named
+ and unnamed fields in the initial table argument, if there is one)
+ are passed through to the <code>_init</code> function, following the nascent
+ cloned object. See the <a href="../object_system/prototype.container.html#mapfields">mapfields</a> usage example below.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         arguments to prototype's <em>_init</em>, often a single table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.container.html#prototype">prototype</a></span>
+        clone of this container, with shared or
+   merged metatable as appropriate
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Cons = Container {_type=<span class="string">"Cons"</span>, _init={<span class="string">"car"</span>, <span class="string">"cdr"</span>}}
+ <span class="keyword">local</span> list = Cons {<span class="string">"head"</span>, Cons {<span class="string">"tail"</span>, <span class="keyword">nil</span>}}</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__tostring"></a>
+    <strong>prototype:__tostring ()</strong>
+    </dt>
+    <dd>
+    Return a compact string representation of this object. </p>
+
+<p> First the container name, and then between { and } an ordered list
+ of the array elements of the contained values with numeric keys,
+ followed by asciibetically sorted remaining public key-value pairs.</p>
+
+<p> This metamethod doesn't recurse explicitly, but relies upon
+ suitable <code>__tostring</code> metamethods for non-primitive content objects.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        stringified object representation
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="http://www.lua.org/manual/5.2/manual.html#pdf-tostring">tostring</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">assert</span> (<span class="global">tostring</span> (list) == <span class="string">'Cons {car="head", cdr=Cons {car="tail"}}'</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "mapfields"></a>
+    <strong>mapfields (new, src[, map={}])</strong>
+    </dt>
+    <dd>
+    Return <em>new</em> with references to the fields of <em>src</em> merged in. </p>
+
+<p> This is the function used to instantiate the contents of a newly
+ cloned container, as called by <a href="../object_system/prototype.container.html#prototype:__call">__call</a> above, to split the
+ fields of a <a href="../object_system/prototype.container.html#prototype:__call">__call</a> argument table into private "_" prefixed
+ field namess, -- which are merged into the <em>new</em> metatable, and
+ public (everything else) names, which are merged into <em>new</em> itself.</p>
+
+<p> You might want to use this function from <code>_init</code> functions of your
+ own derived containers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">new</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         partially instantiated clone container
+        </li>
+        <li><span class="parameter">src</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         <a href="../object_system/prototype.container.html#prototype:__call">__call</a> argument table that triggered cloning
+        </li>
+        <li><span class="parameter">map</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         key renaming specification in the form
+   <code>{old_key=new_key, ...}</code>
+         (<em>default</em> {})
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         merged public fields from <em>new</em> and <em>src</em>, with a
+   metatable of private fields (if any), both renamed according to
+   <em>map</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Bag = Container {
+   _type = <span class="string">"Bag"</span>,
+   _init = <span class="keyword">function</span> (new, ...)
+     <span class="keyword">if</span> <span class="global">type</span> (...) == <span class="string">"table"</span> <span class="keyword">then</span>
+       <span class="keyword">return</span> container.mapfields (new, (...))
+     <span class="keyword">end</span>
+     <span class="keyword">return</span> functional.reduce (operator.set, new, <span class="global">ipairs</span>, {...})
+   <span class="keyword">end</span>,
+ }
+ <span class="keyword">local</span> groceries = Bag (<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"banana"</span>)
+ <span class="keyword">local</span> purse = Bag {_type = <span class="string">"Purse"</span>} (<span class="string">"cards"</span>, <span class="string">"cash"</span>, <span class="string">"id"</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

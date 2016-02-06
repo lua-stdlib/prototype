@@ -1,0 +1,528 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>prototype 1.0 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>prototype 1.0</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Functions">Functions </a></li>
+</ul>
+
+
+<h2>Object System</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
+  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
+  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
+  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
+  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
+  <li><strong>prototype.tree</strong></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>prototype.tree</code></h1>
+<p>Tree container prototype.</h1>
+<p>
+
+
+<p> This module returns a table of tree operators, as well as the prototype
+ for a Tree container object.</p>
+
+<p> This is not a search tree, but rather a way to efficiently store and
+ retrieve values stored with a path as a key, such as a multi-key
+ keytable.  Although it does have iterators for walking the tree with
+ various algorithms.</p>
+
+<p> In addition to the functionality described here, Tree containers also
+ have all the methods and metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+ (except where overridden here),</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; Tree
+</pre>
+
+</p>
+
+
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Tree prototype object.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__index">prototype:__index (i)</a></td>
+	<td class="summary">Deep retrieval.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__newindex">prototype:__newindex (i[, v])</a></td>
+	<td class="summary">Deep insertion.</td>
+	</tr>
+</table>
+<h2><a href="#Functions">Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#clone">clone (tr, nometa)</a></td>
+	<td class="summary">Make a deep copy of a tree or table, including any metatables.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#ileaves">ileaves (tr)</a></td>
+	<td class="summary">Tree iterator which returns just numbered leaves, in order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#inodes">inodes (tr)</a></td>
+	<td class="summary">Tree iterator over numbered nodes, in order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#leaves">leaves (t)</a></td>
+	<td class="summary">Tree iterator which returns just leaves.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#merge">merge (t, u)</a></td>
+	<td class="summary">Destructively deep-merge one tree into another.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#nodes">nodes (tr)</a></td>
+	<td class="summary">Tree iterator over all nodes.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    Tree prototype object.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "Tree")
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> tree = <span class="global">require</span> <span class="string">"prototype.tree"</span>
+ <span class="keyword">local</span> Tree = tree.prototype
+ <span class="keyword">local</span> tr = Tree {}
+ tr[{<span class="string">"branch1"</span>, <span class="number">1</span>}] = <span class="string">"leaf1"</span>
+ tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}] = <span class="string">"leaf2"</span>
+ tr[{<span class="string">"branch2"</span>, <span class="number">1</span>}] = <span class="string">"leaf3"</span>
+ <span class="global">print</span> (tr[{<span class="string">"branch1"</span>}])      <span class="comment">--&gt; Tree {leaf1, leaf2}
+</span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}])   <span class="comment">--&gt; leaf2
+</span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">3</span>}])   <span class="comment">--&gt; nil
+</span> <span class="comment">--&gt; leaf1	leaf2	leaf3
+</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> tree.leaves (tr) <span class="keyword">do</span>
+   <span class="global">io</span>.write (leaf .. <span class="string">"\t"</span>)
+ <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:__index"></a>
+    <strong>prototype:__index (i)</strong>
+    </dt>
+    <dd>
+    Deep retrieval.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">i</span>
+         non-table, or list of keys <code>{i1, ...i_n}</code>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>tr[i1]...[i_n]</code> if <em>i</em> is a key list, <code>tr[i]</code> otherwise
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">del_other_window = keymap[{<span class="string">"C-x"</span>, <span class="string">"4"</span>, KEY_DELETE}]</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__newindex"></a>
+    <strong>prototype:__newindex (i[, v])</strong>
+    </dt>
+    <dd>
+    Deep insertion.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">i</span>
+         non-table, or list of keys <code>{i1, ...i_n}</code>
+        </li>
+        <li><span class="parameter">v</span>
+         value
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">function</span> bindkey (keylist, fn) keymap[keylist] = fn <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "clone"></a>
+    <strong>clone (tr, nometa)</strong>
+    </dt>
+    <dd>
+    Make a deep copy of a tree or table, including any metatables.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tr</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         tree or tree-like table
+        </li>
+        <li><span class="parameter">nometa</span>
+            <span class="types"><span class="type">boolean</span></span>
+         if non-<code>nil</code> don't copy metatables
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        a deep copy of <em>tr</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.object.html#prototype:clone">prototype.object.clone</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ tr = {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}
+ copy = clone (tr)
+ copy[<span class="number">2</span>].two=<span class="number">5</span>
+ <span class="global">assert</span> (tr[<span class="number">2</span>].two == <span class="number">2</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "ileaves"></a>
+    <strong>ileaves (tr)</strong>
+    </dt>
+    <dd>
+    Tree iterator which returns just numbered leaves, in order.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tr</span>
+            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         tree or tree-like table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the tree <em>tr</em></li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../object_system/prototype.tree.html#inodes">inodes</a></li>
+         <li><a href="../object_system/prototype.tree.html#leaves">leaves</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="comment">--&gt; t = {"one", "three", "five"}
+</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> ileaves {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}, foo=<span class="string">"bar"</span>, <span class="string">"five"</span>}
+ <span class="keyword">do</span>
+   t[#t + <span class="number">1</span>] = leaf
+ <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "inodes"></a>
+    <strong>inodes (tr)</strong>
+    </dt>
+    <dd>
+    Tree iterator over numbered nodes, in order. </p>
+
+<p> The iterator function behaves like <a href="../object_system/prototype.tree.html#nodes">nodes</a>, but only traverses the
+ array part of the nodes of <em>tr</em>, ignoring any others.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tr</span>
+            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         tree or tree-like table to iterate over
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><span class="type">tree</span> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the tree, <em>tr</em></li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.tree.html#nodes">nodes</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "leaves"></a>
+    <strong>leaves (t)</strong>
+    </dt>
+    <dd>
+    Tree iterator which returns just leaves.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         tree or tree-like table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        <em>t</em></li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../object_system/prototype.tree.html#ileaves">ileaves</a></li>
+         <li><a href="../object_system/prototype.tree.html#nodes">nodes</a></li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">for</span> leaf <span class="keyword">in</span> leaves {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}, foo=<span class="string">"bar"</span>, <span class="string">"five"</span>}
+ <span class="keyword">do</span>
+   t[#t + <span class="number">1</span>] = leaf
+ <span class="keyword">end</span>
+ <span class="comment">--&gt; t = {2, 4, "five", "foo", "one", "three"}
+</span> <span class="global">table</span>.sort (t, lambda <span class="string">"=tostring(_1) &lt; tostring(_2)"</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "merge"></a>
+    <strong>merge (t, u)</strong>
+    </dt>
+    <dd>
+    Destructively deep-merge one tree into another.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         destination tree
+        </li>
+        <li><span class="parameter">u</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         table with nodes to merge
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        <em>t</em> with nodes from <em>u</em> merged in
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">merge (dest, {{exists=<span class="number">1</span>}, {{<span class="keyword">not</span> = {present = { inside = <span class="string">"dest"</span> }}}}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "nodes"></a>
+    <strong>nodes (tr)</strong>
+    </dt>
+    <dd>
+    Tree iterator over all nodes. </p>
+
+<p> The returned iterator function performs a depth-first traversal of
+ <code>tr</code>, and at each node it returns <code>{node-type, tree-path, tree-node}</code>
+ where <code>node-type</code> is <code>branch</code>, <code>join</code> or <code>leaf</code>; <code>tree-path</code> is a
+ list of keys used to reach this node, and <code>tree-node</code> is the current
+ node.</p>
+
+<p> Note that the <code>tree-path</code> reuses the same table on each iteration, so
+ you must <code>table.clone</code> a copy if you want to take a snap-shot of the
+ current state of the <code>tree-path</code> list before the next iteration
+ changes it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tr</span>
+            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         tree or tree-like table to iterate over
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the tree, <em>tr</em></li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.tree.html#inodes">inodes</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="comment">-- tree = +-- node1
+</span> <span class="comment">--        |    +-- leaf1
+</span> <span class="comment">--        |    '-- leaf2
+</span> <span class="comment">--        '-- leaf 3
+</span> tree = Tree { Tree { <span class="string">"leaf1"</span>, <span class="string">"leaf2"</span>}, <span class="string">"leaf3"</span> }
+ <span class="keyword">for</span> node_type, path, node <span class="keyword">in</span> nodes (tree) <span class="keyword">do</span>
+   <span class="global">print</span> (node_type, path, node)
+ <span class="keyword">end</span>
+ <span class="comment">--&gt; "branch"   {}      {{"leaf1", "leaf2"}, "leaf3"}
+</span> <span class="comment">--&gt; "branch"   {1}     {"leaf1", "leaf2")
+</span> <span class="comment">--&gt; "leaf"     {1,1}   "leaf1"
+</span> <span class="comment">--&gt; "leaf"     {1,2}   "leaf2"
+</span> <span class="comment">--&gt; "join"     {1}     {"leaf1", "leaf2"}
+</span> <span class="comment">--&gt; "leaf"     {2}     "leaf3"
+</span> <span class="comment">--&gt; "join"     {}      {{"leaf1", "leaf2"}, "leaf3"}
+</span> <span class="global">os</span>.exit (<span class="number">0</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>prototype 1.0 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>prototype 1.0</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Methods">Methods </a></li>
+<li><a href="#Object_Functions">Object Functions </a></li>
+</ul>
+
+
+<h2>Object System</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
+  <li><strong>prototype.object</strong></li>
+  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
+  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
+  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
+  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>prototype.object</code></h1>
+<p>Object prototype.</h1>
+<p>
+
+
+<p> This module provides a specialization of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+ with the addition of object methods.  In addition to the functionality
+ described here, object prototypes also have all the methods and
+ metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>.</p>
+
+<p> Note that object methods are stored in the <code>__index</code> field of their
+ metatable, and so cannot also use the <code>__index</code> metamethod to lookup
+ references with square brackets.  Use a <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a> based
+ object if you want to do that.</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; Object
+</pre>
+
+</p>
+
+
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__pairs">prototype:__pairs ()</a></td>
+	<td class="summary">Return an in-order iterator over public object fields.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:clone">prototype:clone (...)</a></td>
+	<td class="summary">Return a clone of this object and its metatable.</td>
+	</tr>
+</table>
+<h2><a href="#Object_Functions">Object Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype.mapfields">prototype.mapfields (new, src[, map={}])</a></td>
+	<td class="summary">Return <em>new</em> with references to the fields of <em>src</em> merged in.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Object prototype.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:__pairs"></a>
+    <strong>prototype:__pairs ()</strong>
+    </dt>
+    <dd>
+    Return an in-order iterator over public object fields.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><span class="type">Object</span></span>
+        <em>self</em></li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">for</span> k, v <span class="keyword">in</span> prototype.<span class="global">pairs</span> (anobject) <span class="keyword">do</span> process (k, v) <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:clone"></a>
+    <strong>prototype:clone (...)</strong>
+    </dt>
+    <dd>
+    Return a clone of this object and its metatable. </p>
+
+<p> This function is useful if you need to override the normal use of
+ the <code>__call</code> metamethod for object cloning, without losing the
+ ability to clone an object.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+         arguments to prototype's <em>_init</em>, often a single table
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.object.html#prototype">prototype</a></span>
+        a clone of this object, with shared or merged
+   metatable as appropriate
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.container.html#prototype:__call">prototype.container.__call</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Node = Object { _type = <span class="string">"Node"</span> }
+ <span class="comment">-- A trivial FSA to recognize powers of 10, either "0" or a "1"
+</span> <span class="comment">-- followed by zero or more "0"s can transition to state 'finish'
+</span> <span class="keyword">local</span> states; states = {
+   start  = Node { [<span class="string">"1"</span>] = states[<span class="number">1</span>], [<span class="string">"0"</span>] = states.finish },
+   [<span class="number">1</span>]    = Node { [<span class="string">"0"</span>] = states[<span class="number">1</span>], [<span class="string">""</span>] = states.finish },
+   finish = Node {},
+ }</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Object_Functions"></a>Object Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype.mapfields"></a>
+    <strong>prototype.mapfields (new, src[, map={}])</strong>
+    </dt>
+    <dd>
+    Return <em>new</em> with references to the fields of <em>src</em> merged in. </p>
+
+<p> You can change the value of this function in an object, and that
+ new function will be called during cloning instead of the
+ standard <a href="../object_system/prototype.container.html#mapfields">prototype.container.mapfields</a> implementation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">new</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         partially instantiated clone container
+        </li>
+        <li><span class="parameter">src</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         <a href="../object_system/prototype.object.html#prototype:clone">clone</a> argument table that triggered cloning
+        </li>
+        <li><span class="parameter">map</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         key renaming specification in the form
+   <code>{old_key=new_key, ...}</code>
+         (<em>default</em> {})
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         merged public fields from <em>new</em> and <em>src</em>, with a
+   metatable of private fields (if any), both renamed according to
+   <em>map</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.container.html#mapfields">prototype.container.mapfields</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    Object prototype.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_init</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
+         object initialisation
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "Object")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"prototype.object"</span>.prototype
+ <span class="keyword">local</span> Process = Object {
+   _type = <span class="string">"Process"</span>,
+   _init = { <span class="string">"status"</span>, <span class="string">"out"</span>, <span class="string">"err"</span> },
+ }
+ <span class="keyword">local</span> process = Process {
+   procs[pid].status, procs[pid].out, procs[pid].err, <span class="comment">-- auto assigned
+</span>   command = pipeline[pid],                           <span class="comment">-- manual assignment
+</span> }</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

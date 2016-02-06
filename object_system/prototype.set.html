@@ -1,0 +1,890 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>prototype 1.0 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>prototype 1.0</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Initialisation">Initialisation</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Functions">Functions </a></li>
+</ul>
+
+
+<h2>Object System</h2>
+<ul class="$(kind=='Topics' and '' or 'nowrap'">
+  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
+  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
+  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
+  <li><strong>prototype.set</strong></li>
+  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
+  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>prototype.set</code></h1>
+<p>Set container prototype.</h1>
+<p>
+
+
+<p> This module returns a table of set operators, as well as the prototype
+ for a Set container object.</p>
+
+<p> Every possible object or primitive value is always present in any Set
+ container exactly zero or one times.</p>
+
+<p> In addition to the functionality described here, Set containers also
+ have all the methods and metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+ (except where overridden here).</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; Set
+</pre>
+
+</p>
+
+
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Set prototype object.</td>
+	</tr>
+</table>
+<h2><a href="#Initialisation">Initialisation</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype._init">prototype._init</a></td>
+	<td class="summary">Set object initialisation.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__add">prototype:__add (s)</a></td>
+	<td class="summary">Union operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__sub">prototype:__sub (s)</a></td>
+	<td class="summary">Difference operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__mul">prototype:__mul (s)</a></td>
+	<td class="summary">Intersection operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__div">prototype:__div (s)</a></td>
+	<td class="summary">Symmetric difference operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__le">prototype:__le (s)</a></td>
+	<td class="summary">Subset operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__lt">prototype:__lt (s)</a></td>
+	<td class="summary">Proper subset operation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__tostring">prototype:__tostring ()</a></td>
+	<td class="summary">Return a string representation of this set.</td>
+	</tr>
+</table>
+<h2><a href="#Functions">Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#delete">delete (set, e)</a></td>
+	<td class="summary">Delete an element from a set.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#difference">difference (set1, set2)</a></td>
+	<td class="summary">Find the difference of two sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#elems">elems (set)</a></td>
+	<td class="summary">Iterator for sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#equal">equal (set1, set2)</a></td>
+	<td class="summary">Find whether two sets are equal.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#insert">insert (set, e)</a></td>
+	<td class="summary">Insert an element into a set.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#intersection">intersection (set1, set2)</a></td>
+	<td class="summary">Find the intersection of two sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#difference">difference (set, e)</a></td>
+	<td class="summary">Say whether an element is in a set.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#proper_subset">proper_subset (set1, set2)</a></td>
+	<td class="summary">Find whether one set is a proper subset of another.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#subset">subset (set1, set2)</a></td>
+	<td class="summary">Find whether one set is a subset of another.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#symmetric_difference">symmetric_difference (set1, set2)</a></td>
+	<td class="summary">Find the symmetric difference of two sets.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#union">union (set1, set2)</a></td>
+	<td class="summary">Find the union of two sets.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    Set prototype object.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "Set")
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Set = <span class="global">require</span> <span class="string">"prototype.set"</span>.prototype
+ <span class="global">assert</span> (prototype.<span class="global">type</span> (Set) == <span class="string">"Set"</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Initialisation"></a>Initialisation</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype._init"></a>
+    <strong>prototype._init</strong>
+    </dt>
+    <dd>
+    Set object initialisation. </p>
+
+<p> Returns partially initialised Set container with contents
+ from <em>t</em>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">new</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         uninitialised Set container object
+        </li>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         initialisation table from <code>__call</code>
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:__add"></a>
+    <strong>prototype:__add (s)</strong>
+    </dt>
+    <dd>
+    Union operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        everything from <em>this</em> set plus everything from <em>s</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#union">union</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">union = this + s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__sub"></a>
+    <strong>prototype:__sub (s)</strong>
+    </dt>
+    <dd>
+    Difference operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        everything from <em>this</em> set that is not also in <em>s</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#difference">difference</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">difference = this - s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__mul"></a>
+    <strong>prototype:__mul (s)</strong>
+    </dt>
+    <dd>
+    Intersection operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        anything in both <em>this</em> set and in <em>s</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#intersection">intersection</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">intersection = this * s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__div"></a>
+    <strong>prototype:__div (s)</strong>
+    </dt>
+    <dd>
+    Symmetric difference operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        everything in <em>this</em> set or in <em>s</em> but not in both
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#symmetric_difference">symmetric_difference</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">symmetric_difference = this / s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__le"></a>
+    <strong>prototype:__le (s)</strong>
+    </dt>
+    <dd>
+    Subset operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if everything in <em>this</em> set is also in <em>s</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#subset">subset</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">issubset = this &lt;= s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__lt"></a>
+    <strong>prototype:__lt (s)</strong>
+    </dt>
+    <dd>
+    Proper subset operation.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if <em>s</em> is not equal to <em>this</em> set, but does
+   contain everything from <em>this</em> set
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../object_system/prototype.set.html#proper_subset">proper_subset</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">ispropersubset = this &lt; s</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__tostring"></a>
+    <strong>prototype:__tostring ()</strong>
+    </dt>
+    <dd>
+    Return a string representation of this set.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        string representation of a set.
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+    </ul>
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "delete"></a>
+    <strong>delete (set, e)</strong>
+    </dt>
+    <dd>
+    Delete an element from a set.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">e</span>
+         element
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        the modified <em>set</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">set.delete (available, found)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "difference"></a>
+    <strong>difference (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find the difference of two sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        a copy of <em>set1</em> with elements of <em>set2</em> removed
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">all = set.difference (all, Set {<span class="number">32</span>, <span class="number">49</span>, <span class="number">56</span>})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "elems"></a>
+    <strong>elems (set)</strong>
+    </dt>
+    <dd>
+    Iterator for sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <em>set</em> iterator
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">for</span> code <span class="keyword">in</span> set.elems (isprintable) <span class="keyword">do</span> <span class="global">print</span> (code) <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "equal"></a>
+    <strong>equal (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find whether two sets are equal.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if <em>set1</em> and <em>set2</em> each contain identical
+   elements, <code>false</code> otherwise
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> set.equal (keys, Set {META, CTRL, <span class="string">"x"</span>}) <span class="keyword">then</span> process (keys) <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "insert"></a>
+    <strong>insert (set, e)</strong>
+    </dt>
+    <dd>
+    Insert an element into a set.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">e</span>
+         element
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        the modified <em>set</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">for</span> byte = <span class="number">32</span>,<span class="number">126</span> <span class="keyword">do</span>
+   set.insert (isprintable, <span class="global">string</span>.char (byte))
+ <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "intersection"></a>
+    <strong>intersection (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find the intersection of two sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        a new set with elements in both <em>set1</em> and <em>set2</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">common = set.intersection (a, b)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "difference"></a>
+    <strong>difference (set, e)</strong>
+    </dt>
+    <dd>
+    Say whether an element is in a set.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">e</span>
+         element
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> if <em>e</em> is in <em>set</em>, otherwise <code>false</code>
+ otherwise
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> <span class="keyword">not</span> set.member (keyset, pressed) <span class="keyword">then</span> <span class="keyword">return</span> <span class="keyword">nil</span> <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "proper_subset"></a>
+    <strong>proper_subset (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find whether one set is a proper subset of another.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if <em>set2</em> contains all elements in <em>set1</em>
+   but not only those elements, <code>false</code> otherwise
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">if</span> set.proper_subset (a, b) <span class="keyword">then</span>
+   <span class="keyword">for</span> e <span class="keyword">in</span> set.elems (set.difference (b, a)) <span class="keyword">do</span>
+     set.delete (b, e)
+   <span class="keyword">end</span>
+ <span class="keyword">end</span>
+ <span class="global">assert</span> (set.equal (a, b))</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "subset"></a>
+    <strong>subset (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find whether one set is a subset of another.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if all elements in <em>set1</em> are also in <em>set2</em>,
+   <code>false</code> otherwise
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> set.subset (a, b) <span class="keyword">then</span> a = b <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "symmetric_difference"></a>
+    <strong>symmetric_difference (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find the symmetric difference of two sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        a new set with elements that are in <em>set1</em> or <em>set2</em>
+   but not both
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">unique = set.symmetric_difference (a, b)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "union"></a>
+    <strong>union (set1, set2)</strong>
+    </dt>
+    <dd>
+    Find the union of two sets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set1</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         a set
+        </li>
+        <li><span class="parameter">set2</span>
+            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+         another set
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+        a copy of <em>set1</em> with elements in <em>set2</em> merged in
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">all = set.union (a, b)</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
