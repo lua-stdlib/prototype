@@ -31,6 +31,7 @@
 local error		= error
 local getmetatable	= getmetatable
 local next		= next
+local nonempty		= next
 local select		= select
 local setmetatable	= setmetatable
 local type		= type
@@ -86,18 +87,8 @@ end
 -- @treturn table a new table with fields from proto and t merged in.
 local function instantiate (proto, t)
   local obj = {}
-  local k, v = next (proto)
-  while k do
-    obj[k] = v
-    k, v = next (proto, k)
-  end
-
-  t = t or {}
-  k, v = next (t)
-  while k do
-    obj[k] = v
-    k, v = next (t, k)
-  end
+  for k, v in next, proto   do obj[k] = v end
+  for k, v in next, t or {} do obj[k] = v end
   return obj
 end
 
@@ -168,10 +159,8 @@ local prototype = {
 
     -- This is the slowest part of cloning for any objects that have
     -- a lot of fields to test and copy.
-    local k, v = next (self)
-    while (k) do
+    for k, v in next, self do
       obj[k] = v
-      k, v = next (self, k)
     end
 
     if type (mt._init) == "function" then
@@ -181,7 +170,7 @@ local prototype = {
     end
 
     -- If a metatable was set, then merge our fields and use it.
-    if next (getmetatable (obj) or {}) then
+    if nonempty (getmetatable (obj) or {}) then
       obj_mt = instantiate (mt, getmetatable (obj))
 
       -- Merge object methods.

@@ -1,5 +1,6 @@
 local _ENV		= _ENV
 local getmetatable	= getmetatable
+local nonempty		= next
 local next		= next
 local pairs		= pairs
 local select		= select
@@ -233,27 +234,25 @@ return {
     -- Map key pairs.
     -- Copy all pairs when `map == nil`, but discard unmapped src keys
     -- when map is provided (i.e. if `map == {}`, copy nothing).
-    if map == nil or next (map) then
+    if map == nil or nonempty (map) then
       map = map or {}
-      local k, v = next (src)
-      while k do
+      for k, v in next, src do
         local key, dst = map[k] or k, obj
         local kind = type (key)
         if kind == "string" and key:sub (1, 1) == "_" then
           mt[key] = v
-        elseif next (map) and kind == "number" and len (dst) + 1 < key then
+        elseif nonempty (map) and kind == "number" and len (dst) + 1 < key then
           -- When map is given, but has fewer entries than src, stop copying
           -- fields when map is exhausted.
           break
         else
           dst[key] = v
         end
-        k, v = next (src, k)
       end
     end
 
     -- Only set non-empty metatable.
-    if next (mt) then
+    if nonempty (mt) then
       setmetatable (obj, mt)
     end
     return obj

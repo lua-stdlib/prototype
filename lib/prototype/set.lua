@@ -23,7 +23,7 @@
 
 
 local getmetatable	= getmetatable
-local next		= next
+local nonempty		= next
 local rawget		= rawget
 local rawset		= rawset
 local setmetatable	= setmetatable
@@ -191,7 +191,7 @@ prototype = Container {
       end
       -- non-underscore-prefixed string keys are discarded!
     end
-    return next (mt) and setmetatable (new, mt) or new
+    return nonempty (mt) and setmetatable (new, mt) or new
   end,
 
   --- Metamethods
