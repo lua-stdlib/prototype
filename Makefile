@@ -4,7 +4,9 @@ MKDIR	= mkdir -p
 SED	= sed
 SPECL	= specl
 
-luadir	= lib/std
+VERSION	= 1.0
+
+luadir	= lib/prototype
 SOURCES =				\
 	$(luadir)/_base.lua		\
 	$(luadir)/container.lua		\
@@ -17,17 +19,29 @@ SOURCES =				\
 	$(NOTHING_ELSE)
 
 
-all: doc
+all: doc $(luadir)/version.lua
+
+
+$(luadir)/version.lua: .FORCE
+	@echo 'return "Prototype Object Libraries / $(VERSION)"' > '$@T';	\
+	if cmp -s '$@' '$@T'; then						\
+	    rm -f '$@T';							\
+	else									\
+	    echo 'echo "Prototype Object Libraries / $(VERSION)" > $@';		\
+	    mv '$@T' '$@';							\
+	fi
 
 doc: doc/config.ld $(SOURCES)
 	$(LDOC) -c doc/config.ld .
 
 doc/config.ld: doc/config.ld.in
-	version=`LUA_PATH=$$(pwd)'/lib/?.lua;;' $(LUA) -e 'io.stdout:write(require"prototype.version")'`; \
-	$(SED) -e "s,@PACKAGE_VERSION@,$$version," '$<' > '$@'
+	$(SED) -e "s,@PACKAGE_VERSION@,$(VERSION)," '$<' > '$@'
 
 
 CHECK_ENV = LUA=$(LUA)
 
 check:
 	LUA=$(LUA) $(SPECL) $(SPECL_OPTS) specs/*_spec.yaml
+
+
+.FORCE:
