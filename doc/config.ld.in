@@ -19,12 +19,12 @@ MIT license (the same license as Lua itself).  There is no warranty.
 dir = "."
 
 file = {
-  "../lib/std/container.lua",
-  "../lib/std/object.lua",
-  "../lib/std/list.lua",
-  "../lib/std/set.lua",
-  "../lib/std/strbuf.lua",
-  "../lib/std/tree.lua",
+  "../lib/prototype/container.lua",
+  "../lib/prototype/object.lua",
+  "../lib/prototype/list.lua",
+  "../lib/prototype/set.lua",
+  "../lib/prototype/strbuf.lua",
+  "../lib/prototype/tree.lua",
 }
 
 new_type ("prototype", "Object_System", true)
