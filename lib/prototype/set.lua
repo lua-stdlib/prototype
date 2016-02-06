@@ -34,19 +34,18 @@ local table_sort	= table.sort
 
 
 local _ = {
+  base			= require "prototype._base",
   container		= require "prototype.container",
-  std			= require "prototype._base",
 }
 
 local Container		= _.container.prototype
-local Module		= _.std.object.Module
+local Module		= _.base.Module
 
-local _pairs		= _.std.pairs
-local _tostring		= _.std.tostring
-local argscheck		= _.std.typecheck and _.std.typecheck.argscheck
-local pickle		= _.std.string.pickle
+local _pairs		= _.base.pairs
+local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
+local str		= _.base.str
 
-local _ENV		= _.std.strict and _.std.strict {} or {}
+local _ENV		= _.base.strict and _.base.strict {} or {}
 
 _ = nil
 
@@ -261,7 +260,7 @@ prototype = Container {
   __tostring = function (self)
     local keys = {}
     for k in _pairs (self) do
-      keys[#keys + 1] = _tostring (k)
+      keys[#keys + 1] = str (k)
     end
     table_sort (keys)
     return getmetatable (self)._type .. " {" .. table_concat (keys, ", ") .. "}"

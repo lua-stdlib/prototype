@@ -27,14 +27,6 @@ file = {
   "../lib/prototype/tree.lua",
 }
 
-new_type ("prototype", "Object_System", true)
-
-function postprocess_html(s)
-  s = s:gsub("<h1>%s*Prototype (.-)</p>", '<h1>Module %1</h1>')
-  s = s:gsub("<h2>Object_System</h2>", '<h2>Object System</h2>')
-  return s
-end
-
 new_type ("object", "Objects", false, "Fields")
 new_type ("init", "Initialisation", false, "Parameters")
 

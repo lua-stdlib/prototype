@@ -16,25 +16,26 @@
  @prototype prototype.list
 ]]
 
+local tonumber		= tonumber
 
+local math_min		= math.min
 local table_unpack	= table.unpack or unpack
 
 
 local _ = {
+  base			= require "prototype._base",
   object		= require "prototype.object",
-  std			= require "prototype._base",
 }
 
-local Module		= _.std.object.Module
+local Module		= _.base.Module
 local Object		= _.object.prototype
 
-local _ipairs		= _.std.ipairs
-local _pairs		= _.std.pairs
-local argscheck		= _.std.typecheck and _.std.typecheck.argscheck
-local compare		= _.std.list.compare
-local len		= _.std.operator.len
+local _ipairs		= _.base.ipairs
+local _pairs		= _.base.pairs
+local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
+local len		= _.base.len
 
-local _ENV		= _.std.strict and _.std.strict {} or {}
+local _ENV		= _.base.strict and _.base.strict {} or {}
 
 _ = nil
 
@@ -52,6 +53,28 @@ local function append (l, x)
   local r = l {}
   r[#r + 1] = x
   return r
+end
+
+
+local function compare (l, m)
+  local lenl, lenm = len (l), len (m)
+  for i = 1, math_min (lenl, lenm) do
+    local li, mi = tonumber (l[i]), tonumber (m[i])
+    if li == nil or mi == nil then
+      li, mi = l[i], m[i]
+    end
+    if li < mi then
+      return -1
+    elseif li > mi then
+      return 1
+    end
+  end
+  if lenl < lenm then
+    return -1
+  elseif lenl > lenm then
+    return 1
+  end
+  return 0
 end
 
 

@@ -28,31 +28,36 @@
  @prototype prototype.container
 ]]
 
+local error		= error
 local getmetatable	= getmetatable
 local next		= next
 local select		= select
 local setmetatable	= setmetatable
+local tostring		= tostring
 local type		= type
 
+local string_format	= string.format
 local table_concat	= table.concat
 
 
 local _			= require "prototype._base"
 
-local Module		= _.object.Module
+local Module		= _.Module
 
 local argcheck		= _.typecheck and _.typecheck.argcheck
-local argerror		= _.argerror
 local argscheck		= _.typecheck and _.typecheck.argscheck
-local copy		= _.base.copy
+local copy		= _.copy
 local extramsg_toomany	= _.typecheck and _.typecheck.extramsg_toomany
-local mapfields		= _.object.mapfields
-local render		= _.string.render
-local sortkeys		= _.base.sortkeys
+local getmetamethod	= _.getmetamethod
+local ipairs		= _.ipairs
+local mapfields		= _.mapfields
+local pairs		= _.pairs
+local str		= _.str
 
 local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
+
 
 
 --[[ ================= ]]--
@@ -60,14 +65,23 @@ _ = nil
 --[[ ================= ]]--
 
 
+local function argerror (name, i, extramsg, level)
+  level = level or 1
+  local s = string_format ("bad argument #%d to '%s'", i, name)
+  if extramsg ~= nil then
+    s = s .. " (" .. extramsg .. ")"
+  end
+  error (s, level + 1)
+end
+
+
 --- Instantiate a new object based on *proto*.
 --
 -- This is equivalent to:
 --
---     table.merge (table.clone (proto), t or {})
+--     merge (copy (proto), t or {})
 --
--- Except that, by not typechecking arguments or checking for metatables,
--- it is slightly faster.
+-- Except that, by not checking arguments or metatables, it is faster.
 -- @tparam table proto base object to copy from
 -- @tparam[opt={}] table t additional fields to merge in
 -- @treturn table a new table with fields from proto and t merged in.
@@ -87,22 +101,6 @@ local function instantiate (proto, t)
   end
   return obj
 end
-
-
-local tostring_vtable = {
-  pair = function (x, kp, vp, k, v, kstr, vstr)
-    if k == 1 or type (k) == "number" and k -1 == kp then return vstr end
-    return kstr .. "=" .. vstr
-  end,
-
-  sep = function (x, kp, vp, kn, vn)
-    if kp == nil or kn == nil then return "" end
-    if type (kp) == "number" and kn ~= kp + 1 then return "; " end
-    return ", "
-  end,
-
-  sort = sortkeys,
-}
 
 
 
@@ -216,7 +214,7 @@ local prototype = {
     return table_concat {
       -- Pass a shallow copy to render to avoid triggering __tostring
       -- again and blowing the stack.
-      getmetatable (self)._type, " ", render (copy (self), tostring_vtable),
+      getmetatable (self)._type, " ", str (copy (self)),
     }
   end,
 }

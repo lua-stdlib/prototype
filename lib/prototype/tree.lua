@@ -30,30 +30,27 @@ local rawset		= rawset
 local setmetatable	= setmetatable
 local type		= type
 
-local coroutine_yield	= coroutine.yield
 local coroutine_wrap	= coroutine.wrap
+local coroutine_yield	= coroutine.yield
 local table_remove	= table.remove
 local table_unpack	= table.unpack or unpack
 
 
 local _ = {
+  base			= require "prototype._base",
   container		= require "prototype.container",
-  std			= require "prototype._base",
 }
 
 local Container		= _.container.prototype
-local Module		= _.std.object.Module
+local Module		= _.base.Module
 
-local _ipairs		= _.std.ipairs
-local _pairs		= _.std.pairs
-local argscheck		= _.std.typecheck and _.std.typecheck.argscheck
-local ielems		= _.std.ielems
-local last		= _.std.base.last
-local leaves		= _.std.tree.leaves
-local len		= _.std.operator.len
-local pack		= _.std.table.pack
+local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
+local ipairs		= _.base.ipairs
+local len		= _.base.len
+local pack		= _.base.pack
+local pairs		= _.base.pairs
 
-local _ENV		= _.std.strict and _.std.strict {} or {}
+local _ENV		= _.base.strict and _.base.strict {} or {}
 
 _ = nil
 
@@ -118,7 +115,7 @@ local function clone (t, nometa)
   end
   local d = {[t] = r}
   local function copy (o, x)
-    for i, v in _pairs (x) do
+    for i, v in pairs (x) do
       if type (v) == "table" then
         if not d[v] then
           d[v] = {}
@@ -139,13 +136,41 @@ local function clone (t, nometa)
 end
 
 
+local function ielems (t)
+  -- capture ipairs iterator initial state
+  local fn, istate, ctrl = ipairs (t)
+  return function (state, _)
+    local v
+    ctrl, v = fn (state, ctrl)
+    if ctrl then return v end
+  end, istate, true -- wrapped initial state
+end
+
+
 local function get (t, k)
   return t and t[k] or nil
 end
 
 
+local function last (t) return t[len (t)] end
+
+
+local function leaves (it, tr)
+  local function visit (n)
+    if type (n) == "table" then
+      for _, v in it (n) do
+        visit (v)
+      end
+    else
+      coroutine_yield (n)
+    end
+  end
+  return coroutine_wrap (visit), tr
+end
+
+
 local function merge (t, u)
-  for ty, p, n in _nodes (_pairs, u) do
+  for ty, p, n in _nodes (pairs, u) do
     if ty == "leaf" then
       t[p] = n
     end
@@ -289,7 +314,7 @@ return Module {
   -- do
   --   t[#t + 1] = leaf
   -- end
-  ileaves = X ("ileaves (table)", function (t) return leaves (_ipairs, t) end),
+  ileaves = X ("ileaves (table)", function (t) return leaves (ipairs, t) end),
 
   --- Tree iterator over numbered nodes, in order.
   --
@@ -300,7 +325,7 @@ return Module {
   -- @treturn function iterator function
   -- @treturn tree|table the tree, *tr*
   -- @see nodes
-  inodes = X ("inodes (table)", function (t) return _nodes (_ipairs, t) end),
+  inodes = X ("inodes (table)", function (t) return _nodes (ipairs, t) end),
 
   --- Tree iterator which returns just leaves.
   -- @function leaves
@@ -316,7 +341,7 @@ return Module {
   -- end
   -- --> t = {2, 4, "five", "foo", "one", "three"}
   -- table.sort (t, lambda "=tostring(_1) < tostring(_2)")
-  leaves = X ("leaves (table)", function (t) return leaves (_pairs, t) end),
+  leaves = X ("leaves (table)", function (t) return leaves (pairs, t) end),
 
   --- Destructively deep-merge one tree into another.
   -- @function merge
@@ -362,5 +387,5 @@ return Module {
   -- --> "leaf"     {2}     "leaf3"
   -- --> "join"     {}      {{"leaf1", "leaf2"}, "leaf3"}
   -- os.exit (0)
-  nodes = X ("nodes (table)", function (t) return _nodes (_pairs, t) end),
+  nodes = X ("nodes (table)", function (t) return _nodes (pairs, t) end),
 }

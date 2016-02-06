@@ -63,7 +63,7 @@ specify prototype.container:
         expect (objtype (v)).to_be (objtype (Container))
   - context with module functions:
     - before:
-        Bag = require "prototype._base".object.Module {
+        Bag = require "prototype._base".Module {
           prototype = Container { _type = "Bag" },
           count = function (bag)
             local n = 0

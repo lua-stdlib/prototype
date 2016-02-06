@@ -34,17 +34,15 @@ local table_concat	= table.concat
 
 
 local _ = {
+  base			= require "prototype._base",
   object		= require "prototype.object",
-  std			= require "prototype._base",
 }
 
-local Module		= _.std.object.Module
+local Module		= _.base.Module
 local Object		= _.object.prototype
 
-local argscheck		= _.std.typecheck and _.std.typecheck.argscheck
-local merge		= _.std.base.merge
-
-local _ENV		= _.std.strict and _.std.strict {} or {}
+local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
+local _ENV		= _.base.strict and _.base.strict {} or {}
 
 _ = nil
 
