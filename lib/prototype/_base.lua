@@ -147,51 +147,6 @@ local function copy (dest, src)
 end
 
 
--- Write pretty-printing based on:
---
---   John Hughes's and Simon Peyton Jones's Pretty Printer Combinators
---
---   Based on "The Design of a Pretty-printing Library in Advanced
---   Functional Programming", Johan Jeuring and Erik Meijer (eds), LNCS 925
---   http://www.cs.chalmers.se/~rjmh/Papers/pretty.ps
---   Heavily modified by Simon Peyton Jones, Dec 96
-
-local function render (x, fns, roots)
-  roots = roots or {}
-
-  local function stop_roots (x)
-    return roots[x] or render (x, fns, copy (roots))
-  end
-
-  if fns.term (x) then
-    return fns.elem (x)
-
-  else
-    local buf, keys = {fns.open (x)}, {}	-- pre-buffer table open
-    roots[x] = fns.elem (x)			-- recursion protection
-
-    for k in pairs (x) do			-- collect keys
-      keys[#keys + 1] = k
-    end
-    keys = fns.sort (keys)
-
-    local pair, sep = fns.pair, fns.sep
-    local kp, vp				-- previous key and value
-    for _, k in ipairs (keys) do
-      local v = x[k]
-      buf[#buf + 1] = sep (x, kp, vp, k, v)	-- | buffer << separator
-      buf[#buf + 1] = pair (x, kp, vp, k, v, stop_roots (k), stop_roots (v))
-						-- | buffer << key/value pair
-      kp, vp = k, v
-    end
-    buf[#buf + 1] = sep (x, kp, vp)		-- buffer << trailing separator
-    buf[#buf + 1] = fns.close (x)		-- buffer << table close
-
-    return table_concat (buf)			-- stringify buffer
-  end
-end
-
-
 local function keysort (a, b)
   if type (a) == "number" then
     return type (b) ~= "number" or a < b
@@ -201,27 +156,53 @@ local function keysort (a, b)
 end
 
 
-local tostring_vtable = {
-  open  = function (x) return "{" end,
-  close = function (x) return "}" end,
-  elem  = tostring,
-  pair  = function (x, kp, vp, k, v, kstr, vstr)
-            if k == 1 or type (k) == "number" and k -1 == kp then return vstr end
-            return kstr .. "=" .. vstr
-          end,
-  sep   = function (x, kp, vp, kn, vn)
-            if kp == nil or kn == nil then return "" end
-            if type (kp) == "number" and kn ~= kp + 1 then return "; " end
-            return ", "
-          end,
-  sort  = function (t)
-            table_sort (t, keysort)
-            return t
-          end,
-  term  = function (x)
-            return type (x) ~= "table" or getmetamethod (x, "__tostring")
-	  end,
-}
+local function opairs (t)
+  local keys, i = {}, 0
+  for k in pairs (t) do keys[#keys + 1] = k end
+  table_sort (keys, keysort)
+  return function (t)
+    i = i + 1
+    local k = keys[i]
+    if k ~= nil then
+      return k, t[k]
+    end
+  end, t, nil
+end
+
+
+local function str (x, roots)
+  roots = roots or {}
+
+  local function stop_roots (x)
+    return roots[x] or str (x, copy (roots))
+  end
+
+  if type (x) ~= "table" or getmetamethod (x, "__tostring") then
+    return tostring (x)
+
+  else
+    local buf = {"{"}				-- pre-buffer table open
+    roots[x] = tostring (x)			-- recursion protection
+
+    local kp, vp				-- previous key and value
+    for k, v in opairs (x) do
+      if kp ~= nil and k ~= nil then
+        -- semi-colon separator after sequence values, or else comma separator
+	buf[#buf + 1] = type (kp) == "number" and k ~= kp + 1 and "; " or ", "
+      end
+      if k == 1 or type (k) == "number" and k -1 == kp then
+	-- no key for sequence values
+	buf[#buf + 1] = stop_roots (v)
+      else
+	buf[#buf + 1] = stop_roots (k) .. "=" .. stop_roots (v)
+      end
+      kp, vp = k, v
+    end
+    buf[#buf + 1] = "}"				-- buffer << table close
+
+    return table_concat (buf)			-- stringify buffer
+  end
+end
 
 
 return {
@@ -235,7 +216,7 @@ return {
   len		= len,
   pack		= pack,
   pairs         = pairs,
-  str		= function (x) return render (x, tostring_vtable) end,
+  str		= str,
   unpack	= unpack,
 
 

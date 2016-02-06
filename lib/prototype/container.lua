@@ -33,7 +33,6 @@ local getmetatable	= getmetatable
 local next		= next
 local select		= select
 local setmetatable	= setmetatable
-local tostring		= tostring
 local type		= type
 
 local string_format	= string.format
