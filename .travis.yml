@@ -115,6 +115,8 @@ install:
        sudo luarocks install --server=http://rocks.moonscript.org/manifests/gvvaughan $rock;
     done'
 
+  - make
+
   # Build from rockspec, forcing uninstall of older luarocks installed
   # above when testing the git rockspec, both for enforcing backwards
   # compatibility by default, and for ease of maintenance.
