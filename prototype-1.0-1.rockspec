@@ -25,10 +25,11 @@ build = {
     prototype			= "lib/prototype/init.lua",
     ["prototype._base"]		= "lib/prototype/_base.lua",
     ["prototype.container"]	= "lib/prototype/container.lua",
-    ["prototype.list"]		= "lib/prototype/list.lua",
+    ["prototype.init"]		= "lib/prototype/init.lua",
     ["prototype.object"]	= "lib/prototype/object.lua",
+    ["prototype.sequence"]	= "lib/prototype/sequence.lua",
     ["prototype.set"]		= "lib/prototype/set.lua",
     ["prototype.strbuf"]	= "lib/prototype/strbuf.lua",
-    ["prototype.tree"]		= "lib/prototype/tree.lua",
+    ["prototype.trie"]		= "lib/prototype/trie.lua",
   },
 }

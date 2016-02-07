@@ -21,10 +21,10 @@ dir = "."
 file = {
   "../lib/prototype/container.lua",
   "../lib/prototype/object.lua",
-  "../lib/prototype/list.lua",
+  "../lib/prototype/sequence.lua",
   "../lib/prototype/set.lua",
   "../lib/prototype/strbuf.lua",
-  "../lib/prototype/tree.lua",
+  "../lib/prototype/trie.lua",
 }
 
 new_type ("object", "Objects", false, "Fields")

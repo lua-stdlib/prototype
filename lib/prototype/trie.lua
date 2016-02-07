@@ -1,15 +1,15 @@
 --[[--
- Tree container prototype.
+ Trie container prototype.
 
- This module returns a table of tree operators, as well as the prototype
- for a Tree container object.
+ This module returns a table of trie operators, as well as the prototype
+ for a Trie container object.
 
- This is not a search tree, but rather a way to efficiently store and
+ This is not a search trie, but rather a way to efficiently store and
  retrieve values stored with a path as a key, such as a multi-key
- keytable.  Although it does have iterators for walking the tree with
+ keytable.  Although it does have iterators for walking the trie with
  various algorithms.
 
- In addition to the functionality described here, Tree containers also
+ In addition to the functionality described here, Trie containers also
  have all the methods and metamethods of the @{prototype.container.prototype}
  (except where overridden here),
 
@@ -18,9 +18,9 @@
 
       table
        `-> Container
-            `-> Tree
+            `-> Trie
 
- @prototype prototype.tree
+ @prototype prototype.trie
 ]]
 
 
@@ -65,9 +65,9 @@ local prototype -- forward declaration
 
 
 
---- Tree iterator.
+--- Trie iterator.
 -- @tparam function it iterator function
--- @tparam prototype|table tr tree container or tree-like table
+-- @tparam prototype|table tr trie container or trie-like table
 -- @treturn string type ("leaf", "branch" (pre-order) or "join" (post-order))
 -- @treturn table path to node (`{i1, ...in}`)
 -- @treturn node node
@@ -202,12 +202,12 @@ end
 
 
 --[[ ============ ]]--
---[[ Tree Object. ]]--
+--[[ Trie Object. ]]--
 --[[ ============ ]]--
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.tree." .. decl, fn) or fn
+  return argscheck and argscheck ("prototype.trie." .. decl, fn) or fn
 end
 
 
@@ -219,26 +219,26 @@ local function _type (x)
 end
 
 
---- Tree prototype object.
+--- Trie prototype object.
 -- @object prototype
--- @string[opt="Tree"] _type object name
+-- @string[opt="Trie"] _type object name
 -- @see prototype.container.prototype
 -- @usage
--- local tree = require "prototype.tree"
--- local Tree = tree.prototype
--- local tr = Tree {}
+-- local trie = require "prototype.trie"
+-- local Trie = trie.prototype
+-- local tr = Trie {}
 -- tr[{"branch1", 1}] = "leaf1"
 -- tr[{"branch1", 2}] = "leaf2"
 -- tr[{"branch2", 1}] = "leaf3"
--- print (tr[{"branch1"}])      --> Tree {leaf1, leaf2}
+-- print (tr[{"branch1"}])      --> Trie {leaf1, leaf2}
 -- print (tr[{"branch1", 2}])   --> leaf2
 -- print (tr[{"branch1", 3}])   --> nil
 -- --> leaf1	leaf2	leaf3
--- for leaf in tree.leaves (tr) do
+-- for leaf in trie.leaves (tr) do
 --   io.write (leaf .. "\t")
 -- end
 prototype = Container {
-  _type = "Tree",
+  _type = "Trie",
 
   --- Metamethods
   -- @section metamethods
@@ -268,7 +268,7 @@ prototype = Container {
   __newindex = function (tr, i, v)
     if _type (i) == "table" then
       for n = 1, len (i) - 1 do
-        if _type (tr[i[n]]) ~= "Tree" then
+        if _type (tr[i[n]]) ~= "Trie" then
           rawset (tr, i[n], prototype {})
         end
         tr = tr[i[n]]
@@ -287,9 +287,9 @@ return Module {
   --- Functions
   -- @section functions
 
-  --- Make a deep copy of a tree or table, including any metatables.
+  --- Make a deep copy of a trie or table, including any metatables.
   -- @function clone
-  -- @tparam table tr tree or tree-like table
+  -- @tparam table tr trie or trie-like table
   -- @tparam boolean nometa if non-`nil` don't copy metatables
   -- @treturn prototype|table a deep copy of *tr*
   -- @see std.table.clone
@@ -301,11 +301,11 @@ return Module {
   -- assert (tr[2].two == 2)
   clone = X ("clone (table, ?boolean|:nometa)", clone),
 
-  --- Tree iterator which returns just numbered leaves, in order.
+  --- Trie iterator which returns just numbered leaves, in order.
   -- @function ileaves
-  -- @tparam prototype|table tr tree or tree-like table
+  -- @tparam prototype|table tr trie or trie-like table
   -- @treturn function iterator function
-  -- @treturn prototype|table the tree *tr*
+  -- @treturn prototype|table the trie *tr*
   -- @see inodes
   -- @see leaves
   -- @usage
@@ -316,20 +316,20 @@ return Module {
   -- end
   ileaves = X ("ileaves (table)", function (t) return leaves (ipairs, t) end),
 
-  --- Tree iterator over numbered nodes, in order.
+  --- Trie iterator over numbered nodes, in order.
   --
   -- The iterator function behaves like @{nodes}, but only traverses the
   -- array part of the nodes of *tr*, ignoring any others.
   -- @function inodes
-  -- @tparam prototype|table tr tree or tree-like table to iterate over
+  -- @tparam prototype|table tr trie or trie-like table to iterate over
   -- @treturn function iterator function
-  -- @treturn tree|table the tree, *tr*
+  -- @treturn trie|table the trie, *tr*
   -- @see nodes
   inodes = X ("inodes (table)", function (t) return _nodes (ipairs, t) end),
 
-  --- Tree iterator which returns just leaves.
+  --- Trie iterator which returns just leaves.
   -- @function leaves
-  -- @tparam table t tree or tree-like table
+  -- @tparam table t trie or trie-like table
   -- @treturn function iterator function
   -- @treturn table *t*
   -- @see ileaves
@@ -343,9 +343,9 @@ return Module {
   -- table.sort (t, lambda "=tostring(_1) < tostring(_2)")
   leaves = X ("leaves (table)", function (t) return leaves (pairs, t) end),
 
-  --- Destructively deep-merge one tree into another.
+  --- Destructively deep-merge one trie into another.
   -- @function merge
-  -- @tparam table t destination tree
+  -- @tparam table t destination trie
   -- @tparam table u table with nodes to merge
   -- @treturn table *t* with nodes from *u* merged in
   -- @see std.table.merge
@@ -353,30 +353,30 @@ return Module {
   -- merge (dest, {{exists=1}, {{not = {present = { inside = "dest" }}}}})
   merge = X ("merge (table, table)", merge),
 
-  --- Tree iterator over all nodes.
+  --- Trie iterator over all nodes.
   --
   -- The returned iterator function performs a depth-first traversal of
-  -- `tr`, and at each node it returns `{node-type, tree-path, tree-node}`
-  -- where `node-type` is `branch`, `join` or `leaf`; `tree-path` is a
-  -- list of keys used to reach this node, and `tree-node` is the current
+  -- `tr`, and at each node it returns `{node-type, trie-path, trie-node}`
+  -- where `node-type` is `branch`, `join` or `leaf`; `trie-path` is a
+  -- list of keys used to reach this node, and `trie-node` is the current
   -- node.
   --
-  -- Note that the `tree-path` reuses the same table on each iteration, so
+  -- Note that the `trie-path` reuses the same table on each iteration, so
   -- you must `table.clone` a copy if you want to take a snap-shot of the
-  -- current state of the `tree-path` list before the next iteration
+  -- current state of the `trie-path` list before the next iteration
   -- changes it.
   -- @function nodes
-  -- @tparam prototype|table tr tree or tree-like table to iterate over
+  -- @tparam prototype|table tr trie or trie-like table to iterate over
   -- @treturn function iterator function
-  -- @treturn prototype|table the tree, *tr*
+  -- @treturn prototype|table the trie, *tr*
   -- @see inodes
   -- @usage
-  -- -- tree = +-- node1
+  -- -- trie = +-- node1
   -- --        |    +-- leaf1
   -- --        |    '-- leaf2
   -- --        '-- leaf 3
-  -- tree = Tree { Tree { "leaf1", "leaf2"}, "leaf3" }
-  -- for node_type, path, node in nodes (tree) do
+  -- trie = Trie { Trie { "leaf1", "leaf2"}, "leaf3" }
+  -- for node_type, path, node in nodes (trie) do
   --   print (node_type, path, node)
   -- end
   -- --> "branch"   {}      {{"leaf1", "leaf2"}, "leaf3"}

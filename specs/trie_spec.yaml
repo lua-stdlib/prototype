@@ -1,14 +1,14 @@
 before: |
   global_table = "_G"
-  this_module  = "prototype.tree"
+  this_module  = "prototype.trie"
 
-  tree = require "prototype.tree"
-  Tree = tree.prototype
+  trie = require "prototype.trie"
+  Trie = trie.prototype
 
-specify prototype.tree:
+specify prototype.trie:
 - before:
     t = {foo="foo", fnord={branch={bar="bar", baz="baz"}}, quux="quux"}
-    tr = Tree (t)
+    tr = Trie (t)
 
 - context when required:
   - context by name:
@@ -22,21 +22,21 @@ specify prototype.tree:
           to_equal {}
 
 - describe construction:
-  - it constructs a new tree:
-      tr = Tree {}
-      expect (tr).not_to_be (Tree)
-      expect (objtype (tr)).to_be "Tree"
-  - it turns a table argument into a tree:
-      expect (objtype (Tree (t))).to_be "Tree"
-  - it does not turn table argument values into sub-Trees:
+  - it constructs a new trie:
+      tr = Trie {}
+      expect (tr).not_to_be (Trie)
+      expect (objtype (tr)).to_be "Trie"
+  - it turns a table argument into a trie:
+      expect (objtype (Trie (t))).to_be "Trie"
+  - it does not turn table argument values into sub-Tries:
       expect (objtype (tr["fnord"])).to_be "table"
   - it understands branched nodes:
-      expect (tr).to_equal (Tree (t))
+      expect (tr).to_equal (Trie (t))
       expect (tr[{"fnord"}]).to_equal (t.fnord)
       expect (tr[{"fnord", "branch", "bar"}]).to_equal (t.fnord.branch.bar)
   - it serves as a prototype for new instances:
       obj = tr {}
-      expect (objtype (obj)).to_be "Tree"
+      expect (objtype (obj)).to_be "Trie"
       expect (obj).to_equal (tr)
       expect (getmetatable (obj)).to_be (getmetatable (tr))
 
@@ -44,7 +44,7 @@ specify prototype.tree:
 - describe clone:
   - before:
       subject = { k1 = {"v1"}, k2 = {"v2"}, k3 = {"v3"} }
-      f       = tree.clone
+      f       = trie.clone
   - it does not just return the subject:
       expect (f (subject)).not_to_be (subject)
   - it does copy the subject:
@@ -65,7 +65,7 @@ specify prototype.tree:
 
 - describe ileaves:
   - before:
-      f = tree.ileaves
+      f = trie.ileaves
       l = {}
   - it iterates over array part of a table argument:
       for v in f {"first", "second", "3rd"} do l[1+#l]=v end
@@ -83,10 +83,10 @@ specify prototype.tree:
         l[1+#l]=v
       end
       expect (l).to_equal {"one", "three", "five"}
-  - it works on trees too:
-      for v in f (Tree {Tree {"one",
-                                Tree {two=2},
-                                Tree {Tree {"three"}, four=4}
+  - it works on tries too:
+      for v in f (Trie {Trie {"one",
+                                Trie {two=2},
+                                Trie {Trie {"three"}, four=4}
                                },
                          foo="bar", "five"})
       do
@@ -102,12 +102,12 @@ specify prototype.tree:
 
 - describe inodes:
   - before: |
-      f = tree.inodes
+      f = trie.inodes
 
       function traverse (subject)
         l = {}
         for ty, p, n in f (subject) do
-           l[1+#l]={ty, tree.clone (p), n}
+           l[1+#l]={ty, trie.clone (p), n}
         end
         return l
       end
@@ -160,10 +160,10 @@ specify prototype.tree:
                   {"join",   {1},       subject[1]},          --  },
                   {"leaf",   {2},       subject[2]},          --  five,
                   {"join",   {},        subject}}             -- }
-  - it works on trees too: |
-      subject = Tree {Tree {"one",
-                              Tree {two=2},
-                              Tree {Tree {"three"}, four=4}},
+  - it works on tries too: |
+      subject = Trie {Trie {"one",
+                              Trie {two=2},
+                              Trie {Trie {"three"}, four=4}},
                               foo="bar",
                               "five"}
       expect (traverse (subject)).
@@ -189,7 +189,7 @@ specify prototype.tree:
 
 - describe leaves:
   - before:
-      f = tree.leaves
+      f = trie.leaves
       l = {}
   - it iterates over elements of a table argument:
       for v in f {"first", "second", "3rd"} do l[1+#l]=v end
@@ -208,10 +208,10 @@ specify prototype.tree:
       end
       expect (l).to_contain.
         a_permutation_of {"one", 2, "three", 4, "bar", "five"}
-  - it works on trees too:
-      for v in f (Tree {Tree {"one",
-                                Tree {two=2},
-                                Tree {Tree {"three"}, four=4}
+  - it works on tries too:
+      for v in f (Trie {Trie {"one",
+                                Trie {two=2},
+                                Trie {Trie {"three"}, four=4}
                                },
                          foo="bar", "five"})
       do
@@ -228,26 +228,26 @@ specify prototype.tree:
 
 - describe merge:
   - before: |
-      f  = tree.merge
+      f  = trie.merge
 
       -- Additional merge keys which are moderately unusual
-      t1 = Tree { k1 = "v1", k2 = "if", k3 = Tree {"?"} }
-      t2 = Tree { ["if"] = true, [{"?"}] = false, _ = "underscore", k3 = "v2" }
+      t1 = Trie { k1 = "v1", k2 = "if", k3 = Trie {"?"} }
+      t2 = Trie { ["if"] = true, [{"?"}] = false, _ = "underscore", k3 = "v2" }
 
-      target = tree.clone (t1)
-      for ty, p, n in tree.nodes (t2) do
+      target = trie.clone (t1)
+      for ty, p, n in trie.nodes (t2) do
         if ty == "leaf" then target[p] = n end
       end
   - it does not create a whole new table:
       expect (f (t1, t2)).to_be (t1)
   - it does not change t1 when t2 is empty:
-      expect (f (t1, Tree {})).to_be (t1)
+      expect (f (t1, Trie {})).to_be (t1)
   - it copies t2 when t1 is empty: |
-      expect (f (Tree {}, t1)).to_copy (t1)
+      expect (f (Trie {}, t1)).to_copy (t1)
   - it merges keys from t2 into t1: |
       expect (f (t1, t2)).to_equal (target)
   - it gives precedence to values from t2:
-      original = tree.clone (t1)
+      original = trie.clone (t1)
       m = f (t1, t2)      -- Merge is destructive, do it once only.
       expect (m.k3).to_be (t2.k3)
       expect (m.k3).not_to_be (original.k3)
@@ -260,11 +260,11 @@ specify prototype.tree:
 
 - describe nodes:
   - before:
-      f = tree.nodes
+      f = trie.nodes
 
       function traverse (subject)
         l = {}
-        for ty, p, n in f (subject) do l[1+#l]={ty, tree.clone (p), n} end
+        for ty, p, n in f (subject) do l[1+#l]={ty, trie.clone (p), n} end
         return l
       end
   - it iterates over the elements of a table argument: |
@@ -326,13 +326,13 @@ specify prototype.tree:
                           {"leaf",   {2},          subject[2]},            --  five,
                           {"leaf",   {"foo"},      subject["foo"]},        --  bar,
                           {"join",   {},           subject}}               -- }
-  - it works on trees too: |
+  - it works on tries too: |
       -- like `pairs`, `nodes` can visit elements in any order, so we cannot
       -- guarantee the array part is always visited before the hash part, or
       -- even that the array elements are visited in order!
-      subject = Tree {Tree {"one",
-                              Tree {two=2},
-                              Tree {Tree {"three"}, four=4}},
+      subject = Trie {Trie {"one",
+                              Trie {two=2},
+                              Trie {Trie {"three"}, four=4}},
                               foo="bar",
                               "five"}
       expect (traverse (subject)).to_contain.
@@ -353,7 +353,7 @@ specify prototype.tree:
                           {"leaf",   {"foo"},      subject["foo"]},        --  bar,
                           {"join",   {},           subject}}               -- }
   - it generates path key-lists that are valid __index arguments: |
-      subject = Tree {"first", Tree {"second"}, "3rd"}
+      subject = Trie {"first", Trie {"second"}, "3rd"}
       expect (traverse (subject)).
         to_equal {{"branch", {},    subject[{}]},    -- {
                   {"leaf",   {1},   subject[{1}]},   --  first,
@@ -380,7 +380,7 @@ specify prototype.tree:
   - it returns a value for the given key:
       expect (tr["foo"]).to_be "foo"
       expect (tr["quux"]).to_be "quux"
-  - it returns tree root for empty key list:
+  - it returns trie root for empty key list:
       expect (tr[{}]).to_be (tr)
   - it returns values for single element key lists:
       expect (tr[{"foo"}]).to_be "foo"
@@ -392,30 +392,30 @@ specify prototype.tree:
 
 - describe __newindex:
   - before:
-      tr = Tree {}
+      tr = Trie {}
   - it stores values for simple keys:
       tr["foo"] = "foo"
-      expect (tr).to_equal (Tree {foo="foo"})
+      expect (tr).to_equal (Trie {foo="foo"})
   - it stores values for single element key lists:
       tr[{"foo"}] = "foo"
-      expect (tr).to_equal (Tree {foo="foo"})
+      expect (tr).to_equal (Trie {foo="foo"})
   - it stores values for multi-element key lists:
       tr[{"foo", "bar"}] = "baz"
-      expect (tr).to_equal (Tree {foo=Tree {bar="baz"}})
+      expect (tr).to_equal (Trie {foo=Trie {bar="baz"}})
   - it separates branches for diverging key lists:
       tr[{"foo", "branch", "bar"}] = "leaf1"
       tr[{"foo", "branch", "baz"}] = "leaf2"
-      expect (tr).to_equal (Tree {foo=Tree {branch=Tree {bar="leaf1", baz="leaf2"}}})
+      expect (tr).to_equal (Trie {foo=Trie {branch=Trie {bar="leaf1", baz="leaf2"}}})
 
 
 - describe __tostring:
   - it returns a string:
       expect (objtype (tostring (tr))).to_be "string"
   - it shows the type name:
-      expect (tostring (tr)).to_contain "Tree"
+      expect (tostring (tr)).to_contain "Trie"
   - it shows the contents in order: |
-      tr = Tree {foo   = "foo",
-                 fnord = Tree {branch = Tree {bar="bar", baz="baz"}},
+      tr = Trie {foo   = "foo",
+                 fnord = Trie {branch = Trie {bar="bar", baz="baz"}},
                  quux  = "quux"}
       expect (tostring (tr)).
-        to_contain 'fnord=Tree {branch=Tree {bar=bar, baz=baz}}, foo=foo, quux=quux'
+        to_contain 'fnord=Trie {branch=Trie {bar=bar, baz=baz}}, foo=foo, quux=quux'

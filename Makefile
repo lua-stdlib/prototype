@@ -11,11 +11,11 @@ SOURCES =				\
 	$(luadir)/_base.lua		\
 	$(luadir)/container.lua		\
 	$(luadir)/init.lua		\
-	$(luadir)/list.lua		\
 	$(luadir)/object.lua		\
+	$(luadir)/sequence.lua		\
 	$(luadir)/set.lua		\
 	$(luadir)/strbuf.lua		\
-	$(luadir)/tree.lua		\
+	$(luadir)/trie.lua		\
 	$(luadir)/version.lua		\
 	$(NOTHING_ELSE)
 

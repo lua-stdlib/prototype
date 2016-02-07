@@ -1,7 +1,7 @@
 --[[--
- List prototype.
+ Sequence prototype.
 
- In addition to the functionality described here, List objects also
+ In addition to the functionality described here, Sequence objects also
  have all the methods and metamethods of the @{prototype.object.prototype}
  (except where overridden here),
 
@@ -11,9 +11,9 @@
       table
        `-> Container
             `-> Object
-                 `-> List
+                 `-> Sequence
 
- @prototype prototype.list
+ @prototype prototype.sequence
 ]]
 
 local tonumber		= tonumber
@@ -46,7 +46,7 @@ _ = nil
 --[[ ================= ]]--
 
 
-local List
+local Sequence
 
 
 local function append (l, x)
@@ -79,7 +79,7 @@ end
 
 
 local function concat (l, ...)
-  local r = List {}
+  local r = Sequence {}
   for _, e in _ipairs {l, ...} do
     for _, v in _ipairs (e) do
       r[#r + 1] = v
@@ -90,7 +90,7 @@ end
 
 
 local function rep (l, n)
-  local r = List {}
+  local r = Sequence {}
   for i = 1, n do
     r = concat (r, l)
   end
@@ -99,7 +99,7 @@ end
 
 
 local function sub (l, from, to)
-  local r = List {}
+  local r = Sequence {}
   local lenl = len (l)
   from = from or 1
   to = to or lenl
@@ -123,7 +123,7 @@ end
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.list." .. decl, fn) or fn
+  return argscheck and argscheck ("prototype.sequence." .. decl, fn) or fn
 end
 
 
@@ -131,126 +131,126 @@ local methods = {
   --- Methods
   -- @section methods
 
-  --- Append an item to a list.
+  --- Append an item to a sequence.
   -- @function prototype:append
   -- @param x item
-  -- @treturn prototype new list with *x* appended
+  -- @treturn prototype new sequence with *x* appended
   -- @usage
-  -- --> List {"shorter", "longer"}
-  -- longer = (List {"shorter"}):append "longer"
-  append = X ("append (List, any)", append),
+  -- --> Sequence {"shorter", "longer"}
+  -- longer = (Sequence {"shorter"}):append "longer"
+  append = X ("append (Sequence, any)", append),
 
-  --- Compare two lists element-by-element, from left-to-right.
+  --- Compare two sequences element-by-element, from left-to-right.
   -- @function prototype:compare
-  -- @tparam prototype|table m another list, or table
+  -- @tparam prototype|table m another sequence, or table
   -- @return -1 if *l* is less than *m*, 0 if they are the same, and 1
   --   if *l* is greater than *m*
   -- @usage
-  -- if list1:compare (list2) == 0 then print "same" end
-  compare = X ("compare (List, List|table)", compare),
+  -- if sequence1:compare (sequence2) == 0 then print "same" end
+  compare = X ("compare (Sequence, Sequence|table)", compare),
 
-  --- Concatenate the elements from any number of lists.
+  --- Concatenate the elements from any number of sequences.
   -- @function prototype:concat
-  -- @tparam prototype|table ... additional lists, or list-like tables
-  -- @treturn prototype new list with elements from arguments
+  -- @tparam prototype|table ... additional sequences, or sequence-like tables
+  -- @treturn prototype new sequence with elements from arguments
   -- @usage
-  -- --> List {"shorter", "short", "longer", "longest"}
-  -- longest = (List {"shorter"}):concat ({"short", "longer"}, {"longest"})
-  concat = X ("concat (List, List|table...)", concat),
+  -- --> Sequence {"shorter", "short", "longer", "longest"}
+  -- longest = (Sequence {"shorter"}):concat ({"short", "longer"}, {"longest"})
+  concat = X ("concat (Sequence, Sequence|table...)", concat),
 
-  --- Prepend an item to a list.
+  --- Prepend an item to a sequence.
   -- @function prototype:cons
   -- @param x item
-  -- @treturn prototype new list with *x* followed by elements of *l*
+  -- @treturn prototype new sequence with *x* followed by elements of *l*
   -- @usage
-  -- --> List {"x", 1, 2, 3}
-  -- consed = (List {1, 2, 3}):cons "x"
-  cons = X ("cons (List, any)", function (l, x) return List {x, table_unpack (l, 1, len (l))} end),
+  -- --> Sequence {"x", 1, 2, 3}
+  -- consed = (Sequence {1, 2, 3}):cons "x"
+  cons = X ("cons (Sequence, any)", function (l, x) return Sequence {x, table_unpack (l, 1, len (l))} end),
 
-  --- Repeat a list.
+  --- Repeat a sequence.
   -- @function prototype:rep
   -- @int n number of times to repeat
   -- @treturn prototype *n* copies of *l* appended together
   -- @usage
-  -- --> List {1, 2, 3, 1, 2, 3, 1, 2, 3}
-  -- repped = (List {1, 2, 3}):rep (3)
-  rep = X ("rep (List, int)", rep),
+  -- --> Sequence {1, 2, 3, 1, 2, 3, 1, 2, 3}
+  -- repped = (Sequence {1, 2, 3}):rep (3)
+  rep = X ("rep (Sequence, int)", rep),
 
-  --- Return a sub-range of a list.
-  -- (The equivalent of @{string.sub} on strings; negative list indices
-  -- count from the end of the list.)
+  --- Return a sub-range of a sequence.
+  -- (The equivalent of @{string.sub} on strings; negative sequence indices
+  -- count from the end of the sequence.)
   -- @function prototype:sub
   -- @int[opt=1] from start of range
   -- @int[opt=#l] to end of range
-  -- @treturn prototype new list containing elements between *from* and *to*
+  -- @treturn prototype new sequence containing elements between *from* and *to*
   --   inclusive
   -- @usage
-  -- --> List {3, 4, 5}
-  -- subbed = (List {1, 2, 3, 4, 5, 6}):sub (3, 5)
-  sub = X ("sub (List, ?int, ?int)", sub),
+  -- --> Sequence {3, 4, 5}
+  -- subbed = (Sequence {1, 2, 3, 4, 5, 6}):sub (3, 5)
+  sub = X ("sub (Sequence, ?int, ?int)", sub),
 
-  --- Return a list with its first element removed.
+  --- Return a sequence with its first element removed.
   -- @function prototype:tail
-  -- @treturn prototype new list with all but the first element of *l*
+  -- @treturn prototype new sequence with all but the first element of *l*
   -- @usage
-  -- --> List {3, {4, 5}, 6, 7}
-  -- tailed = (List {{1, 2}, 3, {4, 5}, 6, 7}):tail ()
-  tail = X ("tail (List)", function (l) return sub (l, 2) end),
+  -- --> Sequence {3, {4, 5}, 6, 7}
+  -- tailed = (Sequence {{1, 2}, 3, {4, 5}, 6, 7}):tail ()
+  tail = X ("tail (Sequence)", function (l) return sub (l, 2) end),
 }
 
 
---- List prototype object.
+--- Sequence prototype object.
 -- @object prototype
--- @string[opt="List"] _type object name
+-- @string[opt="Sequence"] _type object name
 -- @tfield[opt] table|function _init object initialisation
 -- @see prototype.object.prototype
 -- @usage
--- local List = require "prototype.list".prototype
--- assert (prototype.type (List) == "List")
-List = Object {
-  _type = "List",
+-- local Sequence = require "prototype.sequence".prototype
+-- assert (prototype.type (Sequence) == "Sequence")
+Sequence = Object {
+  _type = "Sequence",
 
   --- Metamethods
   -- @section metamethods
 
-  --- Concatenate lists.
+  --- Concatenate sequences.
   -- @function prototype:__concat
-  -- @tparam prototype|table m another list, or table (hash part is ignored)
+  -- @tparam prototype|table m another sequence, or table (hash part is ignored)
   -- @see concat
   -- @usage
-  -- new = alist .. {"append", "these", "elements"}
+  -- new = asequence .. {"append", "these", "elements"}
   __concat = concat,
 
-  --- Append element to list.
+  --- Append element to sequence.
   -- @function prototype:__add
   -- @param e element to append
   -- @see append
   -- @usage
-  -- list = list + "element"
+  -- sequence = sequence + "element"
   __add = append,
 
-  --- List order operator.
+  --- Sequence order operator.
   -- @function prototype:__lt
-  -- @tparam prototype m another list
+  -- @tparam prototype m another sequence
   -- @see compare
   -- @usage
-  -- max = list1 > list2 and list1 or list2
-  __lt = function (list1, list2) return compare (list1, list2) < 0 end,
+  -- max = sequence1 > sequence2 and sequence1 or sequence2
+  __lt = function (sequence1, sequence2) return compare (sequence1, sequence2) < 0 end,
 
-  --- List equality or order operator.
+  --- Sequence equality or order operator.
   -- @function prototype:__le
-  -- @tparam prototype m another list
+  -- @tparam prototype m another sequence
   -- @see compare
   -- @usage
-  -- min = list1 <= list2 and list1 or list2
-  __le = function (list1, list2) return compare (list1, list2) <= 0 end,
+  -- min = sequence1 <= sequence2 and sequence1 or sequence2
+  __le = function (sequence1, sequence2) return compare (sequence1, sequence2) <= 0 end,
 
   __index = methods,
 }
 
 
 return Module {
-  prototype = List,
+  prototype = Sequence,
 
   append  = methods.append,
   compare = methods.compare,
