@@ -1,5 +1,9 @@
 # std.prototype NEWS - User visible changes
 
+## Noteworthy changes in release ?.? (????-??-??) [?]
+
+
+
 ## Noteworthy changes in release 1.0.1 (2016-02-07) [stable]
 
 ### Bug fixes
