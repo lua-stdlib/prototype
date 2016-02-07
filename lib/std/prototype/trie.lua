@@ -1,4 +1,6 @@
 --[[--
+ Trie Prototype.
+
  This module returns a table of trie operators, as well as the prototype
  for a Trie container object.
 

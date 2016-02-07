@@ -1,4 +1,6 @@
 --[[--
+ Set Prototype.
+
  This module returns a table of set operators, as well as the prototype
  for a Set container object.
 

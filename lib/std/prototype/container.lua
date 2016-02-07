@@ -1,4 +1,6 @@
 --[[--
+ Container Prototype.
+
  This module supplies the root prototype object from which every other
  object is descended.  There are no classes as such, rather new objects
  are created by cloning an existing object, and then changing or adding

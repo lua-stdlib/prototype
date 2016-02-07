@@ -1,4 +1,6 @@
 --[[--
+ Object Prototype.
+
  This module provides a specialization of the @{prototype.container.prototype}
  with the addition of object methods.  In addition to the functionality
  described here, object prototypes also have all the methods and

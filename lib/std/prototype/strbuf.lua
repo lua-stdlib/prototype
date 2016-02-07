@@ -1,4 +1,6 @@
 --[[--
+ StrBuf Prototype.
+
  Buffers are mutable by default, but being based on objects, they can
  also be used in a functional style:
 
