@@ -1,5 +1,5 @@
 package = "std.prototype"
-version = "1.0.1-1"
+version = "1.0.1-2"
 
 description = {
   summary = "Prototype Oriented Programming with Lua",
@@ -13,7 +13,7 @@ description = {
 
 source = {
   url = "http://github.com/lua-stdlib/prototype/archive/v1.0.1.zip",
-  dir = "prototype-v1.0.1",
+  dir = "prototype-1.0.1",
 }
 
 dependencies = {
