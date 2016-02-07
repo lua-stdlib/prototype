@@ -34,7 +34,6 @@ local table_remove	= table.remove
 
 
 local Container		= require "prototype.container".prototype
-
 local _			= require "prototype._base"
 
 local Module		= _.Module

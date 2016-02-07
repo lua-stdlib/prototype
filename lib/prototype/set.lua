@@ -31,19 +31,15 @@ local table_concat	= table.concat
 local table_sort	= table.sort
 
 
-local _ = {
-  base			= require "prototype._base",
-  container		= require "prototype.container",
-}
+local Container		= require "prototype.container".prototype
+local _			= require "prototype._base"
 
-local Container		= _.container.prototype
-local Module		= _.base.Module
+local Module		= _.Module
+local argscheck		= _.typecheck and _.typecheck.argscheck
+local pairs		= _.pairs
+local str		= _.str
 
-local _pairs		= _.base.pairs
-local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
-local str		= _.base.str
-
-local _ENV		= _.base.strict and _.base.strict {} or {}
+local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
 
@@ -63,7 +59,7 @@ local Set -- forward declaration
 -- whose values are true.
 
 
-local elems = _pairs
+local elems = pairs
 
 
 local function insert (set, e)
@@ -177,7 +173,7 @@ Set = Container {
   -- @tparam table t initialisation table from `__call`
   _init = function (new, t)
     local mt = {}
-    for k, v in _pairs (t) do
+    for k, v in pairs (t) do
       local type_k = type (k)
       if type_k == "number" then
         insert (new, v)
@@ -254,7 +250,7 @@ Set = Container {
   -- @see tostring
   __tostring = function (self)
     local keys = {}
-    for k in _pairs (self) do
+    for k in pairs (self) do
       keys[#keys + 1] = str (k)
     end
     table_sort (keys)

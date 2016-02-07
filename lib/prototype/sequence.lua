@@ -1,5 +1,5 @@
 --[[--
- An object for storing a sequence of elements.
+ Store an ordered sequence of elements.
 
  In addition to the functionality described here, Sequence objects also
  have all the methods and metamethods of the @{prototype.object.prototype}
@@ -22,20 +22,15 @@ local math_min		= math.min
 local table_unpack	= table.unpack or unpack
 
 
-local _ = {
-  base			= require "prototype._base",
-  object		= require "prototype.object",
-}
+local Object		= require "prototype.object".prototype
+local _			= require "prototype._base"
 
-local Module		= _.base.Module
-local Object		= _.object.prototype
+local Module		= _.Module
+local ipairs		= _.ipairs
+local argscheck		= _.typecheck and _.typecheck.argscheck
+local len		= _.len
 
-local _ipairs		= _.base.ipairs
-local _pairs		= _.base.pairs
-local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
-local len		= _.base.len
-
-local _ENV		= _.base.strict and _.base.strict {} or {}
+local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
 
@@ -80,8 +75,8 @@ end
 
 local function concat (l, ...)
   local r = Sequence {}
-  for _, e in _ipairs {l, ...} do
-    for _, v in _ipairs (e) do
+  for _, e in ipairs {l, ...} do
+    for _, v in ipairs (e) do
       r[#r + 1] = v
     end
   end

@@ -41,7 +41,6 @@ local table_concat	= table.concat
 local _			= require "prototype._base"
 
 local Module		= _.Module
-
 local argcheck		= _.typecheck and _.typecheck.argcheck
 local argscheck		= _.typecheck and _.typecheck.argscheck
 local copy		= _.copy
@@ -105,7 +104,7 @@ end
 -- local Graph = Container { _type = "Graph" }
 -- local function nodes (graph)
 --   local n = 0
---   for _ in std.pairs (graph) do n = n + 1 end
+--   for _ in pairs (graph) do n = n + 1 end
 --   return n
 -- end
 -- local g = Graph { "node1", "node2" }

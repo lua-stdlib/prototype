@@ -25,22 +25,18 @@
 ]]
 
 
-local ipairs		= ipairs
 local tostring		= tostring
 
 local table_concat	= table.concat
 
 
-local _ = {
-  base			= require "prototype._base",
-  object		= require "prototype.object",
-}
+local Object		= require "prototype.object".prototype
+local _			= require "prototype._base"
 
-local Module		= _.base.Module
-local Object		= _.object.prototype
-
-local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
-local _ENV		= _.base.strict and _.base.strict {} or {}
+local Module		= _.Module
+local argscheck		= _.typecheck and _.typecheck.argscheck
+local ipairs		= _.ipairs
+local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
 

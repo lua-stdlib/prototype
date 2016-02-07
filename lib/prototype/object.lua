@@ -23,19 +23,15 @@
 local getmetatable	= getmetatable
 
 
-local _ = {
-  base			= require "prototype._base",
-  container		= require "prototype.container",
-}
+local Container 	= require "prototype.container".prototype
+local _			= require "prototype._base"
 
-local Container 	= _.container.prototype
-local Module		= _.base.Module
+local Module		= _.Module
+local argscheck		= _.typecheck and _.typecheck.argscheck
+local getmetamethod	= _.getmetamethod
+local mapfields		= _.mapfields
 
-local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
-local getmetamethod	= _.base.getmetamethod
-local mapfields		= _.base.mapfields
-
-local _ENV		= _.base.strict and _.base.strict {} or {}
+local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
 
