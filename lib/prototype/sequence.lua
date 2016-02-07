@@ -19,16 +19,16 @@
 local tonumber		= tonumber
 
 local math_min		= math.min
-local table_unpack	= table.unpack or unpack
 
 
 local Object		= require "prototype.object".prototype
 local _			= require "prototype._base"
 
 local Module		= _.Module
-local ipairs		= _.ipairs
 local argscheck		= _.typecheck and _.typecheck.argscheck
+local ipairs		= _.ipairs
 local len		= _.len
+local unpack		= _.unpack
 
 local _ENV		= _.strict and _.strict {} or {}
 
@@ -173,7 +173,7 @@ Sequence = Object {
     -- @usage
     -- --> Sequence {"x", 1, 2, 3}
     -- consed = (Sequence {1, 2, 3}):cons "x"
-    cons = X ("cons (Sequence, any)", function (l, x) return Sequence {x, table_unpack (l, 1, len (l))} end),
+    cons = X ("cons (Sequence, any)", function (l, x) return Sequence {x, unpack (l, 1, len (l))} end),
 
     --- Repeat a sequence.
     -- @function prototype:rep
