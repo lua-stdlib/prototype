@@ -1,5 +1,14 @@
 # std.prototype NEWS - User visible changes
 
+## Noteworthy changes in release 1.0.1 (2016-02-07) [stable]
+
+### Bug fixes
+
+  - The former lua-stdlib `strict` module, has moved to `std.strict`
+    to avoid confusion with the original PUC-Rio strict.lua.  The base
+    module now looks for it there.
+
+
 ## Noteworthy changes in release 1.0 (2016-02-07) [stable]
 
 ### New features (since lua-stdlib-41.2)

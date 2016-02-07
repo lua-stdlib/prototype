@@ -56,7 +56,7 @@ do
   -- Unless strict was disabled (`_DEBUG = false`), or that module is not
   -- available, check for use of undeclared variables in this module...
   if _DEBUG.strict then
-    ok, strict		= pcall (require, "strict")
+    ok, strict		= pcall (require, "std.strict")
     if ok then
       _ENV = strict {}
     else
