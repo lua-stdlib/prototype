@@ -1,6 +1,4 @@
 --[[--
- Set container prototype.
-
  This module returns a table of set operators, as well as the prototype
  for a Set container object.
 
@@ -18,7 +16,7 @@
        `-> Container
             `-> Set
 
- @prototype prototype.set
+ @module prototype.set
 ]]
 
 
@@ -51,12 +49,7 @@ _ = nil
 
 
 
---[[ =============== ]]--
---[[ Implementation. ]]--
---[[ =============== ]]--
-
-
-local prototype -- forward declaration
+local Set -- forward declaration
 
 
 
@@ -97,7 +90,7 @@ local difference, symmetric_difference, intersection, union, subset,
 
 
 function difference (set1, set2)
-  local r = prototype {}
+  local r = Set {}
   for e in elems (set1) do
     if not member (set2, e) then
       insert (r, e)
@@ -113,7 +106,7 @@ end
 
 
 function intersection (set1, set2)
-  local r = prototype {}
+  local r = Set {}
   for e in elems (set1) do
     if member (set2, e) then
       insert (r, e)
@@ -170,7 +163,9 @@ end
 -- @usage
 -- local Set = require "prototype.set".prototype
 -- assert (prototype.type (Set) == "Set")
-prototype = Container {
+
+
+Set = Container {
   _type = "Set",
 
   --- Set object initialisation.
@@ -256,7 +251,7 @@ prototype = Container {
   --- Return a string representation of this set.
   -- @function prototype:__tostring
   -- @treturn string string representation of a set.
-  -- @see std.tostring
+  -- @see tostring
   __tostring = function (self)
     local keys = {}
     for k in _pairs (self) do
@@ -269,10 +264,10 @@ prototype = Container {
 
 
 return Module {
-  prototype = prototype,
+  prototype = Set,
 
-  --- Functions
-  -- @section functions
+  --- Module Functions
+  -- @section modulefunctions
 
   --- Delete an element from a set.
   -- @function delete

@@ -1,6 +1,4 @@
 --[[--
- String buffer prototype.
-
  Buffers are mutable by default, but being based on objects, they can
  also be used in a functional style:
 
@@ -23,7 +21,7 @@
             `-> Object
                  `-> StrBuf
 
- @prototype prototype.strbuf
+ @module prototype.strbuf
 ]]
 
 
@@ -48,9 +46,9 @@ _ = nil
 
 
 
---[[ =============== ]]--
---[[ Implementation. ]]--
---[[ =============== ]]--
+--[[ ================= ]]--
+--[[ Helper Functions. ]]--
+--[[ ================= ]]--
 
 
 local function __concat (self, x)
@@ -59,44 +57,10 @@ local function __concat (self, x)
 end
 
 
-local function __tostring (self)
-  local strs = {}
-  for _, e in ipairs (self) do strs[#strs + 1] = tostring (e) end
-  return table_concat (strs)
-end
 
-
---[[ ================= ]]--
---[[ Public Interface. ]]--
---[[ ================= ]]--
-
-
-local function X (decl, fn)
-  return argscheck and argscheck ("prototype.strbuf." .. decl, fn) or fn
-end
-
-
-local methods = {
-  --- Methods
-  -- @section methods
-
-  --- Add a object to a buffer.
-  -- Elements are stringified lazily, so if you add a table and then
-  -- change its contents, the contents of the buffer will be affected
-  -- too.
-  -- @function prototype:concat
-  -- @param x object to add to buffer
-  -- @treturn prototype modified buffer
-  -- @usage
-  -- c = StrBuf {} :concat "append this" :concat (StrBuf {" and", " this"})
-  concat = X ("concat (StrBuf, any)", __concat),
-}
-
-
-
---[[ ================== ]]--
---[[ Type Declarations. ]]--
---[[ ================== ]]--
+--[[ ============== ]]--
+--[[ StrBuf Object. ]]--
+--[[ ============== ]]--
 
 
 --- StrBuf prototype object.
@@ -112,14 +76,35 @@ local methods = {
 -- print (a, b) --> 1234   1234fivesixseven
 -- os.exit (0)
 
+
+local function X (decl, fn)
+  return argscheck and argscheck ("prototype.strbuf." .. decl, fn) or fn
+end
+
+
 return Module {
   prototype = Object {
     _type = "StrBuf",
 
+    __index = {
+      --- Methods
+      -- @section methods
+
+      --- Add a object to a buffer.
+      -- Elements are stringified lazily, so if you add a table and then
+      -- change its contents, the contents of the buffer will be affected
+      -- too.
+      -- @function prototype:concat
+      -- @param x object to add to buffer
+      -- @treturn prototype modified buffer
+      -- @usage
+      -- c = StrBuf {} :concat "append this" :concat (StrBuf {" and", " this"})
+      concat = X ("concat (StrBuf, any)", __concat),
+    },
+
+
     --- Metamethods
     -- @section metamethods
-
-    __index = methods,
 
     --- Support concatenation to StrBuf objects.
     -- @function prototype:__concat
@@ -136,6 +121,10 @@ return Module {
     -- @see tostring
     -- @usage
     -- str = tostring (buf)
-    __tostring = __tostring,
+    __tostring = function (self)
+      local strs = {}
+      for _, e in ipairs (self) do strs[#strs + 1] = tostring (e) end
+      return table_concat (strs)
+    end,
   },
 }

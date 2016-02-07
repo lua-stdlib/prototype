@@ -1,3 +1,7 @@
+--[[
+@module prototype
+]]
+
 local pcall		= pcall
 local rawset		= rawset
 local require		= require

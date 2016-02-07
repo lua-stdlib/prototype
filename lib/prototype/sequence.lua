@@ -1,5 +1,5 @@
 --[[--
- Sequence prototype.
+ An object for storing a sequence of elements.
 
  In addition to the functionality described here, Sequence objects also
  have all the methods and metamethods of the @{prototype.object.prototype}
@@ -13,7 +13,7 @@
             `-> Object
                  `-> Sequence
 
- @prototype prototype.sequence
+ @module prototype.sequence
 ]]
 
 local tonumber		= tonumber
@@ -41,12 +41,12 @@ _ = nil
 
 
 
---[[ ================= ]]--
---[[ Implementatation. ]]--
---[[ ================= ]]--
+--[[ =============== ]]--
+--[[ Implementation. ]]--
+--[[ =============== ]]--
 
 
-local Sequence
+local Sequence		-- forward declaration
 
 
 local function append (l, x)
@@ -117,86 +117,9 @@ end
 
 
 
---[[ ================== ]]--
---[[ Type Declarations. ]]--
---[[ ================== ]]--
-
-
-local function X (decl, fn)
-  return argscheck and argscheck ("prototype.sequence." .. decl, fn) or fn
-end
-
-
-local methods = {
-  --- Methods
-  -- @section methods
-
-  --- Append an item to a sequence.
-  -- @function prototype:append
-  -- @param x item
-  -- @treturn prototype new sequence with *x* appended
-  -- @usage
-  -- --> Sequence {"shorter", "longer"}
-  -- longer = (Sequence {"shorter"}):append "longer"
-  append = X ("append (Sequence, any)", append),
-
-  --- Compare two sequences element-by-element, from left-to-right.
-  -- @function prototype:compare
-  -- @tparam prototype|table m another sequence, or table
-  -- @return -1 if *l* is less than *m*, 0 if they are the same, and 1
-  --   if *l* is greater than *m*
-  -- @usage
-  -- if sequence1:compare (sequence2) == 0 then print "same" end
-  compare = X ("compare (Sequence, Sequence|table)", compare),
-
-  --- Concatenate the elements from any number of sequences.
-  -- @function prototype:concat
-  -- @tparam prototype|table ... additional sequences, or sequence-like tables
-  -- @treturn prototype new sequence with elements from arguments
-  -- @usage
-  -- --> Sequence {"shorter", "short", "longer", "longest"}
-  -- longest = (Sequence {"shorter"}):concat ({"short", "longer"}, {"longest"})
-  concat = X ("concat (Sequence, Sequence|table...)", concat),
-
-  --- Prepend an item to a sequence.
-  -- @function prototype:cons
-  -- @param x item
-  -- @treturn prototype new sequence with *x* followed by elements of *l*
-  -- @usage
-  -- --> Sequence {"x", 1, 2, 3}
-  -- consed = (Sequence {1, 2, 3}):cons "x"
-  cons = X ("cons (Sequence, any)", function (l, x) return Sequence {x, table_unpack (l, 1, len (l))} end),
-
-  --- Repeat a sequence.
-  -- @function prototype:rep
-  -- @int n number of times to repeat
-  -- @treturn prototype *n* copies of *l* appended together
-  -- @usage
-  -- --> Sequence {1, 2, 3, 1, 2, 3, 1, 2, 3}
-  -- repped = (Sequence {1, 2, 3}):rep (3)
-  rep = X ("rep (Sequence, int)", rep),
-
-  --- Return a sub-range of a sequence.
-  -- (The equivalent of @{string.sub} on strings; negative sequence indices
-  -- count from the end of the sequence.)
-  -- @function prototype:sub
-  -- @int[opt=1] from start of range
-  -- @int[opt=#l] to end of range
-  -- @treturn prototype new sequence containing elements between *from* and *to*
-  --   inclusive
-  -- @usage
-  -- --> Sequence {3, 4, 5}
-  -- subbed = (Sequence {1, 2, 3, 4, 5, 6}):sub (3, 5)
-  sub = X ("sub (Sequence, ?int, ?int)", sub),
-
-  --- Return a sequence with its first element removed.
-  -- @function prototype:tail
-  -- @treturn prototype new sequence with all but the first element of *l*
-  -- @usage
-  -- --> Sequence {3, {4, 5}, 6, 7}
-  -- tailed = (Sequence {{1, 2}, 3, {4, 5}, 6, 7}):tail ()
-  tail = X ("tail (Sequence)", function (l) return sub (l, 2) end),
-}
+--[[ ================ ]]--
+--[[ Sequence Object. ]]--
+--[[ ================ ]]--
 
 
 --- Sequence prototype object.
@@ -207,8 +130,87 @@ local methods = {
 -- @usage
 -- local Sequence = require "prototype.sequence".prototype
 -- assert (prototype.type (Sequence) == "Sequence")
+
+
+local function X (decl, fn)
+  return argscheck and argscheck ("prototype.sequence." .. decl, fn) or fn
+end
+
+
 Sequence = Object {
   _type = "Sequence",
+
+  __index = {
+    --- Methods
+    -- @section methods
+
+    --- Append an item to a sequence.
+    -- @function prototype:append
+    -- @param x item
+    -- @treturn prototype new sequence with *x* appended
+    -- @usage
+    -- --> Sequence {"shorter", "longer"}
+    -- longer = (Sequence {"shorter"}):append "longer"
+    append = X ("append (Sequence, any)", append),
+
+    --- Compare two sequences element-by-element, from left-to-right.
+    -- @function prototype:compare
+    -- @tparam prototype|table m another sequence, or table
+    -- @return -1 if *l* is less than *m*, 0 if they are the same, and 1
+    --   if *l* is greater than *m*
+    -- @usage
+    -- if sequence1:compare (sequence2) == 0 then print "same" end
+    compare = X ("compare (Sequence, Sequence|table)", compare),
+
+    --- Concatenate the elements from any number of sequences.
+    -- @function prototype:concat
+    -- @tparam prototype|table ... additional sequences, or sequence-like tables
+    -- @treturn prototype new sequence with elements from arguments
+    -- @usage
+    -- --> Sequence {"shorter", "short", "longer", "longest"}
+    -- longest = (Sequence {"shorter"}):concat ({"short", "longer"}, {"longest"})
+    concat = X ("concat (Sequence, Sequence|table...)", concat),
+
+    --- Prepend an item to a sequence.
+    -- @function prototype:cons
+    -- @param x item
+    -- @treturn prototype new sequence with *x* followed by elements of *l*
+    -- @usage
+    -- --> Sequence {"x", 1, 2, 3}
+    -- consed = (Sequence {1, 2, 3}):cons "x"
+    cons = X ("cons (Sequence, any)", function (l, x) return Sequence {x, table_unpack (l, 1, len (l))} end),
+
+    --- Repeat a sequence.
+    -- @function prototype:rep
+    -- @int n number of times to repeat
+    -- @treturn prototype *n* copies of *l* appended together
+    -- @usage
+    -- --> Sequence {1, 2, 3, 1, 2, 3, 1, 2, 3}
+    -- repped = (Sequence {1, 2, 3}):rep (3)
+    rep = X ("rep (Sequence, int)", rep),
+
+    --- Return a sub-range of a sequence.
+    -- (The equivalent of @{string.sub} on strings; negative sequence indices
+    -- count from the end of the sequence.)
+    -- @function prototype:sub
+    -- @int[opt=1] from start of range
+    -- @int[opt=#l] to end of range
+    -- @treturn prototype new sequence containing elements between *from* and *to*
+    --   inclusive
+    -- @usage
+    -- --> Sequence {3, 4, 5}
+    -- subbed = (Sequence {1, 2, 3, 4, 5, 6}):sub (3, 5)
+    sub = X ("sub (Sequence, ?int, ?int)", sub),
+
+    --- Return a sequence with its first element removed.
+    -- @function prototype:tail
+    -- @treturn prototype new sequence with all but the first element of *l*
+    -- @usage
+    -- --> Sequence {3, {4, 5}, 6, 7}
+    -- tailed = (Sequence {{1, 2}, 3, {4, 5}, 6, 7}):tail ()
+    tail = X ("tail (Sequence)", function (l) return sub (l, 2) end),
+  },
+
 
   --- Metamethods
   -- @section metamethods
@@ -244,19 +246,17 @@ Sequence = Object {
   -- @usage
   -- min = sequence1 <= sequence2 and sequence1 or sequence2
   __le = function (sequence1, sequence2) return compare (sequence1, sequence2) <= 0 end,
-
-  __index = methods,
 }
 
 
 return Module {
   prototype = Sequence,
 
-  append  = methods.append,
-  compare = methods.compare,
-  concat  = methods.concat,
-  cons    = methods.cons,
-  rep     = methods.rep,
-  sub     = methods.sub,
-  tail    = methods.tail,
+  append  = Sequence.append,
+  compare = Sequence.compare,
+  concat  = Sequence.concat,
+  cons    = Sequence.cons,
+  rep     = Sequence.rep,
+  sub     = Sequence.sub,
+  tail    = Sequence.tail,
 }

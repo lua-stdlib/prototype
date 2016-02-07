@@ -8,7 +8,42 @@ A straight forward prototype-based object system, and a selection of
 useful objects built on it.
 
 This is a collection of light-weight libraries for Lua 5.1 (including
-LuaJIT), 5.2 and 5.3 written in pure Lua, comprising:
+LuaJIT), 5.2 and 5.3 written in pure Lua.
+
+Each of the modules in this package returns a table with an empty
+prototype object in the `prototype` field, and often a selection of
+_module functions_ not related to a specific instance.  That is, when
+you require one of these modules, you get a conventional table of
+functions plus an empty object of some sort:
+
+
+    local object = require "prototype.object"
+    for k, v in pairs (object) do print (k, type (v)) end
+    --> prototype  table
+    --> type       function
+
+In this case, a module function called `type` which looks up the
+`_type` field in any prototype's metatable, and an empty `Object`:
+
+    print (object.prototype)
+    --> Object {}
+
+You can instantiate additional copies of a prototype by calling it with
+a table of specialised attributes:
+
+    print (object.prototype { myattribute = "my value" })
+    --> Object {myattribute=my value}
+
+As a convenience, calling the module itself passes the argument table
+through to that module's prototype, although its faster to save an
+empty instance of the prototype in a `local` and use that:
+
+    print (object { 1, 2, foo = "bar" })
+    --> Object {1, 2; foo=bar}
+
+    local Object = object.prototype
+    print (Object { "Woo!" })
+    --> Object {Woo!}
 
 ## LICENSE
 

@@ -1,6 +1,4 @@
 --[[--
- Container prototype.
-
  This module supplies the root prototype object from which every other
  object is descended.  There are no classes as such, rather new objects
  are created by cloning an existing object, and then changing or adding
@@ -25,7 +23,7 @@
       table
        `-> Container
 
- @prototype prototype.container
+ @module prototype.container
 ]]
 
 local error		= error
@@ -238,8 +236,8 @@ end
 return Module {
   prototype = setmetatable ({}, prototype),
 
-  --- Functions
-  -- @section functions
+  --- Module Functions
+  -- @section modulefunctions
 
   --- Return *new* with references to the fields of *src* merged in.
   --

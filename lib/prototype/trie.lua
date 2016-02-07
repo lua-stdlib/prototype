@@ -1,11 +1,9 @@
 --[[--
- Trie container prototype.
-
  This module returns a table of trie operators, as well as the prototype
  for a Trie container object.
 
- This is not a search trie, but rather a way to efficiently store and
- retrieve values stored with a path as a key, such as a multi-key
+ This is not a search tree, but rather a radix tree to efficiently store
+ and retrieve values stored with a path as a key, such as a multi-key
  keytable.  Although it does have iterators for walking the trie with
  various algorithms.
 
@@ -20,7 +18,7 @@
        `-> Container
             `-> Trie
 
- @prototype prototype.trie
+ @module prototype.trie
 ]]
 
 
@@ -56,16 +54,6 @@ _ = nil
 --[[ =============== ]]--
 
 
-local prototype -- forward declaration
-
-
-
---- Trie iterator.
--- @tparam function it iterator function
--- @tparam prototype|table tr trie container or trie-like table
--- @treturn string type ("leaf", "branch" (pre-order) or "join" (post-order))
--- @treturn table path to node (`{i1, ...in}`)
--- @treturn node node
 local function _nodes (it, tr)
   local p = {}
   local function visit (n)
@@ -174,7 +162,10 @@ end
 -- for leaf in trie.leaves (tr) do
 --   io.write (leaf .. "\t")
 -- end
-prototype = Container {
+
+local Trie
+
+Trie = Container {
   _type = "Trie",
 
   --- Metamethods
@@ -211,7 +202,7 @@ prototype = Container {
     if _type (i) == "table" then
       for n = 1, len (i) - 1 do
         if _type (tr[i[n]]) ~= "Trie" then
-          rawset (tr, i[n], prototype {})
+          rawset (tr, i[n], Trie {})
         end
         tr = tr[i[n]]
       end
@@ -224,17 +215,16 @@ prototype = Container {
 
 
 return Module {
-  prototype = prototype,
+  prototype = Trie,
 
-  --- Functions
-  -- @section functions
+  --- Module Functions
+  -- @section modulefunctions
 
   --- Make a deep copy of a trie or table, including any metatables.
   -- @function clone
   -- @tparam table tr trie or trie-like table
   -- @tparam boolean nometa if non-`nil` don't copy metatables
   -- @treturn prototype|table a deep copy of *tr*
-  -- @see std.table.clone
   -- @see prototype.object.clone
   -- @usage
   -- tr = {"one", {two=2}, {{"three"}, four=4}}
@@ -290,7 +280,6 @@ return Module {
   -- @tparam table t destination trie
   -- @tparam table u table with nodes to merge
   -- @treturn table *t* with nodes from *u* merged in
-  -- @see std.table.merge
   -- @usage
   -- merge (dest, {{exists=1}, {{not = {present = { inside = "dest" }}}}})
   merge = X ("merge (table, table)", merge),
