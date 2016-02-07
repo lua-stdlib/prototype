@@ -57,7 +57,6 @@ file = {
   "../lib/prototype/init.lua",
   "../lib/prototype/container.lua",
   "../lib/prototype/object.lua",
-  "../lib/prototype/sequence.lua",
   "../lib/prototype/set.lua",
   "../lib/prototype/strbuf.lua",
   "../lib/prototype/trie.lua",

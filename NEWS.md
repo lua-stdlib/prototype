@@ -59,9 +59,6 @@
 
   - Deprecated methods and functions have all been removed.
 
-  - `std.list` is now `prototype.sequence` and defines a Sequence
-    object, not a List object.
-
   - `std.tree` is now `prototype.trie` and defines a Trie object, no a
     Tree object.  The implementation has been a _Radix Tree_ (aka _Trie_)
     all along.

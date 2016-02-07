@@ -12,7 +12,6 @@ SOURCES =				\
 	$(luadir)/container.lua		\
 	$(luadir)/init.lua		\
 	$(luadir)/object.lua		\
-	$(luadir)/sequence.lua		\
 	$(luadir)/set.lua		\
 	$(luadir)/strbuf.lua		\
 	$(luadir)/trie.lua		\
