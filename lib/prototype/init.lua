@@ -1,5 +1,9 @@
---[[
-@module prototype
+--[[--
+  Module table.
+
+  Lazy loading of submodules, and metadata for the Prototype package.
+
+  @module prototype
 ]]
 
 local pcall		= pcall
@@ -7,12 +11,26 @@ local rawset		= rawset
 local require		= require
 local setmetatable	= setmetatable
 
+local _			= require "prototype._base"
+local _ENV		= _.strict and _.strict {} or {}
+
+_ = nil
 
 
---- Metamethods
--- @section Metamethods
 
-return setmetatable ({}, {
+--[[ =============== ]]--
+--[[ Implementation. ]]--
+--[[ =============== ]]--
+
+
+return setmetatable ({
+  --- Module table.
+  -- @table prototype
+  -- @field version  Release version string
+}, {
+  --- Metamethods
+  -- @section Metamethods
+
   --- Lazy loading of prototype modules.
   -- Don't load everything on initial startup, wait until first attempt
   -- to access a submodule, and then load it on demand.

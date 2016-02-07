@@ -1,3 +1,4 @@
 .DS_Store
 /doc
 !/doc/config.ld.in
+/lib/prototype/version.lua

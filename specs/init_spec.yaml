@@ -1,0 +1,38 @@
+before:
+  this_module   = "prototype"
+  global_table  = "_G"
+
+  M = require (this_module)
+  M.version = nil               -- previous specs may have autoloaded it
+
+
+specify prototype:
+- context when required:
+  - it does not touch the global table:
+      expect (show_apis {added_to=global_table, by=this_module}).
+        to_equal {}
+
+- context when lazy loading:
+  - it has no submodules on initial load:
+      for _, v in pairs (M) do
+        expect (type (v)).not_to_be "table"
+      end
+  - it loads submodules on demand:
+      lazy = M.object
+      expect (lazy).to_be (require "prototype.object")
+  - it loads submodule functions on demand:
+      expect (M.object.type (M.object.prototype)).to_be "Object"
+
+
+- describe version:
+  - before:
+      x = M.version
+
+  - it returns a string:
+      expect (type (M.version)).to_be "string"
+  - it contains package description:
+      expect (string.match (M.version, "Prototype Object Libraries")).
+        not_to_be (nil)
+  - it ends with a semantic version number:
+      expect (string.match (M.version, "([%.%d]+)%D*$")).
+        not_to_be (nil)

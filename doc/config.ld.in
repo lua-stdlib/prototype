@@ -54,6 +54,7 @@ MIT license (the same license as Lua itself).  There is no warranty.
 dir = "."
 
 file = {
+  "../lib/prototype/init.lua",
   "../lib/prototype/container.lua",
   "../lib/prototype/object.lua",
   "../lib/prototype/sequence.lua",
