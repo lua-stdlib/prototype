@@ -33,24 +33,19 @@ local type		= type
 local coroutine_wrap	= coroutine.wrap
 local coroutine_yield	= coroutine.yield
 local table_remove	= table.remove
-local table_unpack	= table.unpack or unpack
 
 
-local _ = {
-  base			= require "prototype._base",
-  container		= require "prototype.container",
-}
+local Container		= require "prototype.container".prototype
 
-local Container		= _.container.prototype
-local Module		= _.base.Module
+local _			= require "prototype._base"
 
-local argscheck		= _.base.typecheck and _.base.typecheck.argscheck
-local ipairs		= _.base.ipairs
-local len		= _.base.len
-local pack		= _.base.pack
-local pairs		= _.base.pairs
+local Module		= _.Module
+local argscheck		= _.typecheck and _.typecheck.argscheck
+local ipairs		= _.ipairs
+local len		= _.len
+local pairs		= _.pairs
 
-local _ENV		= _.base.strict and _.base.strict {} or {}
+local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
 
@@ -90,24 +85,6 @@ local function _nodes (it, tr)
 end
 
 
--- No need to recurse because functables are second class citizens in
--- Lua:
--- func=function () print "called" end
--- func() --> "called"
--- functable=setmetatable ({}, {__call=func})
--- functable() --> "called"
--- nested=setmetatable ({}, {__call=functable})
--- nested()
--- --> stdin:1: attempt to call a table value (global 'd')
--- --> stack traceback:
--- -->	stdin:1: in main chunk
--- -->		[C]: in ?
-local function callable (x)
-  if type (x) == "function" then return x end
-  return (getmetatable (x) or {}).__call
-end
-
-
 local function clone (t, nometa)
   local r = {}
   if not nometa then
@@ -136,25 +113,6 @@ local function clone (t, nometa)
 end
 
 
-local function ielems (t)
-  -- capture ipairs iterator initial state
-  local fn, istate, ctrl = ipairs (t)
-  return function (state, _)
-    local v
-    ctrl, v = fn (state, ctrl)
-    if ctrl then return v end
-  end, istate, true -- wrapped initial state
-end
-
-
-local function get (t, k)
-  return t and t[k] or nil
-end
-
-
-local function last (t) return t[len (t)] end
-
-
 local function leaves (it, tr)
   local function visit (n)
     if type (n) == "table" then
@@ -176,27 +134,6 @@ local function merge (t, u)
     end
   end
   return t
-end
-
-
-local function reduce (fn, d, ifn, ...)
-  local argt
-  if not callable (ifn) then
-    ifn, argt = pairs, pack (ifn, ...)
-  else
-    argt = pack (...)
-  end
-
-  local nextfn, state, k = ifn (table_unpack (argt, 1, argt.n))
-  local t = pack (nextfn (state, k))		-- table of iteration 1
-
-  local r = d					-- initialise accumulator
-  while t[1] ~= nil do				-- until iterator returns nil
-    k = t[1]
-    r = fn (r, table_unpack (t, 1, t.n))	-- pass all iterator results to fn
-    t = pack (nextfn (state, k))		-- maintain loop invariant
-  end
-  return r
 end
 
 
@@ -253,7 +190,12 @@ prototype = Container {
   -- del_other_window = keymap[{"C-x", "4", KEY_DELETE}]
   __index = function (tr, i)
     if _type (i) == "table" then
-      return reduce (get, tr, ielems, i)
+      local r = tr
+      for _, v in ipairs (i) do
+	if r == nil then return nil end
+        r = r[v]
+      end
+      return r
     else
       return rawget (tr, i)
     end
@@ -273,7 +215,7 @@ prototype = Container {
         end
         tr = tr[i[n]]
       end
-      rawset (tr, last (i), v)
+      rawset (tr, i[len(i)], v)
     else
       rawset (tr, i, v)
     end
