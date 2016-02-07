@@ -23,7 +23,7 @@
       table
        `-> Container
 
- @module prototype.container
+ @module std.prototype.container
 ]]
 
 local error		= error

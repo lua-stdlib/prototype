@@ -16,7 +16,7 @@
         `-> Container
              `-> Object
 
- @module prototype.object
+ @module std.prototype.object
 ]]
 
 

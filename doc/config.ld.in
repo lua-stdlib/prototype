@@ -17,7 +17,7 @@ you require one of these modules, you get a conventional table of
 functions plus an empty object of some sort:
 
 
-    local object = require "prototype.object"
+    local object = require "std.prototype.object"
     for k, v in pairs (object) do print (k, type (v)) end
     --> prototype  table
     --> type       function

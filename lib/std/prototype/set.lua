@@ -16,7 +16,7 @@
        `-> Container
             `-> Set
 
- @module prototype.set
+ @module std.prototype.set
 ]]
 
 

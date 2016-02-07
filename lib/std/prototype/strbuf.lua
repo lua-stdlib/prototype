@@ -21,7 +21,7 @@
             `-> Object
                  `-> StrBuf
 
- @module prototype.strbuf
+ @module std.prototype.strbuf
 ]]
 
 

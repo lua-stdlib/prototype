@@ -18,7 +18,7 @@
        `-> Container
             `-> Trie
 
- @module prototype.trie
+ @module std.prototype.trie
 ]]
 
 

@@ -3,7 +3,7 @@
 
   Lazy loading of submodules, and metadata for the Prototype package.
 
-  @module prototype
+  @module std.prototype
 ]]
 
 local pcall		= pcall
