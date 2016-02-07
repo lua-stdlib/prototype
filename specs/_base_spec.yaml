@@ -1,7 +1,7 @@
 before:
-  M = require "prototype._base"
+  M = require "std.prototype._base"
 
-specify prototype._base:
+specify std.prototype._base:
 - describe str:
   - before:
       f = M.str

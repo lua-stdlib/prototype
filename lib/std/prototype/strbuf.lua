@@ -2,7 +2,7 @@
  Buffers are mutable by default, but being based on objects, they can
  also be used in a functional style:
 
-    local StrBuf = require "prototype.strbuf".prototype
+    local StrBuf = require "std.prototype.strbuf".prototype
     local a = StrBuf {"a"}
     local b = a:concat "b"    -- mutate *a*
     print (a, b)              --> ab   ab
@@ -30,8 +30,8 @@ local tostring		= tostring
 local table_concat	= table.concat
 
 
-local Object		= require "prototype.object".prototype
-local _			= require "prototype._base"
+local Object		= require "std.prototype.object".prototype
+local _			= require "std.prototype._base"
 
 local Module		= _.Module
 local argscheck		= _.typecheck and _.typecheck.argscheck
@@ -64,7 +64,7 @@ end
 -- @string[opt="StrBuf"] _type object name
 -- @see prototype.object.prototype
 -- @usage
--- local StrBuf = require "prototype.strbuf".prototype
+-- local StrBuf = require "std.prototype.strbuf".prototype
 -- local a = StrBuf {1, 2, 3}
 -- local b = StrBuf {a, "five", "six"}
 -- a = a .. 4
@@ -74,7 +74,7 @@ end
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.strbuf." .. decl, fn) or fn
+  return argscheck and argscheck ("std.prototype.strbuf." .. decl, fn) or fn
 end
 
 

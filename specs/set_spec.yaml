@@ -1,16 +1,18 @@
 before:
-  set = require "prototype.set"
+  this_module = "std.prototype.set"
+
+  set = require (this_module)
   Set = set.prototype
   s   = Set {"foo", "bar", "bar"}
 
-specify prototype.set:
+specify std.prototype.set:
 - describe require:
   - it does not perturb the global namespace:
-      expect (show_apis {added_to="_G", by="prototype.set"}).
+      expect (show_apis {added_to="_G", by=this_module}).
         to_equal {}
   - context via the prototype module:
     - it does not perturb the global namespace:
-        expect (show_apis {added_to="_G", by="prototype"}).to_equal {}
+        expect (show_apis {added_to="_G", by="std.prototype"}).to_equal {}
 
 
 - describe construction:

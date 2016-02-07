@@ -11,7 +11,7 @@ local rawset		= rawset
 local require		= require
 local setmetatable	= setmetatable
 
-local _			= require "prototype._base"
+local _			= require "std.prototype._base"
 local _ENV		= _.strict and _.strict {} or {}
 
 _ = nil
@@ -42,7 +42,7 @@ return setmetatable ({
   -- local prototype = require "prototype"
   -- local Object = prototype.object.prototype
   __index = function (self, name)
-    local ok, t = pcall (require, "prototype." .. name)
+    local ok, t = pcall (require, "std.prototype." .. name)
     if ok then
       rawset (self, name, t)
       return t

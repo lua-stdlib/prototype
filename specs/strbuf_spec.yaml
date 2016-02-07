@@ -1,18 +1,18 @@
 before:
-  this_module = "prototype.strbuf"
+  this_module = "std.prototype.strbuf"
 
   StrBuf = require (this_module).prototype
   b      = StrBuf {"foo", "bar"}
 
 
-specify prototype.strbuf:
+specify std.prototype.strbuf:
 - describe require:
   - it does not perturb the global namespace:
-      expect (show_apis {added_to="_G", by="prototype.strbuf"}).
+      expect (show_apis {added_to="_G", by=this_module}).
         to_equal {}
   - context via the prototype module:
     - it does not perturb the global namespace:
-        expect (show_apis {added_to="_G", by="prototype"}).to_equal {}
+        expect (show_apis {added_to="_G", by="std.prototype"}).to_equal {}
 
 
 - describe construction:

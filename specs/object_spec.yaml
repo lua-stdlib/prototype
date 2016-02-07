@@ -1,5 +1,5 @@
 before:
-  this_module = "prototype.object"
+  this_module = "std.prototype.object"
 
   object = require (this_module)
   Object = object.prototype
@@ -11,15 +11,15 @@ before:
     return r
   end
 
-specify prototype.object:
+specify std.prototype.object:
 - context when required:
   - context by name:
     - it does not touch the global table:
-        expect (show_apis {added_to="_G", by="prototype.object"}).
+        expect (show_apis {added_to="_G", by=this_module}).
           to_equal {}
   - context via the prototype module:
     - it does not perturb the global namespace:
-        expect (show_apis {added_to="_G", by="prototype"}).to_equal {}
+        expect (show_apis {added_to="_G", by="std.prototype"}).to_equal {}
 
 - describe construction:
   - context from Object clone method:

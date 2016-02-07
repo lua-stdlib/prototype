@@ -33,8 +33,8 @@ local coroutine_yield	= coroutine.yield
 local table_remove	= table.remove
 
 
-local Container		= require "prototype.container".prototype
-local _			= require "prototype._base"
+local Container		= require "std.prototype.container".prototype
+local _			= require "std.prototype._base"
 
 local Module		= _.Module
 local argscheck		= _.typecheck and _.typecheck.argscheck
@@ -131,7 +131,7 @@ end
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.trie." .. decl, fn) or fn
+  return argscheck and argscheck ("std.prototype.trie." .. decl, fn) or fn
 end
 
 
@@ -148,7 +148,7 @@ end
 -- @string[opt="Trie"] _type object name
 -- @see prototype.container.prototype
 -- @usage
--- local trie = require "prototype.trie"
+-- local trie = require "std.prototype.trie"
 -- local Trie = trie.prototype
 -- local tr = Trie {}
 -- tr[{"branch1", 1}] = "leaf1"

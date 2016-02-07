@@ -1,4 +1,5 @@
 .DS_Store
+/*.rock
 /doc
 !/doc/config.ld.in
-/lib/prototype/version.lua
+/lib/std/prototype/version.lua

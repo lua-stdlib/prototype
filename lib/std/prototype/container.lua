@@ -38,7 +38,7 @@ local string_format	= string.format
 local table_concat	= table.concat
 
 
-local _			= require "prototype._base"
+local _			= require "std.prototype._base"
 
 local Module		= _.Module
 local argcheck		= _.typecheck and _.typecheck.argcheck

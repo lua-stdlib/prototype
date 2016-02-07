@@ -1,15 +1,14 @@
 before:
-  this_module   = "prototype"
-  global_table  = "_G"
+  this_module   = "std.prototype"
 
   M = require (this_module)
   M.version = nil               -- previous specs may have autoloaded it
 
 
-specify prototype:
+specify std.prototype:
 - context when required:
   - it does not touch the global table:
-      expect (show_apis {added_to=global_table, by=this_module}).
+      expect (show_apis {added_to="_G", by=this_module}).
         to_equal {}
 
 - context when lazy loading:
@@ -19,7 +18,7 @@ specify prototype:
       end
   - it loads submodules on demand:
       lazy = M.object
-      expect (lazy).to_be (require "prototype.object")
+      expect (lazy).to_be (require "std.prototype.object")
   - it loads submodule functions on demand:
       expect (M.object.type (M.object.prototype)).to_be "Object"
 

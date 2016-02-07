@@ -23,8 +23,8 @@
 local getmetatable	= getmetatable
 
 
-local Container 	= require "prototype.container".prototype
-local _			= require "prototype._base"
+local Container 	= require "std.prototype.container".prototype
+local _			= require "std.prototype._base"
 
 local Module		= _.Module
 local argscheck		= _.typecheck and _.typecheck.argscheck
@@ -43,7 +43,7 @@ _ = nil
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.object." .. decl, fn) or fn
+  return argscheck and argscheck ("std.prototype.object." .. decl, fn) or fn
 end
 
 
@@ -52,7 +52,7 @@ end
 -- @string[opt="Object"] _type object name
 -- @tfield[opt] table|function _init object initialisation
 -- @usage
--- local Object = require "prototype.object".prototype
+-- local Object = require "std.prototype.object".prototype
 -- local Process = Object {
 --   _type = "Process",
 --   _init = { "status", "out", "err" },

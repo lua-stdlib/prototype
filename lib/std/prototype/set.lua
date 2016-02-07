@@ -31,8 +31,8 @@ local table_concat	= table.concat
 local table_sort	= table.sort
 
 
-local Container		= require "prototype.container".prototype
-local _			= require "prototype._base"
+local Container		= require "std.prototype.container".prototype
+local _			= require "std.prototype._base"
 
 local Module		= _.Module
 local argscheck		= _.typecheck and _.typecheck.argscheck
@@ -148,7 +148,7 @@ end
 
 
 local function X (decl, fn)
-  return argscheck and argscheck ("prototype.set." .. decl, fn) or fn
+  return argscheck and argscheck ("std.prototype.set." .. decl, fn) or fn
 end
 
 
@@ -157,7 +157,7 @@ end
 -- @string[opt="Set"] _type object name
 -- @see prototype.container.prototype
 -- @usage
--- local Set = require "prototype.set".prototype
+-- local Set = require "std.prototype.set".prototype
 -- assert (prototype.type (Set) == "Set")
 
 

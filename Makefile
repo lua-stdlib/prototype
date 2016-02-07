@@ -6,7 +6,7 @@ SPECL	= specl
 
 VERSION	= 1.0
 
-luadir	= lib/prototype
+luadir	= lib/std/prototype
 SOURCES =				\
 	$(luadir)/_base.lua		\
 	$(luadir)/container.lua		\

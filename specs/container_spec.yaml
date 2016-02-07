@@ -1,15 +1,17 @@
 before:
-  Container = require "prototype.container".prototype
+  this_module = "std.prototype.container"
 
-specify prototype.container:
+  Container = require (this_module).prototype
+
+specify std.prototype.container:
 - context when required:
   - context by name:
     - it does not touch the global table:
-        expect (show_apis {added_to="_G", by="prototype.container"}).
+        expect (show_apis {added_to="_G", by=this_module}).
           to_equal {}
   - context via the prototype module:
     - it does not perturb the global namespace:
-        expect (show_apis {added_to="_G", by="prototype"}).to_equal {}
+        expect (show_apis {added_to="_G", by="std.prototype"}).to_equal {}
 
 - describe construction:
   - context with table _init:
@@ -63,7 +65,7 @@ specify prototype.container:
         expect (objtype (v)).to_be (objtype (Container))
   - context with module functions:
     - before:
-        Bag = require "prototype._base".Module {
+        Bag = require "std.prototype._base".Module {
           prototype = Container { _type = "Bag" },
           count = function (bag)
             local n = 0

@@ -1,11 +1,10 @@
-before: |
-  global_table = "_G"
-  this_module  = "prototype.trie"
+before:
+  this_module  = "std.prototype.trie"
 
-  trie = require "prototype.trie"
+  trie = require (this_module)
   Trie = trie.prototype
 
-specify prototype.trie:
+specify std.prototype.trie:
 - before:
     t = {foo="foo", fnord={branch={bar="bar", baz="baz"}}, quux="quux"}
     tr = Trie (t)
@@ -13,12 +12,12 @@ specify prototype.trie:
 - context when required:
   - context by name:
     - it does not touch the global table:
-        expect (show_apis {added_to=global_table, by=this_module}).
+        expect (show_apis {added_to="_G", by=this_module}).
           to_equal {}
 
   - context via the prototype module:
     - it does not touch the global table:
-        expect (show_apis {added_to=global_table, by="prototype"}).
+        expect (show_apis {added_to="_G", by="std.prototype"}).
           to_equal {}
 
 - describe construction:
