@@ -32,39 +32,39 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
 <li><a href="#Methods">Methods </a></li>
-<li><a href="#Object_Functions">Object Functions </a></li>
 </ul>
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
-  <li><strong>prototype.object</strong></li>
-  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
-  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
-  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
-  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><strong>std.prototype.object</strong></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>prototype.object</code></h1>
-<p>Object prototype.</h1>
+<h1>Module <code>std.prototype.object</code></h1>
+<p>Object Prototype.</p>
 <p>
 
 
-<p> This module provides a specialization of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+<p> This module provides a specialization of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
  with the addition of object methods.  In addition to the functionality
  described here, object prototypes also have all the methods and
- metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>.</p>
+ metamethods of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>.</p>
 
 <p> Note that object methods are stored in the <code>__index</code> field of their
  metatable, and so cannot also use the <code>__index</code> metamethod to lookup
- references with square brackets.  Use a <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a> based
+ references with square brackets.  Use a <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a> based
  object if you want to do that.</p>
 
 <h2> Prototype Chain</h2>
@@ -79,11 +79,18 @@
 </p>
 
 
-<h2><a href="#Metamethods">Metamethods </a></h2>
+<h2><a href="#Objects">Objects</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#prototype:__pairs">prototype:__pairs ()</a></td>
-	<td class="summary">Return an in-order iterator over public object fields.</td>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Object prototype.</td>
+	</tr>
+</table>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#type">type (x)</a></td>
+	<td class="summary">Type of an object.</td>
 	</tr>
 </table>
 <h2><a href="#Methods">Methods </a></h2>
@@ -92,50 +99,103 @@
 	<td class="name" nowrap><a href="#prototype:clone">prototype:clone (...)</a></td>
 	<td class="summary">Return a clone of this object and its metatable.</td>
 	</tr>
-</table>
-<h2><a href="#Object_Functions">Object Functions </a></h2>
-<table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#prototype.mapfields">prototype.mapfields (new, src[, map={}])</a></td>
 	<td class="summary">Return <em>new</em> with references to the fields of <em>src</em> merged in.</td>
 	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#prototype">prototype</a></td>
-	<td class="summary">Object prototype.</td>
-	</tr>
 </table>
 
 <br/>
 <br/>
 
 
-    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
 
     <dl class="function">
     <dt>
-    <a name = "prototype:__pairs"></a>
-    <strong>prototype:__pairs ()</strong>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
     </dt>
     <dd>
-    Return an in-order iterator over public object fields.
+    Object prototype.
 
 
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_init</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
+         object initialisation
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "Object")
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"std.prototype.object"</span>.prototype
+ <span class="keyword">local</span> Process = Object {
+   _type = <span class="string">"Process"</span>,
+   _init = { <span class="string">"status"</span>, <span class="string">"out"</span>, <span class="string">"err"</span> },
+ }
+ <span class="keyword">local</span> process = Process {
+   procs[pid].status, procs[pid].out, procs[pid].err, <span class="comment">-- auto assigned
+</span>   command = pipeline[pid],                           <span class="comment">-- manual assignment
+</span> }</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "type"></a>
+    <strong>type (x)</strong>
+    </dt>
+    <dd>
+    Type of an object. </p>
+
+<p> It's conventional to organise similar objects according to a string
+ valued <code>_type</code> field, which can then be queried using this
+ function.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">x</span>
+         an object
+        </li>
+    </ul>
 
     <h3>Returns:</h3>
     <ol>
-        <li>
-           <span class="types"><span class="type">function</span></span>
-        iterator function</li>
-        <li>
-           <span class="types"><span class="type">Object</span></span>
-        <em>self</em></li>
+
+           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+        type of <em>x</em>, or <code>nil</code> if <em>x</em> has no <code>_type</code>
+   metatable entry.
     </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">for</span> k, v <span class="keyword">in</span> prototype.<span class="global">pairs</span> (anobject) <span class="keyword">do</span> process (k, v) <span class="keyword">end</span></pre>
+        <pre class="example">
+   <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"std.object"</span>.prototype
+   <span class="global">assert</span> (object.<span class="global">type</span> (Object) == <span class="string">"Object"</span>)
+   <span class="keyword">local</span> Stack = Object {
+     _type = <span class="string">"Stack"</span>,
+     ...
+   }
+   <span class="keyword">local</span> stack = Stack {<span class="string">"some stuff"</span>}
+   <span class="global">assert</span> (object.<span class="global">type</span> (stack) == <span class="global">getmetatable</span> (stack)._type)</pre>
     </ul>
 
 </dd>
@@ -165,7 +225,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.object.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.object.html#prototype">prototype</a></span>
         a clone of this object, with shared or merged
    metatable as appropriate
     </ol>
@@ -173,7 +233,7 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.container.html#prototype:__call">prototype.container.__call</a>
+         <a href="../modules/std.prototype.container.html#prototype:__call">prototype.container.__call</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -190,10 +250,6 @@
     </ul>
 
 </dd>
-</dl>
-    <h2 class="section-header "><a name="Object_Functions"></a>Object Functions </h2>
-
-    <dl class="function">
     <dt>
     <a name = "prototype.mapfields"></a>
     <strong>prototype.mapfields (new, src[, map={}])</strong>
@@ -203,7 +259,7 @@
 
 <p> You can change the value of this function in an object, and that
  new function will be called during cloning instead of the
- standard <a href="../object_system/prototype.container.html#mapfields">prototype.container.mapfields</a> implementation.
+ standard <a href="../modules/std.prototype.container.html#mapfields">prototype.container.mapfields</a> implementation.
 
 
     <h3>Parameters:</h3>
@@ -214,7 +270,7 @@
         </li>
         <li><span class="parameter">src</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         <a href="../object_system/prototype.object.html#prototype:clone">clone</a> argument table that triggered cloning
+         <a href="../modules/std.prototype.object.html#prototype:clone">clone</a> argument table that triggered cloning
         </li>
         <li><span class="parameter">map</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
@@ -236,49 +292,9 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.container.html#mapfields">prototype.container.mapfields</a>
+         <a href="../modules/std.prototype.container.html#mapfields">prototype.container.mapfields</a>
     </ul>
 
-
-</dd>
-    <dt>
-    <a name = "prototype"></a>
-    <strong>prototype</strong>
-    </dt>
-    <dd>
-    Object prototype.
-
-
-    <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">_init</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
-         object initialisation
-         (<em>optional</em>)
-        </li>
-        <li><span class="parameter">_type</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-         object name
-         (<em>default</em> "Object")
-        </li>
-    </ul>
-
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
- <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"prototype.object"</span>.prototype
- <span class="keyword">local</span> Process = Object {
-   _type = <span class="string">"Process"</span>,
-   _init = { <span class="string">"status"</span>, <span class="string">"out"</span>, <span class="string">"err"</span> },
- }
- <span class="keyword">local</span> process = Process {
-   procs[pid].status, procs[pid].out, procs[pid].err, <span class="comment">-- auto assigned
-</span>   command = pipeline[pid],                           <span class="comment">-- manual assignment
-</span> }</pre>
-    </ul>
 
 </dd>
 </dl>
@@ -288,7 +304,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

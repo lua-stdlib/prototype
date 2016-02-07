@@ -29,14 +29,14 @@
 
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><a href="object_system/prototype.container.html">prototype.container</a></li>
-  <li><a href="object_system/prototype.object.html">prototype.object</a></li>
-  <li><a href="object_system/prototype.list.html">prototype.list</a></li>
-  <li><a href="object_system/prototype.set.html">prototype.set</a></li>
-  <li><a href="object_system/prototype.strbuf.html">prototype.strbuf</a></li>
-  <li><a href="object_system/prototype.tree.html">prototype.tree</a></li>
+  <li><a href="modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="modules/std.prototype.trie.html">std.prototype.trie</a></li>
 </ul>
 
 </div>
@@ -45,13 +45,52 @@
 
 
   <h2>
-<h1>Module Oriented Programming with Lua</h1>
+<h1>Prototype Oriented Programming with Lua</h1>
 
 <p>A straight forward prototype-based object system, and a selection of
-useful objects built on it.</h1>
+useful objects built on it.</p>
 
 <p>This is a collection of light-weight libraries for Lua 5.1 (including
-LuaJIT), 5.2 and 5.3 written in pure Lua, comprising:</p>
+LuaJIT), 5.2 and 5.3 written in pure Lua.</p>
+
+<p>Each of the modules in this package returns a table with an empty
+prototype object in the <code>prototype</code> field, and often a selection of
+<em>module functions</em> not related to a specific instance.  That is, when
+you require one of these modules, you get a conventional table of
+functions plus an empty object of some sort:</p>
+
+
+<pre><code>local object = require "std.prototype.object"
+for k, v in pairs (object) do print (k, type (v)) end
+--&gt; prototype  table
+--&gt; type       function
+</code></pre>
+
+<p>In this case, a module function called <code>type</code> which looks up the
+<code>_type</code> field in any prototype's metatable, and an empty <code>Object</code>:</p>
+
+<pre><code>print (object.prototype)
+--&gt; Object {}
+</code></pre>
+
+<p>You can instantiate additional copies of a prototype by calling it with
+a table of specialised attributes:</p>
+
+<pre><code>print (object.prototype { myattribute = "my value" })
+--&gt; Object {myattribute=my value}
+</code></pre>
+
+<p>As a convenience, calling the module itself passes the argument table
+through to that module's prototype, although its faster to save an
+empty instance of the prototype in a <code>local</code> and use that:</p>
+
+<pre><code>print (object { 1, 2, foo = "bar" })
+--&gt; Object {1, 2; foo=bar}
+
+local Object = object.prototype
+print (Object { "Woo!" })
+--&gt; Object {Woo!}
+</code></pre>
 
 <h2>LICENSE</h2>
 
@@ -60,31 +99,31 @@ MIT license (the same license as Lua itself).  There is no warranty.</p>
 
 </h2>
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <table class="module_list">
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.container.html">prototype.container</a></td>
-		<td class="summary">Container prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.html">std.prototype</a></td>
+		<td class="summary">Module table.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.object.html">prototype.object</a></td>
-		<td class="summary">Object prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.container.html">std.prototype.container</a></td>
+		<td class="summary">Container Prototype.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.list.html">prototype.list</a></td>
-		<td class="summary">List prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.object.html">std.prototype.object</a></td>
+		<td class="summary">Object Prototype.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.set.html">prototype.set</a></td>
-		<td class="summary">Set container prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.set.html">std.prototype.set</a></td>
+		<td class="summary">Set Prototype.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.strbuf.html">prototype.strbuf</a></td>
-		<td class="summary">String buffer prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.strbuf.html">std.prototype.strbuf</a></td>
+		<td class="summary">StrBuf Prototype.</td>
 	</tr>
 	<tr>
-		<td class="name"  nowrap><a href="object_system/prototype.tree.html">prototype.tree</a></td>
-		<td class="summary">Tree container prototype.</td>
+		<td class="name"  nowrap><a href="modules/std.prototype.trie.html">std.prototype.trie</a></td>
+		<td class="summary">Trie Prototype.</td>
 	</tr>
 </table>
 
@@ -92,7 +131,7 @@ MIT license (the same license as Lua itself).  There is no warranty.</p>
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

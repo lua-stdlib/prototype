@@ -34,39 +34,39 @@
 <ul>
 <li><a href="#Objects">Objects</a></li>
 <li><a href="#Metamethods">Metamethods </a></li>
-<li><a href="#Functions">Functions </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
 </ul>
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
-  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
-  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
-  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
-  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
-  <li><strong>prototype.tree</strong></li>
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><strong>std.prototype.trie</strong></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>prototype.tree</code></h1>
-<p>Tree container prototype.</h1>
+<h1>Module <code>std.prototype.trie</code></h1>
+<p>Trie Prototype.</p>
 <p>
 
 
-<p> This module returns a table of tree operators, as well as the prototype
- for a Tree container object.</p>
+<p> This module returns a table of trie operators, as well as the prototype
+ for a Trie container object.</p>
 
-<p> This is not a search tree, but rather a way to efficiently store and
- retrieve values stored with a path as a key, such as a multi-key
- keytable.  Although it does have iterators for walking the tree with
+<p> This is not a search tree, but rather a radix tree to efficiently store
+ and retrieve values stored with a path as a key, such as a multi-key
+ keytable.  Although it does have iterators for walking the trie with
  various algorithms.</p>
 
-<p> In addition to the functionality described here, Tree containers also
- have all the methods and metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+<p> In addition to the functionality described here, Trie containers also
+ have all the methods and metamethods of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
  (except where overridden here),</p>
 
 <h2> Prototype Chain</h2>
@@ -75,7 +75,7 @@
 <pre>
 <span class="global">table</span>
  <span class="backtick">`-&gt; Container
-      `</span>-&gt; Tree
+      `</span>-&gt; Trie
 </pre>
 
 </p>
@@ -85,7 +85,7 @@
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#prototype">prototype</a></td>
-	<td class="summary">Tree prototype object.</td>
+	<td class="summary">Trie prototype object.</td>
 	</tr>
 </table>
 <h2><a href="#Metamethods">Metamethods </a></h2>
@@ -99,31 +99,31 @@
 	<td class="summary">Deep insertion.</td>
 	</tr>
 </table>
-<h2><a href="#Functions">Functions </a></h2>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#clone">clone (tr, nometa)</a></td>
-	<td class="summary">Make a deep copy of a tree or table, including any metatables.</td>
+	<td class="summary">Make a deep copy of a trie or table, including any metatables.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#ileaves">ileaves (tr)</a></td>
-	<td class="summary">Tree iterator which returns just numbered leaves, in order.</td>
+	<td class="summary">Trie iterator which returns just numbered leaves, in order.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#inodes">inodes (tr)</a></td>
-	<td class="summary">Tree iterator over numbered nodes, in order.</td>
+	<td class="summary">Trie iterator over numbered nodes, in order.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#leaves">leaves (t)</a></td>
-	<td class="summary">Tree iterator which returns just leaves.</td>
+	<td class="summary">Trie iterator which returns just leaves.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#merge">merge (t, u)</a></td>
-	<td class="summary">Destructively deep-merge one tree into another.</td>
+	<td class="summary">Destructively deep-merge one trie into another.</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#nodes">nodes (tr)</a></td>
-	<td class="summary">Tree iterator over all nodes.</td>
+	<td class="summary">Trie iterator over all nodes.</td>
 	</tr>
 </table>
 
@@ -139,7 +139,7 @@
     <strong>prototype</strong>
     </dt>
     <dd>
-    Tree prototype object.
+    Trie prototype object.
 
 
     <h3>Fields:</h3>
@@ -147,7 +147,7 @@
         <li><span class="parameter">_type</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
          object name
-         (<em>default</em> "Tree")
+         (<em>default</em> "Trie")
         </li>
     </ul>
 
@@ -155,23 +155,23 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+         <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
     </ul>
 
     <h3>Usage:</h3>
     <ul>
         <pre class="example">
- <span class="keyword">local</span> tree = <span class="global">require</span> <span class="string">"prototype.tree"</span>
- <span class="keyword">local</span> Tree = tree.prototype
- <span class="keyword">local</span> tr = Tree {}
+ <span class="keyword">local</span> trie = <span class="global">require</span> <span class="string">"std.prototype.trie"</span>
+ <span class="keyword">local</span> Trie = trie.prototype
+ <span class="keyword">local</span> tr = Trie {}
  tr[{<span class="string">"branch1"</span>, <span class="number">1</span>}] = <span class="string">"leaf1"</span>
  tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}] = <span class="string">"leaf2"</span>
  tr[{<span class="string">"branch2"</span>, <span class="number">1</span>}] = <span class="string">"leaf3"</span>
- <span class="global">print</span> (tr[{<span class="string">"branch1"</span>}])      <span class="comment">--&gt; Tree {leaf1, leaf2}
+ <span class="global">print</span> (tr[{<span class="string">"branch1"</span>}])      <span class="comment">--&gt; Trie {leaf1, leaf2}
 </span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}])   <span class="comment">--&gt; leaf2
 </span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">3</span>}])   <span class="comment">--&gt; nil
 </span> <span class="comment">--&gt; leaf1	leaf2	leaf3
-</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> tree.leaves (tr) <span class="keyword">do</span>
+</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> trie.leaves (tr) <span class="keyword">do</span>
    <span class="global">io</span>.write (leaf .. <span class="string">"\t"</span>)
  <span class="keyword">end</span></pre>
     </ul>
@@ -239,7 +239,7 @@
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
 
     <dl class="function">
     <dt>
@@ -247,14 +247,14 @@
     <strong>clone (tr, nometa)</strong>
     </dt>
     <dd>
-    Make a deep copy of a tree or table, including any metatables.
+    Make a deep copy of a trie or table, including any metatables.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         tree or tree-like table
+         trie or trie-like table
         </li>
         <li><span class="parameter">nometa</span>
             <span class="types"><span class="type">boolean</span></span>
@@ -265,14 +265,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
         a deep copy of <em>tr</em>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.object.html#prototype:clone">prototype.object.clone</a>
+         <a href="../modules/std.prototype.object.html#prototype:clone">prototype.object.clone</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -290,14 +290,14 @@
     <strong>ileaves (tr)</strong>
     </dt>
     <dd>
-    Tree iterator which returns just numbered leaves, in order.
+    Trie iterator which returns just numbered leaves, in order.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         tree or tree-like table
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         trie or trie-like table
         </li>
     </ul>
 
@@ -307,15 +307,15 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-        the tree <em>tr</em></li>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the trie <em>tr</em></li>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="../object_system/prototype.tree.html#inodes">inodes</a></li>
-         <li><a href="../object_system/prototype.tree.html#leaves">leaves</a></li>
+         <li><a href="../modules/std.prototype.trie.html#inodes">inodes</a></li>
+         <li><a href="../modules/std.prototype.trie.html#leaves">leaves</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -334,17 +334,17 @@
     <strong>inodes (tr)</strong>
     </dt>
     <dd>
-    Tree iterator over numbered nodes, in order. </p>
+    Trie iterator over numbered nodes, in order. </p>
 
-<p> The iterator function behaves like <a href="../object_system/prototype.tree.html#nodes">nodes</a>, but only traverses the
+<p> The iterator function behaves like <a href="../modules/std.prototype.trie.html#nodes">nodes</a>, but only traverses the
  array part of the nodes of <em>tr</em>, ignoring any others.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         tree or tree-like table to iterate over
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         trie or trie-like table to iterate over
         </li>
     </ul>
 
@@ -354,14 +354,14 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><span class="type">tree</span> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-        the tree, <em>tr</em></li>
+           <span class="types"><span class="type">trie</span> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the trie, <em>tr</em></li>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.tree.html#nodes">nodes</a>
+         <a href="../modules/std.prototype.trie.html#nodes">nodes</a>
     </ul>
 
 
@@ -371,14 +371,14 @@
     <strong>leaves (t)</strong>
     </dt>
     <dd>
-    Tree iterator which returns just leaves.
+    Trie iterator which returns just leaves.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         tree or tree-like table
+         trie or trie-like table
         </li>
     </ul>
 
@@ -395,8 +395,8 @@
 
     <h3>See also:</h3>
     <ul>
-         <li><a href="../object_system/prototype.tree.html#ileaves">ileaves</a></li>
-         <li><a href="../object_system/prototype.tree.html#nodes">nodes</a></li>
+         <li><a href="../modules/std.prototype.trie.html#ileaves">ileaves</a></li>
+         <li><a href="../modules/std.prototype.trie.html#nodes">nodes</a></li>
     </ul>
 
     <h3>Usage:</h3>
@@ -416,14 +416,14 @@
     <strong>merge (t, u)</strong>
     </dt>
     <dd>
-    Destructively deep-merge one tree into another.
+    Destructively deep-merge one trie into another.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         destination tree
+         destination trie
         </li>
         <li><span class="parameter">u</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
@@ -439,9 +439,6 @@
     </ol>
 
 
-    <h3>See also:</h3>
-    <ul>
-    </ul>
 
     <h3>Usage:</h3>
     <ul>
@@ -454,25 +451,25 @@
     <strong>nodes (tr)</strong>
     </dt>
     <dd>
-    Tree iterator over all nodes. </p>
+    Trie iterator over all nodes. </p>
 
 <p> The returned iterator function performs a depth-first traversal of
- <code>tr</code>, and at each node it returns <code>{node-type, tree-path, tree-node}</code>
- where <code>node-type</code> is <code>branch</code>, <code>join</code> or <code>leaf</code>; <code>tree-path</code> is a
- list of keys used to reach this node, and <code>tree-node</code> is the current
+ <code>tr</code>, and at each node it returns <code>{node-type, trie-path, trie-node}</code>
+ where <code>node-type</code> is <code>branch</code>, <code>join</code> or <code>leaf</code>; <code>trie-path</code> is a
+ list of keys used to reach this node, and <code>trie-node</code> is the current
  node.</p>
 
-<p> Note that the <code>tree-path</code> reuses the same table on each iteration, so
+<p> Note that the <code>trie-path</code> reuses the same table on each iteration, so
  you must <code>table.clone</code> a copy if you want to take a snap-shot of the
- current state of the <code>tree-path</code> list before the next iteration
+ current state of the <code>trie-path</code> list before the next iteration
  changes it.
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         tree or tree-like table to iterate over
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+         trie or trie-like table to iterate over
         </li>
     </ul>
 
@@ -482,25 +479,25 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><a class="type" href="../object_system/prototype.tree.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-        the tree, <em>tr</em></li>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+        the trie, <em>tr</em></li>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.tree.html#inodes">inodes</a>
+         <a href="../modules/std.prototype.trie.html#inodes">inodes</a>
     </ul>
 
     <h3>Usage:</h3>
     <ul>
         <pre class="example">
- <span class="comment">-- tree = +-- node1
+ <span class="comment">-- trie = +-- node1
 </span> <span class="comment">--        |    +-- leaf1
 </span> <span class="comment">--        |    '-- leaf2
 </span> <span class="comment">--        '-- leaf 3
-</span> tree = Tree { Tree { <span class="string">"leaf1"</span>, <span class="string">"leaf2"</span>}, <span class="string">"leaf3"</span> }
- <span class="keyword">for</span> node_type, path, node <span class="keyword">in</span> nodes (tree) <span class="keyword">do</span>
+</span> trie = Trie { Trie { <span class="string">"leaf1"</span>, <span class="string">"leaf2"</span>}, <span class="string">"leaf3"</span> }
+ <span class="keyword">for</span> node_type, path, node <span class="keyword">in</span> nodes (trie) <span class="keyword">do</span>
    <span class="global">print</span> (node_type, path, node)
  <span class="keyword">end</span>
  <span class="comment">--&gt; "branch"   {}      {{"leaf1", "leaf2"}, "leaf3"}
@@ -521,7 +518,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

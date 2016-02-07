@@ -35,26 +35,26 @@
 <li><a href="#Objects">Objects</a></li>
 <li><a href="#Initialisation">Initialisation</a></li>
 <li><a href="#Metamethods">Metamethods </a></li>
-<li><a href="#Functions">Functions </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
 </ul>
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
-  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
-  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
-  <li><strong>prototype.set</strong></li>
-  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
-  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><strong>std.prototype.set</strong></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>prototype.set</code></h1>
-<p>Set container prototype.</h1>
+<h1>Module <code>std.prototype.set</code></h1>
+<p>Set Prototype.</p>
 <p>
 
 
@@ -65,7 +65,7 @@
  container exactly zero or one times.</p>
 
 <p> In addition to the functionality described here, Set containers also
- have all the methods and metamethods of the <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+ have all the methods and metamethods of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
  (except where overridden here).</p>
 
 <h2> Prototype Chain</h2>
@@ -125,7 +125,7 @@
 	<td class="summary">Return a string representation of this set.</td>
 	</tr>
 </table>
-<h2><a href="#Functions">Functions </a></h2>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#delete">delete (set, e)</a></td>
@@ -201,13 +201,13 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+         <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
     </ul>
 
     <h3>Usage:</h3>
     <ul>
         <pre class="example">
- <span class="keyword">local</span> Set = <span class="global">require</span> <span class="string">"prototype.set"</span>.prototype
+ <span class="keyword">local</span> Set = <span class="global">require</span> <span class="string">"std.prototype.set"</span>.prototype
  <span class="global">assert</span> (prototype.<span class="global">type</span> (Set) == <span class="string">"Set"</span>)</pre>
     </ul>
 
@@ -259,7 +259,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -267,14 +267,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         everything from <em>this</em> set plus everything from <em>s</em>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#union">union</a>
+         <a href="../modules/std.prototype.set.html#union">union</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -294,7 +294,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -302,14 +302,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         everything from <em>this</em> set that is not also in <em>s</em>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#difference">difference</a>
+         <a href="../modules/std.prototype.set.html#difference">difference</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -329,7 +329,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -337,14 +337,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         anything in both <em>this</em> set and in <em>s</em>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#intersection">intersection</a>
+         <a href="../modules/std.prototype.set.html#intersection">intersection</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -364,7 +364,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -372,14 +372,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         everything in <em>this</em> set or in <em>s</em> but not in both
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#symmetric_difference">symmetric_difference</a>
+         <a href="../modules/std.prototype.set.html#symmetric_difference">symmetric_difference</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -399,7 +399,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -414,7 +414,7 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#subset">subset</a>
+         <a href="../modules/std.prototype.set.html#subset">subset</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -434,7 +434,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">s</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -450,7 +450,7 @@
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.set.html#proper_subset">proper_subset</a>
+         <a href="../modules/std.prototype.set.html#proper_subset">proper_subset</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -478,12 +478,13 @@
 
     <h3>See also:</h3>
     <ul>
+         <a href="http://www.lua.org/manual/5.2/manual.html#pdf-tostring">tostring</a>
     </ul>
 
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
 
     <dl class="function">
     <dt>
@@ -497,7 +498,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">e</span>
@@ -508,7 +509,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         the modified <em>set</em>
     </ol>
 
@@ -531,11 +532,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -543,7 +544,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         a copy of <em>set1</em> with elements of <em>set2</em> removed
     </ol>
 
@@ -566,7 +567,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
     </ul>
@@ -596,11 +597,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -632,7 +633,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">e</span>
@@ -643,7 +644,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         the modified <em>set</em>
     </ol>
 
@@ -669,11 +670,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -681,7 +682,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         a new set with elements in both <em>set1</em> and <em>set2</em>
     </ol>
 
@@ -704,7 +705,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">e</span>
@@ -738,11 +739,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -780,11 +781,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -816,11 +817,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -828,7 +829,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         a new set with elements that are in <em>set1</em> or <em>set2</em>
    but not both
     </ol>
@@ -852,11 +853,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">set1</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          a set
         </li>
         <li><span class="parameter">set2</span>
-            <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
          another set
         </li>
     </ul>
@@ -864,7 +865,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.set.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.set.html#prototype">prototype</a></span>
         a copy of <em>set1</em> with elements in <em>set2</em> merged in
     </ol>
 
@@ -883,7 +884,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

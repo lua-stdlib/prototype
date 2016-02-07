@@ -32,27 +32,28 @@
 
 <h2>Contents</h2>
 <ul>
+<li><a href="#Objects">Objects</a></li>
 <li><a href="#Metamethods">Metamethods </a></li>
 <li><a href="#Methods">Methods </a></li>
 </ul>
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><a href="../object_system/prototype.container.html">prototype.container</a></li>
-  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
-  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
-  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
-  <li><strong>prototype.strbuf</strong></li>
-  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><strong>std.prototype.strbuf</strong></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>prototype.strbuf</code></h1>
-<p>String buffer prototype.</h1>
+<h1>Module <code>std.prototype.strbuf</code></h1>
+<p>StrBuf Prototype.</p>
 <p>
 
 
@@ -61,7 +62,7 @@
 
 
 <pre>
-<span class="keyword">local</span> StrBuf = <span class="global">require</span> <span class="string">"prototype.strbuf"</span>.prototype
+<span class="keyword">local</span> StrBuf = <span class="global">require</span> <span class="string">"std.prototype.strbuf"</span>.prototype
 <span class="keyword">local</span> a = StrBuf {<span class="string">"a"</span>}
 <span class="keyword">local</span> b = a:concat <span class="string">"b"</span>    <span class="comment">-- mutate *a*
 </span><span class="global">print</span> (a, b)              <span class="comment">--&gt; ab   ab
@@ -71,7 +72,7 @@
 </pre>
 
 <p> In addition to the functionality described here, StrBuf objects also
- have all the methods and metamethods of the <a href="../object_system/prototype.object.html#prototype">prototype.object.prototype</a>
+ have all the methods and metamethods of the <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a>
  (except where overridden here),</p>
 
 <h2> Prototype Chain</h2>
@@ -87,6 +88,13 @@
 </p>
 
 
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">StrBuf prototype object.</td>
+	</tr>
+</table>
 <h2><a href="#Metamethods">Metamethods </a></h2>
 <table class="function_list">
 	<tr>
@@ -104,16 +112,53 @@
 	<td class="name" nowrap><a href="#prototype:concat">prototype:concat (x)</a></td>
 	<td class="summary">Add a object to a buffer.</td>
 	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#prototype">prototype</a></td>
-	<td class="summary">StrBuf prototype object.</td>
-	</tr>
 </table>
 
 <br/>
 <br/>
 
 
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    StrBuf prototype object.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+         object name
+         (<em>default</em> "StrBuf")
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+ <span class="keyword">local</span> StrBuf = <span class="global">require</span> <span class="string">"std.prototype.strbuf"</span>.prototype
+ <span class="keyword">local</span> a = StrBuf {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
+ <span class="keyword">local</span> b = StrBuf {a, <span class="string">"five"</span>, <span class="string">"six"</span>}
+ a = a .. <span class="number">4</span>
+ b = b:concat <span class="string">"seven"</span>
+ <span class="global">print</span> (a, b) <span class="comment">--&gt; 1234   1234fivesixseven
+</span> <span class="global">os</span>.exit (<span class="number">0</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
     <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
 
     <dl class="function">
@@ -135,14 +180,14 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.strbuf.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.strbuf.html#prototype">prototype</a></span>
         modified <em>buf</em>
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="../object_system/prototype.strbuf.html#prototype:concat">concat</a>
+         <a href="../modules/std.prototype.strbuf.html#prototype:concat">concat</a>
     </ul>
 
     <h3>Usage:</h3>
@@ -204,7 +249,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.strbuf.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.strbuf.html#prototype">prototype</a></span>
         modified buffer
     </ol>
 
@@ -216,43 +261,6 @@
     </ul>
 
 </dd>
-    <dt>
-    <a name = "prototype"></a>
-    <strong>prototype</strong>
-    </dt>
-    <dd>
-    StrBuf prototype object.
-
-
-    <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">_type</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-         object name
-         (<em>default</em> "StrBuf")
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="../object_system/prototype.object.html#prototype">prototype.object.prototype</a>
-    </ul>
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
- <span class="keyword">local</span> StrBuf = <span class="global">require</span> <span class="string">"prototype.strbuf"</span>.prototype
- <span class="keyword">local</span> a = StrBuf {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
- <span class="keyword">local</span> b = StrBuf {a, <span class="string">"five"</span>, <span class="string">"six"</span>}
- a = a .. <span class="number">4</span>
- b = b:concat <span class="string">"seven"</span>
- <span class="global">print</span> (a, b) <span class="comment">--&gt; 1234   1234fivesixseven
-</span> <span class="global">os</span>.exit (<span class="number">0</span>)</pre>
-    </ul>
-
-</dd>
 </dl>
 
 
@@ -260,7 +268,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

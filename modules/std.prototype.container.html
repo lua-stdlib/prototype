@@ -34,26 +34,26 @@
 <ul>
 <li><a href="#Objects">Objects</a></li>
 <li><a href="#Metamethods">Metamethods </a></li>
-<li><a href="#Functions">Functions </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
 </ul>
 
 
-<h2>Object System</h2>
+<h2>Modules</h2>
 <ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><strong>prototype.container</strong></li>
-  <li><a href="../object_system/prototype.object.html">prototype.object</a></li>
-  <li><a href="../object_system/prototype.list.html">prototype.list</a></li>
-  <li><a href="../object_system/prototype.set.html">prototype.set</a></li>
-  <li><a href="../object_system/prototype.strbuf.html">prototype.strbuf</a></li>
-  <li><a href="../object_system/prototype.tree.html">prototype.tree</a></li>
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><strong>std.prototype.container</strong></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
 </ul>
 
 </div>
 
 <div id="content">
 
-<h1>Module <code>prototype.container</code></h1>
-<p>Container prototype.</h1>
+<h1>Module <code>std.prototype.container</code></h1>
+<p>Container Prototype.</p>
 <p>
 
 
@@ -70,9 +70,9 @@
  course that does not entirely preclude the use of <code>__index</code> with
  containers, so long as this limitation is observed.</p>
 
-<p> When making your own prototypes, derive from <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>
+<p> When making your own prototypes, derive from <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
  if you want to access the contents of your containers with the <code>[]</code>
- operator, otherwise from <a href="../object_system/prototype.object.html#prototype">prototype.object.prototype</a> if you want to access
+ operator, otherwise from <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a> if you want to access
  the functionality of your objects with named object methods.</p>
 
 <h2> Prototype Chain</h2>
@@ -100,11 +100,15 @@
 	<td class="summary">Return a clone of this container and its metatable.</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#prototype:__pairs">prototype:__pairs ()</a></td>
+	<td class="summary">Return an in-order iterator over public object fields.</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#prototype:__tostring">prototype:__tostring ()</a></td>
 	<td class="summary">Return a compact string representation of this object.</td>
 	</tr>
 </table>
-<h2><a href="#Functions">Functions </a></h2>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#mapfields">mapfields (new, src[, map={}])</a></td>
@@ -151,7 +155,7 @@
  <span class="keyword">local</span> Graph = Container { _type = <span class="string">"Graph"</span> }
  <span class="keyword">local</span> <span class="keyword">function</span> nodes (graph)
    <span class="keyword">local</span> n = <span class="number">0</span>
-   <span class="keyword">for</span> _ <span class="keyword">in</span> std.<span class="global">pairs</span> (graph) <span class="keyword">do</span> n = n + <span class="number">1</span> <span class="keyword">end</span>
+   <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="global">pairs</span> (graph) <span class="keyword">do</span> n = n + <span class="number">1</span> <span class="keyword">end</span>
    <span class="keyword">return</span> n
  <span class="keyword">end</span>
  <span class="keyword">local</span> g = Graph { <span class="string">"node1"</span>, <span class="string">"node2"</span> }
@@ -177,7 +181,7 @@
  being part of its actual contents.  In general, cloned objects
  also clone the behaviour of the object they cloned, unless...</p>
 
-<p> When calling <a href="../object_system/prototype.container.html#prototype">prototype.container.prototype</a>, you pass a single table
+<p> When calling <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>, you pass a single table
  argument with additional fields (and values) to be merged into the
  clone. Any field names beginning with an underscore <code>_</code> are copied
  to the clone's metatable, and all other fields to the cloned
@@ -193,7 +197,7 @@
  all the arguments passed when <em>it</em> is called/cloned (including named
  and unnamed fields in the initial table argument, if there is one)
  are passed through to the <code>_init</code> function, following the nascent
- cloned object. See the <a href="../object_system/prototype.container.html#mapfields">mapfields</a> usage example below.
+ cloned object. See the <a href="../modules/std.prototype.container.html#mapfields">mapfields</a> usage example below.
 
 
     <h3>Parameters:</h3>
@@ -206,7 +210,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../object_system/prototype.container.html#prototype">prototype</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.container.html#prototype">prototype</a></span>
         clone of this container, with shared or
    merged metatable as appropriate
     </ol>
@@ -218,6 +222,33 @@
         <pre class="example">
  <span class="keyword">local</span> Cons = Container {_type=<span class="string">"Cons"</span>, _init={<span class="string">"car"</span>, <span class="string">"cdr"</span>}}
  <span class="keyword">local</span> list = Cons {<span class="string">"head"</span>, Cons {<span class="string">"tail"</span>, <span class="keyword">nil</span>}}</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:__pairs"></a>
+    <strong>prototype:__pairs ()</strong>
+    </dt>
+    <dd>
+    Return an in-order iterator over public object fields.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        iterator function</li>
+        <li>
+           <span class="types"><span class="type">Object</span></span>
+        <em>self</em></li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="global">pairs</span> (anobject) <span class="keyword">do</span> process (k, v) <span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -257,7 +288,7 @@
 
 </dd>
 </dl>
-    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
 
     <dl class="function">
     <dt>
@@ -268,8 +299,8 @@
     Return <em>new</em> with references to the fields of <em>src</em> merged in. </p>
 
 <p> This is the function used to instantiate the contents of a newly
- cloned container, as called by <a href="../object_system/prototype.container.html#prototype:__call">__call</a> above, to split the
- fields of a <a href="../object_system/prototype.container.html#prototype:__call">__call</a> argument table into private "_" prefixed
+ cloned container, as called by <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> above, to split the
+ fields of a <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> argument table into private "_" prefixed
  field namess, -- which are merged into the <em>new</em> metatable, and
  public (everything else) names, which are merged into <em>new</em> itself.</p>
 
@@ -285,7 +316,7 @@
         </li>
         <li><span class="parameter">src</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         <a href="../object_system/prototype.container.html#prototype:__call">__call</a> argument table that triggered cloning
+         <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> argument table that triggered cloning
         </li>
         <li><span class="parameter">map</span>
             <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
@@ -330,7 +361,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-06 00:10:05 </i>
+<i style="float:right;">Last updated 2016-02-07 19:52:52 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
