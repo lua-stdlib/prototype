@@ -51,6 +51,10 @@
     field in the init argument, just like the other table argument
     objects.
 
+  - In order iteration with `__pairs` metamethod has been reinstated.
+    There were no spec examples, and the implementation mysteriously
+    went missing in a previous round of refactoring.
+
 ### Incompatible changes
 
   - Deprecated methods and functions have all been removed.

@@ -25,6 +25,13 @@ package.path = std.package.normalize (
 local LUA = os.getenv "LUA" or "lua"
 
 
+function copy (t)
+  local r = {}
+  for k, v in next, t do r[k] = v end
+  return r
+end
+
+
 -- Simplified version for specifications, does not support functable
 -- valued __len metamethod, so don't write examples that need that!
 function len (x)

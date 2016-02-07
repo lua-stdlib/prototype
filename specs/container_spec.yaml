@@ -111,6 +111,22 @@ specify prototype.container:
         expect (things.new).to_be "value"
 
 
+- describe __pairs:
+  - before:
+      things = Container {"one", "two", three=3, four=4, "five", 6}
+      iter = getmetatable (things).__pairs
+  - it returns a function:
+      expect (type (iter)).to_be "function"
+  - it iterates all contents:
+      r = {}
+      for k, v in iter (things) do r[k] = v end
+      expect (r).to_contain.a_permutation_of (copy (things))
+  - it returns keys in order:
+      keys = {}
+      for k in iter (things) do keys[#keys + 1] = k end
+      expect (keys).to_equal {1, 2, 3, 4, "four", "three"}
+
+
 - describe __tostring:
   - before:
       things = Container {_type = "Derived", "one", "two", "three"}

@@ -110,16 +110,6 @@ local Object = Container {
     -- @see prototype.container.mapfields
     mapfields = X ("mapfields (table, table|object, ?table)", mapfields),
   },
-
-  --- Metamethods
-  -- @section metamethods
-
-  --- Return an in-order iterator over public object fields.
-  -- @function prototype:__pairs
-  -- @treturn function iterator function
-  -- @treturn Object *self*
-  -- @usage
-  -- for k, v in prototype.pairs (anobject) do process (k, v) end
 }
 
 

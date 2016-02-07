@@ -159,7 +159,7 @@ end
 
 local function opairs (t)
   local keys, i = {}, 0
-  for k in pairs (t) do keys[#keys + 1] = k end
+  for k in next, t do keys[#keys + 1] = k end
   table_sort (keys, keysort)
   return function (t)
     i = i + 1
@@ -215,6 +215,7 @@ return {
   getmetamethod = getmetamethod,
   ipairs        = ipairs,
   len		= len,
+  opairs	= opairs,
   pack		= pack,
   pairs         = pairs,
   str		= str,

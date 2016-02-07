@@ -47,9 +47,8 @@ local argscheck		= _.typecheck and _.typecheck.argscheck
 local copy		= _.copy
 local extramsg_toomany	= _.typecheck and _.typecheck.extramsg_toomany
 local getmetamethod	= _.getmetamethod
-local ipairs		= _.ipairs
 local mapfields		= _.mapfields
-local pairs		= _.pairs
+local opairs		= _.opairs
 local str		= _.str
 
 local _ENV		= _.strict and _.strict {} or {}
@@ -182,6 +181,13 @@ local prototype = {
     return setmetatable (obj, obj_mt)
   end,
 
+  --- Return an in-order iterator over public object fields.
+  -- @function prototype:__pairs
+  -- @treturn function iterator function
+  -- @treturn Object *self*
+  -- @usage
+  -- for k, v in pairs (anobject) do process (k, v) end
+  __pairs = opairs,
 
   --- Return a compact string representation of this object.
   --
