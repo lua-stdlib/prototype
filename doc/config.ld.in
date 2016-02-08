@@ -1,6 +1,6 @@
 -- -*- lua -*-
-title = "prototype @PACKAGE_VERSION@ Reference"
-project = "prototype @PACKAGE_VERSION@"
+title = "std.prototype @PACKAGE_VERSION@ Reference"
+project = "std.prototype @PACKAGE_VERSION@"
 description = [[
 # Prototype Oriented Programming with Lua
 
