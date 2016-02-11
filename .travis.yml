@@ -11,10 +11,6 @@ env:
     - LUA="luajit=2.0"
 
 before_install:
-  # Put back the links for libyaml, which are missing on recent Travis VMs
-  - test -f /usr/lib/libyaml.so ||
-    sudo find /usr/lib -name 'libyaml*' -exec ln -s {} /usr/lib \;
-
   - pip install hererocks
   - hererocks here -r^ --$LUA
   - export PATH=$PWD/here/bin:$PATH
