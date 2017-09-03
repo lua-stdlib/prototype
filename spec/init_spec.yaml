@@ -32,6 +32,3 @@ specify std.prototype:
   - it contains package description:
       expect (string.match (M.version, "Prototype Object Libraries")).
         not_to_be (nil)
-  - it ends with a semantic version number:
-      expect (string.match (M.version, "([%.%d]+)%D*$")).
-        not_to_be (nil)
