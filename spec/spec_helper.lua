@@ -1,18 +1,18 @@
 local typecheck
-have_typecheck, typecheck	= pcall (require, "typecheck")
+have_typecheck, typecheck	= pcall (require, 'typecheck')
 
-local inprocess			= require "specl.inprocess"
-local hell			= require "specl.shell"
-local std			= require "specl.std"
+local inprocess			= require 'specl.inprocess'
+local hell			= require 'specl.shell'
+local std			= require 'specl.std'
 
-badargs				= require "specl.badargs"
+badargs				= require 'specl.badargs'
 
-package.path = std.package.normalize ("./lib/?.lua", "./lib/?/init.lua", package.path)
+package.path = std.package.normalize ('./lib/?.lua', './lib/?/init.lua', package.path)
 
 
 -- Allow user override of LUA binary used by hell.spawn, falling
--- back to environment PATH search for "lua" if nothing else works.
-local LUA = os.getenv "LUA" or "lua"
+-- back to environment PATH search for 'lua' if nothing else works.
+local LUA = os.getenv 'LUA' or 'lua'
 
 
 -- Allow use of bare 'unpack' even in Lua 5.3.
@@ -44,7 +44,7 @@ end
 
 local function mkscript (code)
   local f = os.tmpname ()
-  local h = io.open (f, "w")
+  local h = io.open (f, 'w')
   h:write (code)
   h:close ()
   return f
@@ -60,11 +60,11 @@ end
 --   execution was successful, otherwise nil
 function luaproc (code, arg, stdin)
   local f = mkscript (code)
-  if type (arg) ~= "table" then arg = {arg} end
+  if type (arg) ~= 'table' then arg = {arg} end
   local cmd = {LUA, f, unpack (arg)}
   -- inject env and stdin keys separately to avoid truncating `...` in
   -- cmd constructor
-  cmd.env = { LUA_PATH=package.path, LUA_INIT="", LUA_INIT_5_2="" }
+  cmd.env = { LUA_PATH=package.path, LUA_INIT='', LUA_INIT_5_2='' }
   cmd.stdin = stdin
   local proc = hell.spawn (cmd)
   os.remove (f)
@@ -76,9 +76,9 @@ local function tabulate_output (code)
   local proc = luaproc (code)
   if proc.status ~= 0 then return error (proc.errout) end
   local r = {}
-  proc.output:gsub ("(%S*)[%s]*",
+  proc.output:gsub ('(%S*)[%s]*',
     function (x)
-      if x ~= "" then r[x] = true end
+      if x ~= '' then r[x] = true end
     end)
   return r
 end
@@ -86,7 +86,7 @@ end
 
 --- Show changes to tables wrought by a require statement.
 -- There are a few modes to this function, controlled by what named
--- arguments are given.  Lists new keys in T1 after `require "import"`:
+-- arguments are given.  Lists new keys in T1 after `require 'import'`:
 --
 --     show_apis {added_to=T1, by=import}
 --
@@ -99,7 +99,7 @@ function show_apis (argt)
       before[k] = true
     end
 
-    local M = require "]] .. argt.by .. [["
+    local M = require ']] .. argt.by .. [['
     for k in pairs (]] .. argt.added_to .. [[) do
       after[k] = true
     end
@@ -114,8 +114,8 @@ end
 do
   -- Custom matcher for set size and set membership.
 
-  local util     = require "specl.util"
-  local matchers = require "specl.matchers"
+  local util     = require 'specl.util'
+  local matchers = require 'specl.matchers'
 
   local Matcher, matchers, q =
         matchers.Matcher, matchers.matchers, matchers.stringify
@@ -125,15 +125,15 @@ do
       return actual[expect] ~= nil
     end,
 
-    actual = "set",
+    actual = 'set',
 
     format_expect = function (self, expect)
-      return " a set containing " .. q (expect) .. ", "
+      return ' a set containing ' .. q (expect) .. ', '
     end,
 
     format_any_of = function (self, alternatives)
-      return " a set containing any of " ..
-             util.concat (alternatives, util.QUOTED) .. ", "
+      return ' a set containing any of ' ..
+             util.concat (alternatives, util.QUOTED) .. ', '
     end,
   }
 
