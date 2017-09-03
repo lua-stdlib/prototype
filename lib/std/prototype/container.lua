@@ -151,9 +151,9 @@ local prototype = {
    --   local Cons = Container {_type='Cons', _init={'car', 'cdr'}}
    --   local list = Cons {'head', Cons {'tail', nil}}
    __call = function(self, ...)
-      local mt       = getmetatable(self)
+      local mt = getmetatable(self)
       local obj_mt = mt
-      local obj      = {}
+      local obj = {}
 
       -- This is the slowest part of cloning for any objects that have
       -- a lot of fields to test and copy.
@@ -164,7 +164,7 @@ local prototype = {
       if type(mt._init) == 'function' then
          obj = mt._init(obj, ...)
       else
-         obj =(self.mapfields or mapfields)(obj,(...), mt._init)
+         obj = (self.mapfields or mapfields)(obj, (...), mt._init)
       end
 
       -- If a metatable was set, then merge our fields and use it.
@@ -254,6 +254,7 @@ end
 local function X(decl, fn)
    return argscheck('prototype.container.' .. decl, fn)
 end
+
 
 return Module {
    prototype = setmetatable({}, prototype),

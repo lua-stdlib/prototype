@@ -131,5 +131,7 @@ return Module {
    --    }
    --    local stack = Stack {'some stuff'}
    --    assert(object.type(stack) == getmetatable(stack)._type)
-   type = function(x) return(getmetatable(x) or {})._type end,
+   type = function(x)
+      return(getmetatable(x) or {})._type
+   end,
 }

@@ -33,6 +33,7 @@ local _ENV = require 'std.normalize' {
    concat = table.concat,
    nonempty = next,
    sort = table.sort,
+   sub = string.sub,
 }
 
 
@@ -48,9 +49,6 @@ local Set -- forward declaration
 -- These functions know about internal implementatation.
 -- The representation is a table whose tags are the elements, and
 -- whose values are true.
-
-
-local elems = pairs
 
 
 local function insert(set, e)
@@ -78,7 +76,7 @@ local difference, symmetric_difference, intersection, union, subset,
 
 function difference(set1, set2)
    local r = Set {}
-   for e in elems(set1) do
+   for e in next, set1 do
       if not member(set2, e) then
          insert(r, e)
       end
@@ -94,7 +92,7 @@ end
 
 function intersection(set1, set2)
    local r = Set {}
-   for e in elems(set1) do
+   for e in next, set1 do
       if member(set2, e) then
          insert(r, e)
       end
@@ -105,7 +103,7 @@ end
 
 function union(set1, set2)
    local r = set1 {}
-   for e in elems(set2) do
+   for e in next, set2 do
       insert(r, e)
    end
    return r
@@ -113,7 +111,7 @@ end
 
 
 function subset(set1, set2)
-   for e in elems(set1) do
+   for e in next, set1 do
       if not member(set2, e) then
          return false
       end
@@ -168,8 +166,8 @@ Set = Container {
          local type_k = type(k)
          if type_k == 'number' then
             insert(new, v)
-         elseif type_k == 'string' and k:sub(1, 1) == '_' then
-	mt[k] = v
+         elseif type_k == 'string' and sub(k, 1, 1) == '_' then
+            mt[k] = v
          end
          -- non-underscore-prefixed string keys are discarded!
       end
@@ -223,7 +221,7 @@ Set = Container {
    -- @see subset
    -- @usage
    --   issubset = this <= s
-   __le   = subset,
+   __le = subset,
 
    --- Proper subset operation.
    -- @function prototype:__lt
@@ -233,7 +231,7 @@ Set = Container {
    -- @see proper_subset
    -- @usage
    --   ispropersubset = this < s
-   __lt   = proper_subset,
+   __lt = proper_subset,
 
    --- Return a string representation of this set.
    -- @function prototype:__tostring
@@ -263,8 +261,9 @@ return Module {
    -- @treturn prototype the modified *set*
    -- @usage
    --   set.delete(available, found)
-   delete = X('delete(Set, any)',
-                     function(set, e) return rawset(set, e, nil) end),
+   delete = X('delete(Set, any)', function(set, e)
+      return rawset(set, e, nil)
+   end),
 
    --- Find the difference of two sets.
    -- @function difference
@@ -284,7 +283,7 @@ return Module {
    --   for code in set.elems(isprintable) do
    --      print(code)
    --   end
-   elems = X('elems(Set)', elems),
+   elems = X('elems(Set)', pairs),
 
    --- Find whether two sets are equal.
    -- @function equal

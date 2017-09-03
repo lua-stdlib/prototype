@@ -172,11 +172,11 @@ Trie = Container {
    __index = function(tr, i)
       if _type(i) == 'table' then
          local r = tr
-         for _, v in ipairs(i) do
-	if r == nil then
+         for j = 1, len(i) do
+            if r == nil then
                return nil
             end
-            r = r[v]
+            r = r[i[j]]
          end
          return r
       else
@@ -240,7 +240,9 @@ return Module {
    --   do
    --      t[#t + 1] = leaf
    --   end
-   ileaves = X('ileaves(table)', function(t) return leaves(ipairs, t) end),
+   ileaves = X('ileaves(table)', function(t)
+      return leaves(ipairs, t)
+   end),
 
    --- Trie iterator over numbered nodes, in order.
    --
@@ -251,7 +253,9 @@ return Module {
    -- @treturn function iterator function
    -- @treturn trie|table the trie, *tr*
    -- @see nodes
-   inodes = X('inodes(table)', function(t) return _nodes(ipairs, t) end),
+   inodes = X('inodes(table)', function(t)
+      return _nodes(ipairs, t)
+   end),
 
    --- Trie iterator which returns just leaves.
    -- @function leaves
@@ -267,7 +271,9 @@ return Module {
    --   end
    --   --> t = {2, 4, 'five', 'foo', 'one', 'three'}
    --   table.sort(t, lambda '=tostring(_1) < tostring(_2)')
-   leaves = X('leaves(table)', function(t) return leaves(pairs, t) end),
+   leaves = X('leaves(table)', function(t)
+      return leaves(pairs, t)
+   end),
 
    --- Destructively deep-merge one trie into another.
    -- @function merge
@@ -312,5 +318,7 @@ return Module {
    --   --> 'leaf'      {2}      'leaf3'
    --   --> 'join'      {}       {{'leaf1', 'leaf2'}, 'leaf3'}
    --   os.exit(0)
-   nodes = X('nodes(table)', function(t) return _nodes(pairs, t) end),
+   nodes = X('nodes(table)', function(t)
+      return _nodes(pairs, t)
+   end),
 }

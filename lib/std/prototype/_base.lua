@@ -5,6 +5,7 @@
 
 local _ENV = require 'std.normalize' {
    nonempty = next,
+   sub = string.sub,
 }
 
 local argscheck
@@ -23,8 +24,10 @@ end
 return {
    Module = function(t)
       return setmetatable(t, {
-         _type   = 'Module',
-         __call = function(self, ...) return self.prototype(...) end,
+         _type = 'Module',
+         __call = function(self, ...)
+            return self.prototype(...)
+         end,
       })
    end,
 
@@ -41,7 +44,7 @@ return {
          for k, v in next, src do
             local key, dst = map[k] or k, obj
             local kind = type(key)
-            if kind == 'string' and key:sub(1, 1) == '_' then
+            if kind == 'string' and sub(key, 1, 1) == '_' then
                mt[key] = v
             elseif nonempty(map) and kind == 'number' and len(dst) + 1 < key then
                -- When map is given, but has fewer entries than src, stop copying
