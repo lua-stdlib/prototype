@@ -22,29 +22,14 @@
 ]]
 
 
-local getmetatable	= getmetatable
-local nonempty		= next
-local rawget		= rawget
-local rawset		= rawset
-local setmetatable	= setmetatable
-local type		= type
-
-local table_concat	= table.concat
-local table_sort	= table.sort
-
-
-local Container		= require 'std.prototype.container'.prototype
-local _			= require 'std.prototype._base'
-
-local Module		= _.Module
-local argscheck		= _.typecheck and _.typecheck.argscheck
-local pairs		= _.pairs
-local str		= _.str
-
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
-
+local _ENV = require 'std.normalize' {
+   Container = require 'std.prototype.container'.prototype,
+   Module = require 'std.prototype._base'.Module,
+   argscheck = require 'std.prototype._base'.argscheck,
+   concat = table.concat,
+   nonempty = next,
+   sort = table.sort,
+}
 
 
 local Set -- forward declaration
@@ -150,7 +135,7 @@ end
 
 
 local function X(decl, fn)
-   return argscheck and argscheck('std.prototype.set.' .. decl, fn) or fn
+   return argscheck('std.prototype.set.' .. decl, fn)
 end
 
 
@@ -255,8 +240,8 @@ Set = Container {
       for k in pairs(self) do
          keys[#keys + 1] = str(k)
       end
-      table_sort(keys)
-      return getmetatable(self)._type .. ' {' .. table_concat(keys, ', ') .. '}'
+      sort(keys)
+      return getmetatable(self)._type .. ' {' .. concat(keys, ', ') .. '}'
    end,
 }
 

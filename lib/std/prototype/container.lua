@@ -28,33 +28,15 @@
  @module std.prototype.container
 ]]
 
-local error		= error
-local getmetatable	= getmetatable
-local next		= next
-local nonempty		= next
-local select		= select
-local setmetatable	= setmetatable
-local type		= type
 
-local string_format	= string.format
-local table_concat	= table.concat
-
-
-local _			= require 'std.prototype._base'
-
-local Module		= _.Module
-local argcheck		= _.typecheck and _.typecheck.argcheck
-local argscheck		= _.typecheck and _.typecheck.argscheck
-local copy		= _.copy
-local extramsg_toomany	= _.typecheck and _.typecheck.extramsg_toomany
-local getmetamethod	= _.getmetamethod
-local mapfields		= _.mapfields
-local opairs		= _.opairs
-local str		= _.str
-
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
+local _ENV = require 'std.normalize' {
+   Module = require 'std.prototype._base'.Module,
+   argscheck = require 'std.prototype._base'.argscheck,
+   concat = table.concat,
+   mapfields = require 'std.prototype._base'.mapfields,
+   nonempty = next,
+   sort = table.sort,
+}
 
 
 
@@ -63,13 +45,21 @@ _ = nil
 --[[ ================= ]]--
 
 
-local function argerror(name, i, extramsg, level)
-   level = level or 1
-   local s = string_format("bad argument #%d to '%s'", i, name)
-   if extramsg ~= nil then
-      s = s .. '(' .. extramsg .. ')'
+local function keysort(a, b)
+   if type(a) == 'number' then
+      return type(b) ~= 'number' or a < b
+   else
+      return type(b) ~= 'number' and tostring(a) < tostring(b)
    end
-   error(s, level + 1)
+end
+
+
+local function shallow_copy(t)
+   local r = {}
+   for k, v in next, t do
+      r[k] = v
+   end
+   return r
 end
 
 
@@ -196,7 +186,20 @@ local prototype = {
    --   for k, v in pairs(anobject) do
    --      process(k, v)
    --   end
-   __pairs = opairs,
+   __pairs = function(self)
+      local keys, i = {}, 0
+      for k in next, self do
+         keys[#keys + 1] = k
+      end
+      sort(keys, keysort)
+      return function(t)
+         i = i + 1
+         local k = keys[i]
+         if k ~= nil then
+            return k, t[k]
+         end
+      end, self
+   end,
 
    --- Return a compact string representation of this object.
    --
@@ -212,10 +215,10 @@ local prototype = {
    -- @usage
    --   assert(tostring(list) == 'Cons {car='head', cdr=Cons {car='tail'}}')
    __tostring = function(self)
-      return table_concat {
+      return concat {
          -- Pass a shallow copy to render to avoid triggering __tostring
          -- again and blowing the stack.
-         getmetatable(self)._type, ' ', str(copy(self)),
+         getmetatable(self)._type, ' ', str(shallow_copy(self)),
       }
    end,
 }
@@ -245,7 +248,7 @@ end
 
 
 local function X(decl, fn)
-   return argscheck and argscheck('prototype.container.' .. decl, fn) or fn
+   return argscheck('prototype.container.' .. decl, fn)
 end
 
 return Module {

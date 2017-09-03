@@ -22,20 +22,12 @@
 ]]
 
 
-local getmetatable	= getmetatable
-
-
-local Container 	= require 'std.prototype.container'.prototype
-local _			= require 'std.prototype._base'
-
-local Module		= _.Module
-local argscheck		= _.typecheck and _.typecheck.argscheck
-local getmetamethod	= _.getmetamethod
-local mapfields		= _.mapfields
-
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
+local _ENV = require 'std.normalize' {
+   Container = require 'std.prototype.container'.prototype,
+   Module = require 'std.prototype._base'.Module,
+   argscheck = require 'std.prototype._base'.argscheck,
+   mapfields = require 'std.prototype._base'.mapfields,
+}
 
 
 
@@ -45,7 +37,7 @@ _ = nil
 
 
 local function X(decl, fn)
-   return argscheck and argscheck('std.prototype.object.' .. decl, fn) or fn
+   return argscheck('std.prototype.object.' .. decl, fn)
 end
 
 

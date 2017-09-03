@@ -22,6 +22,7 @@ source = {
 dependencies = {
    'ldoc',
    'lua >= 5.1, < 5.4',
+   'std.normalize >= 1.0.3',
 }
 
 build = {

@@ -24,29 +24,14 @@
 ]]
 
 
-local getmetatable	= getmetatable
-local rawget		= rawget
-local rawset		= rawset
-local setmetatable	= setmetatable
-local type		= type
-
-local coroutine_wrap	= coroutine.wrap
-local coroutine_yield	= coroutine.yield
-local table_remove	= table.remove
-
-
-local Container		= require 'std.prototype.container'.prototype
-local _			= require 'std.prototype._base'
-
-local Module		= _.Module
-local argscheck		= _.typecheck and _.typecheck.argscheck
-local ipairs		= _.ipairs
-local len		= _.len
-local pairs		= _.pairs
-
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
+local _ENV = require 'std.normalize' {
+   Container = require 'std.prototype.container'.prototype,
+   Module = require 'std.prototype._base'.Module,
+   argscheck = require 'std.prototype._base'.argscheck,
+   remove = table.remove,
+   wrap = coroutine.wrap,
+   yield = coroutine.yield,
+}
 
 
 
@@ -59,18 +44,18 @@ local function _nodes(it, tr)
    local p = {}
    local function visit(n)
       if type(n) == 'table' then
-         coroutine_yield('branch', p, n)
+         yield('branch', p, n)
          for i, v in it(n) do
             p[#p + 1] = i
             visit(v)
-            table_remove(p)
+            remove(p)
          end
-         coroutine_yield('join', p, n)
+         yield('join', p, n)
       else
-         coroutine_yield('leaf', p, n)
+         yield('leaf', p, n)
       end
    end
-   return coroutine_wrap(visit), tr
+   return wrap(visit), tr
 end
 
 
@@ -80,7 +65,7 @@ local function clone(t, nometa)
       setmetatable(r, getmetatable(t))
    end
    local d = {[t]=r}
-   local function copy(o, x)
+   local function deep_copy(o, x)
       for i, v in pairs(x) do
          if type(v) == 'table' then
             if not d[v] then
@@ -88,7 +73,7 @@ local function clone(t, nometa)
                if not nometa then
                   setmetatable(d[v], getmetatable(v))
                end
-               o[i] = copy(d[v], v)
+               o[i] = deep_copy(d[v], v)
             else
                o[i] = d[v]
             end
@@ -98,7 +83,7 @@ local function clone(t, nometa)
       end
       return o
    end
-   return copy(r, t)
+   return deep_copy(r, t)
 end
 
 
@@ -109,10 +94,10 @@ local function leaves(it, tr)
             visit(v)
          end
       else
-         coroutine_yield(n)
+         yield(n)
       end
    end
-   return coroutine_wrap(visit), tr
+   return wrap(visit), tr
 end
 
 
@@ -133,7 +118,7 @@ end
 
 
 local function X(decl, fn)
-   return argscheck and argscheck('std.prototype.trie.' .. decl, fn) or fn
+   return argscheck('std.prototype.trie.' .. decl, fn)
 end
 
 

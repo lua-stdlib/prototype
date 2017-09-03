@@ -27,20 +27,12 @@
 ]]
 
 
-local tostring		= tostring
-
-local table_concat	= table.concat
-
-
-local Object		= require 'std.prototype.object'.prototype
-local _			= require 'std.prototype._base'
-
-local Module		= _.Module
-local argscheck		= _.typecheck and _.typecheck.argscheck
-local ipairs		= _.ipairs
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
+local _ENV = require 'std.normalize' {
+   Module = require 'std.prototype._base'.Module,
+   Object = require 'std.prototype.object'.prototype,
+   argscheck = require 'std.prototype._base'.argscheck,
+   concat = table.concat,
+}
 
 
 
@@ -76,7 +68,7 @@ end
 
 
 local function X(decl, fn)
-   return argscheck and argscheck('std.prototype.strbuf.' .. decl, fn) or fn
+   return argscheck('std.prototype.strbuf.' .. decl, fn)
 end
 
 
@@ -124,7 +116,7 @@ return Module {
          for _, e in ipairs(self) do
             strs[#strs + 1] = tostring(e)
          end
-         return table_concat(strs)
+         return concat(strs)
       end,
    },
 }

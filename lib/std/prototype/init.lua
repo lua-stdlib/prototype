@@ -6,15 +6,8 @@
  @module std.prototype
 ]]
 
-local pcall		= pcall
-local rawset		= rawset
-local require		= require
-local setmetatable	= setmetatable
 
-local _			= require 'std.prototype._base'
-local _ENV		= _.strict and _.strict {} or {}
-
-_ = nil
+local _ENV = require 'std.normalize' {}
 
 
 
