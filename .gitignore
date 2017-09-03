@@ -1,4 +1,4 @@
 .DS_Store
-/*.rock
+/*.src.rock
+/build-aux/config.ld
 /doc
-!/doc/config.ld.in
