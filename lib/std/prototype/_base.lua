@@ -1,3 +1,8 @@
+--[[
+ Prototype Oriented Programming for Lua 5.1, 5.2 & 5.3
+ Copyright (C) 2000-2017 prototype authors
+]]
+
 local _ENV = require 'std.normalize' {
    nonempty = next,
 }
