@@ -95,7 +95,7 @@ specify std.prototype.object:
         array = Array {'first', 'second'}
         expect(copy(array)).
            to_equal {'first', 'second', 'baz'}
-    - it merges surplas positional parameters:
+    - it merges surplus positional parameters:
         array = Array {'first', 'second', 'third', 'fourth'}
         expect(copy(array)).
            to_equal {'first', 'second', 'third', 'fourth'}
