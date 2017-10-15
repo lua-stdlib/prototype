@@ -16,7 +16,7 @@ before_install:
   - export PATH=$PWD/here/bin:$PATH
 
 install:
-  - luarocks install --server=http://rocks.moonscript.org/manifests/gvvaughan ldoc
+  - luarocks install ldoc
   - luarocks install ansicolors
   - luarocks install specl
   - luarocks install luacov
