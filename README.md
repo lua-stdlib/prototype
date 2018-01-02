@@ -1,7 +1,7 @@
 Prototype Oriented Programming with Lua
 =======================================
 
-by the [prototype project][github]
+Copyright (C) 2000-2018 [std.prototype authors][authors]
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://mit-license.org)
 [![travis-ci status](https://secure.travis-ci.org/lua-stdlib/prototype.png?branch=master)](http://travis-ci.org/lua-stdlib/prototype/builds)
@@ -11,9 +11,9 @@ by the [prototype project][github]
 
 This is a collection of Prototype Oriented Programming libraries for
 Lua 5.1 (including LuaJIT), 5.2 and 5.3. The libraries are copyright by
-their authors 2000-2017 (see the [AUTHORS][] file for details), and
-released under the [MIT license][mit] (the same license as Lua itself).
-There is no warranty.
+their authors (see the [AUTHORS][] file for details), and released under
+the [MIT license][mit] (the same license as Lua itself).  There is no
+warranty.
 
 _prototype_ has no run-time prerequisites beyond a standard Lua system,
 though it will take advantage of [stdlib][], [strict][] and [typecheck][]

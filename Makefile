@@ -1,3 +1,6 @@
+# Prototype Oriented Programming with Lua
+# Copyright (C) 2002-2018 std.prototype authors
+
 LDOC	= ldoc
 LUA	= lua
 MKDIR	= mkdir -p
@@ -27,7 +30,7 @@ $(luadir)/version.lua: .FORCE
 	if cmp -s '$@' '$@T'; then						\
 	    rm -f '$@T';							\
 	else									\
-	    echo 'echo "Prototype Object Libraries / $(VERSION)" > $@';		\
+	    echo 'echo return "Prototype Object Libraries / $(VERSION)" > $@';	\
 	    mv '$@T' '$@';							\
 	fi
 
