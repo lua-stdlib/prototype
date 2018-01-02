@@ -1,4 +1,8 @@
+*~
 .DS_Store
 /*.src.rock
 /build-aux/config.ld
 /doc
+/luacov.*.out
+/lib/std/prototype/version.lua
+/prototype-*.tar.gz
