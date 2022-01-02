@@ -4,9 +4,8 @@ Prototype Oriented Programming with Lua
 Copyright (C) 2000-2022 [std.prototype authors][authors]
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://mit-license.org)
-[![travis-ci status](https://secure.travis-ci.org/lua-stdlib/prototype.png?branch=master)](http://travis-ci.org/lua-stdlib/prototype/builds)
+[![workflow status](https://github.com/lua-stdlib/prototype/actions/workflows/spec.yml/badge.svg?branch=master)](https://github.com/lua-stdlib/prototype/actions)
 [![codecov.io](https://codecov.io/github/lua-stdlib/prototype/coverage.svg?branch=master)](https://codecov.io/github/lua-stdlib/prototype?branch=master)
-[![Stories in Ready](https://badge.waffle.io/lua-stdlib/prototype.png?label=ready&title=Ready)](https://waffle.io/lua-stdlib/prototype)
 
 
 This is a collection of Prototype Oriented Programming libraries for
