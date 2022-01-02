@@ -1,6 +1,6 @@
 --[[
  Prototype Oriented Programming for Lua 5.1, 5.2 & 5.3
- Copyright (C) 2000-2018 std.prototype authors
+ Copyright (C) 2000-2022 std.prototype authors
 ]]
 --[[--
  Object Prototype.

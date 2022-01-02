@@ -1,5 +1,5 @@
 # Prototype Oriented Programming with Lua
-# Copyright (C) 2002-2018 std.prototype authors
+# Copyright (C) 2002-2022 std.prototype authors
 
 LDOC	= ldoc
 LUA	= lua

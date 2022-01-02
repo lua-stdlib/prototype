@@ -1,7 +1,7 @@
 Prototype Oriented Programming with Lua
 =======================================
 
-Copyright (C) 2000-2018 [std.prototype authors][authors]
+Copyright (C) 2000-2022 [std.prototype authors][authors]
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://mit-license.org)
 [![travis-ci status](https://secure.travis-ci.org/lua-stdlib/prototype.png?branch=master)](http://travis-ci.org/lua-stdlib/prototype/builds)
