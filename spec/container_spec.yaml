@@ -1,4 +1,4 @@
-# Prototype Oriented Programming for Lua 5.1, 5.2 & 5.3
+# Prototype Oriented Programming for Lua 5.1, 5.2, 5.3 & 5.4
 # Copyright (C) 2014-2022 std.prototype authors
 
 before:
@@ -83,7 +83,8 @@ specify std.prototype.container:
         things = Bag {}
         expect(things:count()).to_raise.any_of {
            "attempt to call method 'count'",
-           "attempt to call a nil value (method 'count'"
+           "attempt to call a nil value (method 'count'",
+           "method 'count' is not callable (a nil value)"
         }
     - it does retain module functions:
         things = Bag {apples=1, oranges=3}

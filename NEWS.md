@@ -2,6 +2,9 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+### New Features
+
+  - Initial support for Lua 5.4.
 
 
 ## Noteworthy changes in release 1.0.1 (2016-02-07) [stable]

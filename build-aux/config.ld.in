@@ -12,7 +12,7 @@ A straight forward prototype-based object system, and a selection of
 useful objects built on it.
 
 This is a collection of light-weight libraries for Lua 5.1 (including
-LuaJIT), 5.2 and 5.3 written in pure Lua.
+LuaJIT), 5.2, 5.3 and 5.4 written in pure Lua.
 
 Each of the modules in this package returns a table with an empty
 prototype object in the `prototype` field, and often a selection of

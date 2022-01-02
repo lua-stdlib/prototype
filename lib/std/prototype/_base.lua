@@ -1,5 +1,5 @@
 --[[
- Prototype Oriented Programming for Lua 5.1, 5.2 & 5.3
+ Prototype Oriented Programming for Lua 5.1, 5.2, 5.3 & 5.4
  Copyright (C) 2000-2022 std.prototype authors
 ]]
 

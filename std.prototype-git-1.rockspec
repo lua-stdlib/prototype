@@ -27,7 +27,7 @@ source = (function(gitp)
 end)(_MODREV == 'git')
 
 dependencies = {
-   'lua >= 5.1, < 5.4',
+   'lua >= 5.1, < 5.5',
    'std.normalize >= 1.0.3',
 }
 
