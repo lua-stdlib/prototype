@@ -1,4 +1,4 @@
-local _MODREV, _SPECREV = 'git', '-1'
+local _MODREV, _SPECREV = '1.1', '-1'
 
 package = 'std.prototype'
 version = _MODREV .. _SPECREV
@@ -20,7 +20,7 @@ source = (function(gitp)
       }
    else
       return {
-         url = 'http://github.com/lua-stdlib/prototype/archive' .. _MODREV .. '.zip',
+         url = 'http://github.com/lua-stdlib/prototype/archive/v' .. _MODREV .. '.zip',
          dir = 'prototype-' .. _MODREV,
       }
    end
