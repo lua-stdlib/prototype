@@ -225,7 +225,7 @@ return Module {
    --   copy = clone(tr)
    --   copy[2].two=5
    --   assert(tr[2].two == 2)
-   clone = X('clone(table, ?boolean|:nometa)', clone),
+   clone = X('clone(table, [?boolean|:nometa])', clone),
 
    --- Trie iterator which returns just numbered leaves, in order.
    -- @function ileaves

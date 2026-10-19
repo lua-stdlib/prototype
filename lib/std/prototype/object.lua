@@ -102,7 +102,7 @@ local Object = Container {
       --    metatable of private fields(if any), both renamed according to
       --    *map*
       -- @see prototype.container.mapfields
-      mapfields = X('mapfields(table, table|object, ?table)', mapfields),
+      mapfields = X('mapfields(table, table|object, [?table])', mapfields),
    },
 }
 
