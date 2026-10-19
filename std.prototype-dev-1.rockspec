@@ -1,4 +1,4 @@
-local _MODREV, _SPECREV = 'git', '-1'
+local _MODREV, _SPECREV = 'dev', '-1'
 
 package = 'std.prototype'
 version = _MODREV .. _SPECREV
@@ -9,31 +9,19 @@ description = {
      A straight forward prototype-based object system, and a selection of
      useful objects build on it.
    ]],
-   homepage = 'http://lua-stdlib.github.io/prototype',
+   homepage = 'https://lua-stdlib.github.io/prototype',
    license = 'MIT/X11',
 }
 
-source = (function(gitp)
-   if gitp then
-      return {
-         url = 'git://github.com/lua-stdlib/prototype.git',
-      }
-   else
-      return {
-         url = 'http://github.com/lua-stdlib/prototype/archive' .. _MODREV .. '.zip',
-         dir = 'prototype-' .. _MODREV,
-      }
-   end
-end)(_MODREV == 'git')
+source = {
+   url = 'https://github.com/lua-stdlib/prototype/archive/v' .. _MODREV .. '.zip',
+   dir = 'prototype-' .. _MODREV,
+}
 
 dependencies = {
    'lua >= 5.1, < 5.6',
    'std.normalize >= 1.0.3',
 }
-
-if _MODREV == 'git' then
-   dependencies[#dependencies + 1] = 'ldoc'
-end
 
 build = {
    type = 'builtin',
@@ -48,3 +36,9 @@ build = {
       ['std.prototype.version']	  = 'lib/std/prototype/version.lua',
   },
 }
+
+if _MODREV == 'dev' then
+   source = {
+      url = 'git+https://github.com/lua-stdlib/prototype.git',
+   }
+end
