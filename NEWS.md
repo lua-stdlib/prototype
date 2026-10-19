@@ -2,6 +2,15 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+### New features
+
+  - std.prototype builds with luke instead of make.  To install current
+    git master, use the `std.prototype-dev-1.rockspec`:
+
+    ```bash
+    luarocks install https://raw.githubusercontent.com/lua-stdlib/prototype/master/std.prototype-dev-1.rockspec
+    ```
+
 ### Bug fixes
 
   - With typecheck installed, a container prototype called with a table

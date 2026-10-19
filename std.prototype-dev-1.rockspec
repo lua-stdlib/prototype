@@ -3,6 +3,8 @@ local _MODREV, _SPECREV = 'dev', '-1'
 package = 'std.prototype'
 version = _MODREV .. _SPECREV
 
+rockspec_format = '3.0'
+
 description = {
    summary = 'Prototype Oriented Programming with Lua',
    detailed = [[
@@ -24,21 +26,40 @@ dependencies = {
 }
 
 build = {
-   type = 'builtin',
-   modules = {
-      ['std.prototype']		  = 'lib/std/prototype/init.lua',
-      ['std.prototype._base']	  = 'lib/std/prototype/_base.lua',
-      ['std.prototype.container'] = 'lib/std/prototype/container.lua',
-      ['std.prototype.object']	  = 'lib/std/prototype/object.lua',
-      ['std.prototype.set']	  = 'lib/std/prototype/set.lua',
-      ['std.prototype.strbuf']	  = 'lib/std/prototype/strbuf.lua',
-      ['std.prototype.trie']	  = 'lib/std/prototype/trie.lua',
-      ['std.prototype.version']	  = 'lib/std/prototype/version.lua',
-  },
+   type = 'command',
+   build_command = '$(LUA) build-aux/luke'
+      .. ' package="' .. package .. '"'
+      .. ' version="' .. _MODREV .. '"'
+      .. ' PREFIX="$(PREFIX)"'
+      .. ' LUA="$(LUA)"'
+      ,
+   install_command = '$(LUA) build-aux/luke install --quiet'
+      .. ' INST_LUADIR="$(LUADIR)"'
+      ,
+   copy_directories = {'doc'},
+}
+
+test_dependencies = {
+   'ansicolors',
+   'luacov',
+   'specl >= 15',
+}
+
+test = {
+   type = 'command',
+   command = 'specl -vfreport --coverage spec/*_spec.yaml',
 }
 
 if _MODREV == 'dev' then
+   -- luarocks.org's ldoc fails on Lua 5.5; gvvaughan's works.
+   build_dependencies = {'gvvaughan/ldoc'}
+
+   build.copy_directories = nil
+
    source = {
       url = 'git+https://github.com/lua-stdlib/prototype.git',
    }
+else
+   -- A release commits its LDocs, so don't build them again.
+   build.build_command = build.build_command .. ' LDOC=true'
 end

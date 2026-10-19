@@ -3,8 +3,8 @@
  Copyright (C) 2002-2026 std.prototype authors
 ]]
 
-title = 'std.prototype @PACKAGE_VERSION@ Reference'
-project = 'std.prototype @PACKAGE_VERSION@'
+title = 'std.prototype @version@ Reference'
+project = 'std.prototype @version@'
 description = [[
 # Prototype Oriented Programming with Lua
 
