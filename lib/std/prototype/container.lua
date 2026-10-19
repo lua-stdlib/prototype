@@ -33,6 +33,20 @@
 ]]
 
 
+-- Check constructor arguments with typecheck, if it's installed, unless
+-- std._debug turns argument checks off.
+local argcheck, argerror, extramsg_toomany
+do
+   local typecheck = require 'std.prototype._base'.typecheck
+   local ok, _debug = pcall(require, 'std._debug')
+   if typecheck and not (ok and _debug.argcheck == false) then
+      argcheck = typecheck.argcheck
+      argerror = typecheck.argerror
+      extramsg_toomany = typecheck.extramsg_toomany
+   end
+end
+
+
 local _ENV = require 'std.normalize' {
    Module = require 'std.prototype._base'.Module,
    argscheck = require 'std.prototype._base'.argscheck,
@@ -240,7 +254,10 @@ if argcheck then
          local name, n = mt._type, select('#', ...)
          -- Don't count `self` as an argument for error messages, because
          -- it just refers back to the object being called: `prototype {'x'}.
-         argcheck(name, 1, 'table',(...))
+         if n == 0 then
+            argerror(name, 1, 'table expected, got no value', 2)
+         end
+         argcheck(name, 1, 'table', (...))
          if n > 1 then
             argerror(name, 2, extramsg_toomany('argument', 1, n), 2)
          end
@@ -292,5 +309,5 @@ return Module {
    --   }
    --   local groceries = Bag('apple', 'banana', 'banana')
    --   local purse = Bag {_type = 'Purse'}('cards', 'cash', 'id')
-   mapfields = X('mapfields(table, table|object, ?table)', mapfields),
+   mapfields = X('mapfields(table, table|object, [?table])', mapfields),
 }

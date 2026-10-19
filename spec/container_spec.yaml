@@ -21,12 +21,12 @@ specify std.prototype.container:
     - it diagnoses missing arguments: |
         if have_typecheck then
            expect(Container()).
-              to_raise "bad argument #1 to 'Container'(table expected, got no value)"
+              to_raise "bad argument #1 to 'Container' (table expected, got no value)"
         end
     - it diagnoses too many arguments: |
         if have_typecheck then
            expect(Container({}, false)).
-              to_raise "bad argument #2 to 'Container'(no more than 1 argument expected, got 2)"
+              to_raise "bad argument #2 to 'Container' (no more than 1 argument expected, got 2)"
         end
   - context with function _init:
     - before:

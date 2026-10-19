@@ -8,10 +8,11 @@ local _ENV = require 'std.normalize' {
    sub = string.sub,
 }
 
-local argscheck
+local argscheck, typecheck
 do
-   local ok, typecheck = pcall(require, 'typecheck')
+   local ok, r = pcall(require, 'typecheck')
    if ok then
+      typecheck = r
       argscheck = typecheck.argscheck
    else
       argscheck = function(decl, fn)
@@ -32,6 +33,8 @@ return {
    end,
 
    argscheck = argscheck,
+
+   typecheck = typecheck,
 
    mapfields = function(obj, src, map)
       local mt = getmetatable(obj) or {}

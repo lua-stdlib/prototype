@@ -2,6 +2,13 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+### Bug fixes
+
+  - With typecheck installed, a container prototype called with a table
+    `_init` diagnoses a missing or extra argument, rather than raising
+    "variable 'argcheck' is not declared" under std.strict, or not
+    checking at all without it.
+
 
 ## Noteworthy changes in release 1.1 (2020-07-26) [stable]
 
