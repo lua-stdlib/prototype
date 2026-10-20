@@ -11,6 +11,11 @@
     luarocks install https://raw.githubusercontent.com/lua-stdlib/prototype/master/std.prototype-dev-1.rockspec
     ```
 
+### Incompatible changes
+
+  - std.prototype needs std.normalize 2.0 or later, whose std._debug
+    settings it follows.
+
 ### Bug fixes
 
   - With typecheck installed, a container prototype called with a table
