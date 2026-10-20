@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>std.prototype 1.0.1 Reference</title>
+    <title>std.prototype 2 Reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,7 +24,8 @@
 
 <div id="navigation">
 <br/>
-<h1>std.prototype 1.0.1</h1>
+<h1>std.prototype 2</h1>
+
 
 <ul>
   <li><a href="../index.html">Index</a></li>
@@ -39,7 +40,7 @@
 
 
 <h2>Modules</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
+<ul class="nowrap">
   <li><a href="../modules/std.prototype.html">std.prototype</a></li>
   <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
   <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
@@ -62,7 +63,7 @@
 
 <p> This is not a search tree, but rather a radix tree to efficiently store
  and retrieve values stored with a path as a key, such as a multi-key
- keytable.  Although it does have iterators for walking the trie with
+ keytable.   Although it does have iterators for walking the trie with
  various algorithms.</p>
 
 <p> In addition to the functionality described here, Trie containers also
@@ -145,9 +146,9 @@
     <h3>Fields:</h3>
     <ul>
         <li><span class="parameter">_type</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
          object name
-         (<em>default</em> "Trie")
+         (<em>default</em> 'Trie')
         </li>
     </ul>
 
@@ -160,20 +161,19 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> trie = <span class="global">require</span> <span class="string">"std.prototype.trie"</span>
- <span class="keyword">local</span> Trie = trie.prototype
- <span class="keyword">local</span> tr = Trie {}
- tr[{<span class="string">"branch1"</span>, <span class="number">1</span>}] = <span class="string">"leaf1"</span>
- tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}] = <span class="string">"leaf2"</span>
- tr[{<span class="string">"branch2"</span>, <span class="number">1</span>}] = <span class="string">"leaf3"</span>
- <span class="global">print</span> (tr[{<span class="string">"branch1"</span>}])      <span class="comment">--&gt; Trie {leaf1, leaf2}
-</span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">2</span>}])   <span class="comment">--&gt; leaf2
-</span> <span class="global">print</span> (tr[{<span class="string">"branch1"</span>, <span class="number">3</span>}])   <span class="comment">--&gt; nil
-</span> <span class="comment">--&gt; leaf1	leaf2	leaf3
-</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> trie.leaves (tr) <span class="keyword">do</span>
-   <span class="global">io</span>.write (leaf .. <span class="string">"\t"</span>)
- <span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">local</span> trie = <span class="global">require</span> <span class="string">'std.prototype.trie'</span>
+<span class="keyword">local</span> Trie = trie.prototype
+<span class="keyword">local</span> tr = <span class="function-name">Trie</span> {}
+tr[{<span class="string">'branch1'</span>, <span class="number">1</span>}] = <span class="string">'leaf1'</span>
+tr[{<span class="string">'branch1'</span>, <span class="number">2</span>}] = <span class="string">'leaf2'</span>
+tr[{<span class="string">'branch2'</span>, <span class="number">1</span>}] = <span class="string">'leaf3'</span>
+<span class="global">print</span>(tr[{<span class="string">'branch1'</span>}])         <span class="comment">--&gt; Trie {leaf1, leaf2}
+</span><span class="global">print</span>(tr[{<span class="string">'branch1'</span>, <span class="number">2</span>}])    <span class="comment">--&gt; leaf2
+</span><span class="global">print</span>(tr[{<span class="string">'branch1'</span>, <span class="number">3</span>}])    <span class="comment">--&gt; nil
+</span><span class="comment">--&gt; leaf1	leaf2	leaf3
+</span><span class="keyword">for</span> leaf <span class="keyword">in</span> trie.<span class="function-name">leaves</span>(tr) <span class="keyword">do</span>
+   <span class="global">io</span>.<span class="function-name">write</span>(leaf .. <span class="string">'\t'</span>)
+<span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -206,7 +206,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">del_other_window = keymap[{<span class="string">"C-x"</span>, <span class="string">"4"</span>, KEY_DELETE}]</pre>
+        <pre class="example">del_other_window = keymap[{<span class="string">'C-x'</span>, <span class="string">'4'</span>, KEY_DELETE}]</pre>
     </ul>
 
 </dd>
@@ -234,7 +234,9 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">function</span> bindkey (keylist, fn) keymap[keylist] = fn <span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">function</span> <span class="function-name">bindkey</span>(keylist, fn)
+   keymap[keylist] = fn
+<span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -253,7 +255,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          trie or trie-like table
         </li>
         <li><span class="parameter">nometa</span>
@@ -265,7 +267,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         a deep copy of <em>tr</em>
     </ol>
 
@@ -277,11 +279,10 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- tr = {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}
- copy = clone (tr)
- copy[<span class="number">2</span>].two=<span class="number">5</span>
- <span class="global">assert</span> (tr[<span class="number">2</span>].two == <span class="number">2</span>)</pre>
+        <pre class="example">tr = {<span class="string">'one'</span>, {two=<span class="number">2</span>}, {{<span class="string">'three'</span>}, four=<span class="number">4</span>}}
+copy = <span class="function-name">clone</span>(tr)
+copy[<span class="number">2</span>].two=<span class="number">5</span>
+<span class="global">assert</span>(tr[<span class="number">2</span>].two == <span class="number">2</span>)</pre>
     </ul>
 
 </dd>
@@ -296,7 +297,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          trie or trie-like table
         </li>
     </ul>
@@ -307,7 +308,7 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         the trie <em>tr</em></li>
     </ol>
 
@@ -320,12 +321,11 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="comment">--&gt; t = {"one", "three", "five"}
-</span> <span class="keyword">for</span> leaf <span class="keyword">in</span> ileaves {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}, foo=<span class="string">"bar"</span>, <span class="string">"five"</span>}
- <span class="keyword">do</span>
+        <pre class="example"><span class="comment">--&gt; t = {'one', 'three', 'five'}
+</span><span class="keyword">for</span> leaf <span class="keyword">in</span> <span class="function-name">ileaves</span> {<span class="string">'one'</span>, {two=<span class="number">2</span>}, {{<span class="string">'three'</span>}, four=<span class="number">4</span>}}, foo=<span class="string">'bar'</span>, <span class="string">'five'</span>}
+<span class="keyword">do</span>
    t[#t + <span class="number">1</span>] = leaf
- <span class="keyword">end</span></pre>
+<span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -343,7 +343,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          trie or trie-like table to iterate over
         </li>
     </ul>
@@ -354,7 +354,7 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><span class="type">trie</span> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><span class="type">trie</span> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         the trie, <em>tr</em></li>
     </ol>
 
@@ -377,7 +377,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          trie or trie-like table
         </li>
     </ul>
@@ -388,7 +388,7 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         <em>t</em></li>
     </ol>
 
@@ -401,13 +401,12 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">for</span> leaf <span class="keyword">in</span> leaves {<span class="string">"one"</span>, {two=<span class="number">2</span>}, {{<span class="string">"three"</span>}, four=<span class="number">4</span>}}, foo=<span class="string">"bar"</span>, <span class="string">"five"</span>}
- <span class="keyword">do</span>
+        <pre class="example"><span class="keyword">for</span> leaf <span class="keyword">in</span> <span class="function-name">leaves</span> {<span class="string">'one'</span>, {two=<span class="number">2</span>}, {{<span class="string">'three'</span>}, four=<span class="number">4</span>}}, foo=<span class="string">'bar'</span>, <span class="string">'five'</span>}
+<span class="keyword">do</span>
    t[#t + <span class="number">1</span>] = leaf
- <span class="keyword">end</span>
- <span class="comment">--&gt; t = {2, 4, "five", "foo", "one", "three"}
-</span> <span class="global">table</span>.sort (t, lambda <span class="string">"=tostring(_1) &lt; tostring(_2)"</span>)</pre>
+<span class="keyword">end</span>
+<span class="comment">--&gt; t = {2, 4, 'five', 'foo', 'one', 'three'}
+</span><span class="global">table</span>.<span class="function-name">sort</span>(t, <span class="function-name">lambda</span> <span class="string">'=tostring(_1) &lt; tostring(_2)'</span>)</pre>
     </ul>
 
 </dd>
@@ -422,11 +421,11 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">t</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          destination trie
         </li>
         <li><span class="parameter">u</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          table with nodes to merge
         </li>
     </ul>
@@ -434,7 +433,7 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         <em>t</em> with nodes from <em>u</em> merged in
     </ol>
 
@@ -442,7 +441,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">merge (dest, {{exists=<span class="number">1</span>}, {{<span class="keyword">not</span> = {present = { inside = <span class="string">"dest"</span> }}}}})</pre>
+        <pre class="example"><span class="function-name">merge</span>(dest, {{exists=<span class="number">1</span>}, {{<span class="keyword">not</span> = {present = {inside=<span class="string">'dest'</span>}}}}})</pre>
     </ul>
 
 </dd>
@@ -468,7 +467,7 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">tr</span>
-            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          trie or trie-like table to iterate over
         </li>
     </ul>
@@ -479,7 +478,7 @@
            <span class="types"><span class="type">function</span></span>
         iterator function</li>
         <li>
-           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+           <span class="types"><a class="type" href="../modules/std.prototype.trie.html#prototype">prototype</a> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
         the trie, <em>tr</em></li>
     </ol>
 
@@ -491,23 +490,22 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="comment">-- trie = +-- node1
-</span> <span class="comment">--        |    +-- leaf1
-</span> <span class="comment">--        |    '-- leaf2
-</span> <span class="comment">--        '-- leaf 3
-</span> trie = Trie { Trie { <span class="string">"leaf1"</span>, <span class="string">"leaf2"</span>}, <span class="string">"leaf3"</span> }
- <span class="keyword">for</span> node_type, path, node <span class="keyword">in</span> nodes (trie) <span class="keyword">do</span>
-   <span class="global">print</span> (node_type, path, node)
- <span class="keyword">end</span>
- <span class="comment">--&gt; "branch"   {}      {{"leaf1", "leaf2"}, "leaf3"}
-</span> <span class="comment">--&gt; "branch"   {1}     {"leaf1", "leaf2")
-</span> <span class="comment">--&gt; "leaf"     {1,1}   "leaf1"
-</span> <span class="comment">--&gt; "leaf"     {1,2}   "leaf2"
-</span> <span class="comment">--&gt; "join"     {1}     {"leaf1", "leaf2"}
-</span> <span class="comment">--&gt; "leaf"     {2}     "leaf3"
-</span> <span class="comment">--&gt; "join"     {}      {{"leaf1", "leaf2"}, "leaf3"}
-</span> <span class="global">os</span>.exit (<span class="number">0</span>)</pre>
+        <pre class="example"><span class="comment">-- trie = +-- node1
+</span><span class="comment">--        |    +-- leaf1
+</span><span class="comment">--        |    '-- leaf2
+</span><span class="comment">--        '-- leaf 3
+</span>trie = <span class="function-name">Trie</span> {<span class="function-name">Trie</span> {<span class="string">'leaf1'</span>, <span class="string">'leaf2'</span>}, <span class="string">'leaf3'</span>}
+<span class="keyword">for</span> node_type, path, node <span class="keyword">in</span> <span class="function-name">nodes</span>(trie) <span class="keyword">do</span>
+   <span class="global">print</span>(node_type, path, node)
+<span class="keyword">end</span>
+<span class="comment">--&gt; 'branch'    {}       {{'leaf1', 'leaf2'}, 'leaf3'}
+</span><span class="comment">--&gt; 'branch'    {1}      {'leaf1', 'leaf2')
+</span><span class="comment">--&gt; 'leaf'      {1,1}    'leaf1'
+</span><span class="comment">--&gt; 'leaf'      {1,2}    'leaf2'
+</span><span class="comment">--&gt; 'join'      {1}      {'leaf1', 'leaf2'}
+</span><span class="comment">--&gt; 'leaf'      {2}      'leaf3'
+</span><span class="comment">--&gt; 'join'      {}       {{'leaf1', 'leaf2'}, 'leaf3'}
+</span><span class="global">os</span>.<span class="function-name">exit</span>(<span class="number">0</span>)</pre>
     </ul>
 
 </dd>
@@ -517,8 +515,8 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-08 00:31:49 </i>
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-20 12:00:59 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

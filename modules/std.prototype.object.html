@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>std.prototype 1.0.1 Reference</title>
+    <title>std.prototype 2 Reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,7 +24,8 @@
 
 <div id="navigation">
 <br/>
-<h1>std.prototype 1.0.1</h1>
+<h1>std.prototype 2</h1>
+
 
 <ul>
   <li><a href="../index.html">Index</a></li>
@@ -39,7 +40,7 @@
 
 
 <h2>Modules</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
+<ul class="nowrap">
   <li><a href="../modules/std.prototype.html">std.prototype</a></li>
   <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
   <li><strong>std.prototype.object</strong></li>
@@ -58,13 +59,13 @@
 
 
 <p> This module provides a specialization of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
- with the addition of object methods.  In addition to the functionality
+ with the addition of object methods.   In addition to the functionality
  described here, object prototypes also have all the methods and
  metamethods of the <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>.</p>
 
 <p> Note that object methods are stored in the <code>__index</code> field of their
  metatable, and so cannot also use the <code>__index</code> metamethod to lookup
- references with square brackets.  Use a <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a> based
+ references with square brackets.   Use a <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a> based
  object if you want to do that.</p>
 
 <h2> Prototype Chain</h2>
@@ -123,14 +124,14 @@
     <h3>Fields:</h3>
     <ul>
         <li><span class="parameter">_init</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a> or <span class="type">function</span></span>
          object initialisation
          (<em>optional</em>)
         </li>
         <li><span class="parameter">_type</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
          object name
-         (<em>default</em> "Object")
+         (<em>default</em> 'Object')
         </li>
     </ul>
 
@@ -139,16 +140,15 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"std.prototype.object"</span>.prototype
- <span class="keyword">local</span> Process = Object {
-   _type = <span class="string">"Process"</span>,
-   _init = { <span class="string">"status"</span>, <span class="string">"out"</span>, <span class="string">"err"</span> },
- }
- <span class="keyword">local</span> process = Process {
+        <pre class="example"><span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">'std.prototype.object'</span>.prototype
+<span class="keyword">local</span> Process = <span class="function-name">Object</span> {
+   _type = <span class="string">'Process'</span>,
+   _init = {<span class="string">'status'</span>, <span class="string">'out'</span>, <span class="string">'err'</span>},
+}
+<span class="keyword">local</span> process = <span class="function-name">Process</span> {
    procs[pid].status, procs[pid].out, procs[pid].err, <span class="comment">-- auto assigned
 </span>   command = pipeline[pid],                           <span class="comment">-- manual assignment
-</span> }</pre>
+</span>}</pre>
     </ul>
 
 </dd>
@@ -178,24 +178,26 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
-        type of <em>x</em>, or <code>nil</code> if <em>x</em> has no <code>_type</code>
-   metatable entry.
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+
+<p>type of <em>x</em>, or <code>nil</code> if <em>x</em> has no <code>_type</code></p>
+<pre><code>metatable entry.
+</code></pre>
+
     </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-   <span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">"std.object"</span>.prototype
-   <span class="global">assert</span> (object.<span class="global">type</span> (Object) == <span class="string">"Object"</span>)
-   <span class="keyword">local</span> Stack = Object {
-     _type = <span class="string">"Stack"</span>,
-     ...
-   }
-   <span class="keyword">local</span> stack = Stack {<span class="string">"some stuff"</span>}
-   <span class="global">assert</span> (object.<span class="global">type</span> (stack) == <span class="global">getmetatable</span> (stack)._type)</pre>
+        <pre class="example"><span class="keyword">local</span> Object = <span class="global">require</span> <span class="string">'std.object'</span>.prototype
+<span class="global">assert</span>(object.<span class="global">type</span>(Object) == <span class="string">'Object'</span>)
+<span class="keyword">local</span> Stack = <span class="function-name">Object</span> {
+   _type = <span class="string">'Stack'</span>,
+   ...
+}
+<span class="keyword">local</span> stack = <span class="function-name">Stack</span> {<span class="string">'some stuff'</span>}
+<span class="global">assert</span>(object.<span class="global">type</span>(stack) == <span class="global">getmetatable</span>(stack)._type)</pre>
     </ul>
 
 </dd>
@@ -226,8 +228,11 @@
     <ol>
 
            <span class="types"><a class="type" href="../modules/std.prototype.object.html#prototype">prototype</a></span>
-        a clone of this object, with shared or merged
-   metatable as appropriate
+
+<p>a clone of this object, with shared or merged</p>
+<pre><code>metatable as appropriate
+</code></pre>
+
     </ol>
 
 
@@ -238,15 +243,14 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> Node = Object { _type = <span class="string">"Node"</span> }
- <span class="comment">-- A trivial FSA to recognize powers of 10, either "0" or a "1"
-</span> <span class="comment">-- followed by zero or more "0"s can transition to state 'finish'
-</span> <span class="keyword">local</span> states; states = {
-   start  = Node { [<span class="string">"1"</span>] = states[<span class="number">1</span>], [<span class="string">"0"</span>] = states.finish },
-   [<span class="number">1</span>]    = Node { [<span class="string">"0"</span>] = states[<span class="number">1</span>], [<span class="string">""</span>] = states.finish },
-   finish = Node {},
- }</pre>
+        <pre class="example"><span class="keyword">local</span> Node = <span class="function-name">Object</span> {_type=<span class="string">'Node'</span>}
+<span class="comment">-- A trivial FSA to recognize powers of 10, either '0' or a '1'
+</span><span class="comment">-- followed by zero or more '0's can transition to state 'finish'
+</span><span class="keyword">local</span> states; states = {
+   start  = <span class="function-name">Node</span> {[<span class="string">'1'</span>]=states[<span class="number">1</span>], [<span class="string">'0'</span>]=states.finish},
+   [<span class="number">1</span>]    = <span class="function-name">Node</span> {[<span class="string">'0'</span>]=states[<span class="number">1</span>], [<span class="string">''</span>]=states.finish},
+   finish = <span class="function-name">Node</span> {},
+}</pre>
     </ul>
 
 </dd>
@@ -265,17 +269,20 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">new</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          partially instantiated clone container
         </li>
         <li><span class="parameter">src</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          <a href="../modules/std.prototype.object.html#prototype:clone">clone</a> argument table that triggered cloning
         </li>
         <li><span class="parameter">map</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         key renaming specification in the form
-   <code>{old_key=new_key, ...}</code>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+
+<p> key renaming specification in the form</p>
+<pre><code>`{old_key=new_key, ...}`
+</code></pre>
+
          (<em>default</em> {})
         </li>
     </ul>
@@ -283,10 +290,13 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         merged public fields from <em>new</em> and <em>src</em>, with a
-   metatable of private fields (if any), both renamed according to
-   <em>map</em>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+
+<p> merged public fields from <em>new</em> and <em>src</em>, with a</p>
+<pre><code>metatable of private fields(if any), both renamed according to
+*map*
+</code></pre>
+
     </ol>
 
 
@@ -303,8 +313,8 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-08 00:31:49 </i>
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-20 12:00:59 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

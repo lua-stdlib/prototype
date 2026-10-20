@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>std.prototype 1.0.1 Reference</title>
+    <title>std.prototype 2 Reference</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,7 +24,8 @@
 
 <div id="navigation">
 <br/>
-<h1>std.prototype 1.0.1</h1>
+<h1>std.prototype 2</h1>
+
 
 <ul>
   <li><a href="../index.html">Index</a></li>
@@ -39,7 +40,7 @@
 
 
 <h2>Modules</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
+<ul class="nowrap">
   <li><a href="../modules/std.prototype.html">std.prototype</a></li>
   <li><strong>std.prototype.container</strong></li>
   <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
@@ -58,7 +59,7 @@
 
 
 <p> This module supplies the root prototype object from which every other
- object is descended.  There are no classes as such, rather new objects
+ object is descended.   There are no classes as such, rather new objects
  are created by cloning an existing object, and then changing or adding
  to the clone. Further objects can then be made by cloning the changed
  object, and so on.</p>
@@ -134,14 +135,14 @@
     <h3>Fields:</h3>
     <ul>
         <li><span class="parameter">_init</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a> or <span class="type">function</span></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a> or <span class="type">function</span></span>
          object initialisation
          (<em>optional</em>)
         </li>
         <li><span class="parameter">_type</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
          object name
-         (<em>default</em> "Container")
+         (<em>default</em> 'Container')
         </li>
     </ul>
 
@@ -150,16 +151,17 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> Container = <span class="global">require</span> <span class="string">"prototype.container"</span>.prototype
- <span class="keyword">local</span> Graph = Container { _type = <span class="string">"Graph"</span> }
- <span class="keyword">local</span> <span class="keyword">function</span> nodes (graph)
+        <pre class="example"><span class="keyword">local</span> Container = <span class="global">require</span> <span class="string">'prototype.container'</span>.prototype
+<span class="keyword">local</span> Graph = <span class="function-name">Container</span> { _type = <span class="string">'Graph'</span> }
+<span class="keyword">local</span> <span class="keyword">function</span> <span class="function-name">nodes</span>(graph)
    <span class="keyword">local</span> n = <span class="number">0</span>
-   <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="global">pairs</span> (graph) <span class="keyword">do</span> n = n + <span class="number">1</span> <span class="keyword">end</span>
+   <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="global">pairs</span>(graph) <span class="keyword">do</span>
+      n = n + <span class="number">1</span>
+   <span class="keyword">end</span>
    <span class="keyword">return</span> n
- <span class="keyword">end</span>
- <span class="keyword">local</span> g = Graph { <span class="string">"node1"</span>, <span class="string">"node2"</span> }
- <span class="global">assert</span> (nodes (g) == <span class="number">2</span>)</pre>
+<span class="keyword">end</span>
+<span class="keyword">local</span> g = <span class="function-name">Graph</span> { <span class="string">'node1'</span>, <span class="string">'node2'</span> }
+<span class="global">assert</span>(<span class="function-name">nodes</span>(g) == <span class="number">2</span>)</pre>
     </ul>
 
 </dd>
@@ -178,14 +180,14 @@
  <code>field_n = value_n</code> pairs, except that field names beginning with
  an underscore <code>_</code> are usually kept in that container's metatable
  where they define the behaviour of a container object rather than
- being part of its actual contents.  In general, cloned objects
+ being part of its actual contents.   In general, cloned objects
  also clone the behaviour of the object they cloned, unless...</p>
 
 <p> When calling <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>, you pass a single table
- argument with additional fields (and values) to be merged into the
+ argument with additional fields(and values) to be merged into the
  clone. Any field names beginning with an underscore <code>_</code> are copied
  to the clone's metatable, and all other fields to the cloned
- container itself.  For instance, you can change the name of the
+ container itself.   For instance, you can change the name of the
  cloned object by setting the <code>_type</code> field in the argument table.</p>
 
 <p> The <code>_init</code> private field is also special: When set to a sequence of
@@ -194,7 +196,7 @@
 
 <p> Alternatively, you can set the <code>_init</code> private field of a cloned
  container object to a function instead of a sequence, in which case
- all the arguments passed when <em>it</em> is called/cloned (including named
+ all the arguments passed when <em>it</em> is called/cloned(including named
  and unnamed fields in the initial table argument, if there is one)
  are passed through to the <code>_init</code> function, following the nascent
  cloned object. See the <a href="../modules/std.prototype.container.html#mapfields">mapfields</a> usage example below.
@@ -211,17 +213,19 @@
     <ol>
 
            <span class="types"><a class="type" href="../modules/std.prototype.container.html#prototype">prototype</a></span>
-        clone of this container, with shared or
-   merged metatable as appropriate
+
+<p>clone of this container, with shared or</p>
+<pre><code>merged metatable as appropriate
+</code></pre>
+
     </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> Cons = Container {_type=<span class="string">"Cons"</span>, _init={<span class="string">"car"</span>, <span class="string">"cdr"</span>}}
- <span class="keyword">local</span> list = Cons {<span class="string">"head"</span>, Cons {<span class="string">"tail"</span>, <span class="keyword">nil</span>}}</pre>
+        <pre class="example"><span class="keyword">local</span> Cons = <span class="function-name">Container</span> {_type=<span class="string">'Cons'</span>, _init={<span class="string">'car'</span>, <span class="string">'cdr'</span>}}
+<span class="keyword">local</span> list = <span class="function-name">Cons</span> {<span class="string">'head'</span>, <span class="function-name">Cons</span> {<span class="string">'tail'</span>, <span class="keyword">nil</span>}}</pre>
     </ul>
 
 </dd>
@@ -248,7 +252,9 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="global">pairs</span> (anobject) <span class="keyword">do</span> process (k, v) <span class="keyword">end</span></pre>
+        <pre class="example"><span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="global">pairs</span>(anobject) <span class="keyword">do</span>
+   <span class="function-name">process</span>(k, v)
+<span class="keyword">end</span></pre>
     </ul>
 
 </dd>
@@ -271,19 +277,19 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.4">string</a></span>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
         stringified object representation
     </ol>
 
 
     <h3>See also:</h3>
     <ul>
-         <a href="http://www.lua.org/manual/5.2/manual.html#pdf-tostring">tostring</a>
+         <a href="https://www.lua.org/manual/5.5/manual.html#pdf-tostring">tostring</a>
     </ul>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example"><span class="global">assert</span> (<span class="global">tostring</span> (list) == <span class="string">'Cons {car="head", cdr=Cons {car="tail"}}'</span>)</pre>
+        <pre class="example"><span class="global">assert</span>(<span class="global">tostring</span>(list) == <span class="string">'Cons {car='</span><span class="function-name">head</span><span class="string">', cdr=Cons {car='</span><span class="function-name">tail</span><span class="string">'}}'</span>)</pre>
     </ul>
 
 </dd>
@@ -300,9 +306,9 @@
 
 <p> This is the function used to instantiate the contents of a newly
  cloned container, as called by <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> above, to split the
- fields of a <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> argument table into private "_" prefixed
+ fields of a <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> argument table into private '_' prefixed
  field namess, -- which are merged into the <em>new</em> metatable, and
- public (everything else) names, which are merged into <em>new</em> itself.</p>
+ public(everything else) names, which are merged into <em>new</em> itself.</p>
 
 <p> You might want to use this function from <code>_init</code> functions of your
  own derived containers.
@@ -311,17 +317,20 @@
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">new</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          partially instantiated clone container
         </li>
         <li><span class="parameter">src</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
          <a href="../modules/std.prototype.container.html#prototype:__call">__call</a> argument table that triggered cloning
         </li>
         <li><span class="parameter">map</span>
-            <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         key renaming specification in the form
-   <code>{old_key=new_key, ...}</code>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+
+<p> key renaming specification in the form</p>
+<pre><code>`{old_key=new_key, ...}`
+</code></pre>
+
          (<em>default</em> {})
         </li>
     </ul>
@@ -329,28 +338,30 @@
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="http://www.lua.org/manual/5.2/manual.html#6.5">table</a></span>
-         merged public fields from <em>new</em> and <em>src</em>, with a
-   metatable of private fields (if any), both renamed according to
-   <em>map</em>
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+
+<p> merged public fields from <em>new</em> and <em>src</em>, with a</p>
+<pre><code>metatable of private fields(if any), both renamed according to
+*map*
+</code></pre>
+
     </ol>
 
 
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
- <span class="keyword">local</span> Bag = Container {
-   _type = <span class="string">"Bag"</span>,
-   _init = <span class="keyword">function</span> (new, ...)
-     <span class="keyword">if</span> <span class="global">type</span> (...) == <span class="string">"table"</span> <span class="keyword">then</span>
-       <span class="keyword">return</span> container.mapfields (new, (...))
-     <span class="keyword">end</span>
-     <span class="keyword">return</span> functional.reduce (operator.set, new, <span class="global">ipairs</span>, {...})
+        <pre class="example"><span class="keyword">local</span> Bag = <span class="function-name">Container</span> {
+   _type = <span class="string">'Bag'</span>,
+   _init = <span class="keyword">function</span>(new, ...)
+      <span class="keyword">if</span> <span class="global">type</span>(...) == <span class="string">'table'</span> <span class="keyword">then</span>
+         <span class="keyword">return</span> container.<span class="function-name">mapfields</span>(new,(...))
+      <span class="keyword">end</span>
+      <span class="keyword">return</span> functional.<span class="function-name">reduce</span>(operator.set, new, <span class="global">ipairs</span>, {...})
    <span class="keyword">end</span>,
- }
- <span class="keyword">local</span> groceries = Bag (<span class="string">"apple"</span>, <span class="string">"banana"</span>, <span class="string">"banana"</span>)
- <span class="keyword">local</span> purse = Bag {_type = <span class="string">"Purse"</span>} (<span class="string">"cards"</span>, <span class="string">"cash"</span>, <span class="string">"id"</span>)</pre>
+}
+<span class="keyword">local</span> groceries = <span class="function-name">Bag</span>(<span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'banana'</span>)
+<span class="keyword">local</span> purse = <span class="function-name">Bag</span> {_type = <span class="string">'Purse'</span>}(<span class="string">'cards'</span>, <span class="string">'cash'</span>, <span class="string">'id'</span>)</pre>
     </ul>
 
 </dd>
@@ -360,8 +371,8 @@
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-02-08 00:31:49 </i>
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-20 12:00:59 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
