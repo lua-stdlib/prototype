@@ -408,6 +408,25 @@ specify std.prototype.trie:
       tr[{'foo', 'branch', 'bar'}] = 'leaf1'
       tr[{'foo', 'branch', 'baz'}] = 'leaf2'
       expect(tr).to_equal(Trie {foo=Trie {branch=Trie {bar='leaf1', baz='leaf2'}}})
+  - context with a derived trie:
+    - before:
+        Derived = Trie {_type='Derived'}
+        tr = Derived {}
+    - it makes branches of the derived type:
+        tr[{'foo', 'bar'}] = 'baz'
+        expect(objtype(tr.foo)).to_be 'Derived'
+        expect(getmetatable(tr.foo)).to_be(getmetatable(tr))
+    - it keeps existing branches of the derived type:
+        tr.foo = Derived {keep='kept'}
+        tr[{'foo', 'bar'}] = 'baz'
+        expect(tr.foo.keep).to_be 'kept'
+        expect(tr.foo.bar).to_be 'baz'
+    - it keeps existing branches of other trie types:
+        tr.foo = Trie {keep='kept'}
+        tr[{'foo', 'bar'}] = 'baz'
+        expect(objtype(tr.foo)).to_be 'Trie'
+        expect(tr.foo.keep).to_be 'kept'
+        expect(tr.foo.bar).to_be 'baz'
 
 
 - describe __tostring:

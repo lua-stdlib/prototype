@@ -18,6 +18,11 @@
     "variable 'argcheck' is not declared" under std.strict, or not
     checking at all without it.
 
+  - Assigning through a key list into a trie keeps its existing trie
+    branches, even those of a type derived from Trie, and makes new
+    branches of the same type as that trie, rather than replacing
+    branches with plain Tries.
+
 
 ## Noteworthy changes in release 1.1 (2020-07-26) [stable]
 

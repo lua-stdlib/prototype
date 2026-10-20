@@ -194,11 +194,16 @@ Trie = Container {
    --   end
    __newindex = function(tr, i, v)
       if _type(i) == 'table' then
+         -- Keep any existing trie branch, whatever type derived from Trie
+         -- it has, and make new branches of the same type as *tr*.
+         local mt = getmetatable(tr)
          for n = 1, len(i) - 1 do
-            if _type(tr[i[n]]) ~= 'Trie' then
-               rawset(tr, i[n], Trie {})
+            local b = tr[i[n]]
+            if (getmetatable(b) or {}).__newindex ~= mt.__newindex then
+               b = setmetatable({}, mt)
+               rawset(tr, i[n], b)
             end
-            tr = tr[i[n]]
+            tr = b
          end
          rawset(tr, i[len(i)], v)
       else
