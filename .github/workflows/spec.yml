@@ -49,7 +49,7 @@ jobs:
           luarocks install ansicolors
           luarocks install luacov
           luarocks install specl
-          luarocks --tree="$DEPS" install --only-deps std.prototype-dev-1.rockspec
+          luarocks --tree="$DEPS" make --only-deps
           test -n "${{ matrix.typecheck }}" && luarocks --tree="$DEPS" install --deps-mode=all typecheck || true
           test -n "${{ matrix.strict }}" && luarocks --tree="$DEPS" install std.strict || true
 
