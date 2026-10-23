@@ -22,7 +22,7 @@ source = {
 
 dependencies = {
    'lua >= 5.1, < 5.6',
-   'std.normalize >= 2.0',
+   'std.normalize >= 4',
 }
 
 build = {
@@ -42,7 +42,7 @@ build = {
 test_dependencies = {
    'ansicolors',
    'luacov',
-   'specl >= 15',
+   'specl >= 16',
 }
 
 test = {
