@@ -31,6 +31,7 @@ return {
     "lib/std/prototype/init$",
     "lib/std/prototype/object$",
     "lib/std/prototype/orderedmap$",
+    "lib/std/prototype/scanner$",
     "lib/std/prototype/set$",
     "lib/std/prototype/strbuf$",
     "lib/std/prototype/trie$",

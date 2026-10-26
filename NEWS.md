@@ -15,6 +15,16 @@
     `get`, `set`, `delete`, `keys`, `values`, `entries`, `merged`,
     `pluck` and `mapvalues`.
 
+  - New `std.prototype.scanner` has a `Scanner` object that reads a
+    string of text for the lexer of a parser: `peek`, `next` and `back`
+    look at, read and unread characters, `lookahead` and `match` test
+    for text or a Lua pattern, and `take` and `skip` read a run of the
+    characters in a class, which is a Set, a function or a string.
+    `line` finds the line number of an index when it is asked for,
+    and `error` raises an error that says where it is.  The module
+    function `charset` makes a Set of the characters of a string, and
+    sets join with `+`.
+
 
 ## Noteworthy changes in release 2 (2026-10-20) [stable]
 

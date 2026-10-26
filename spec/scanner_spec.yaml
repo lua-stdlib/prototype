@@ -1,0 +1,399 @@
+# Prototype Oriented Programming for Lua 5.1, 5.2, 5.3, 5.4 & 5.5
+# Copyright (C) 2014-2026 std.prototype authors
+
+before:
+  this_module = 'std.prototype.scanner'
+
+  scanner = require(this_module)
+  Scanner = scanner.prototype
+  charset = scanner.charset
+  s = Scanner 'abc def'
+
+specify std.prototype.scanner:
+- describe require:
+  - it does not perturb the global namespace:
+      expect(show_apis {added_to='_G', by=this_module}).
+         to_equal {}
+  - context via the prototype module:
+    - it does not perturb the global namespace:
+        expect(show_apis {added_to='_G', by='std.prototype'}).to_equal {}
+
+
+- describe construction:
+  - it constructs a new scanner at the start of the text:
+      expect(s).not_to_be(Scanner)
+      expect(objtype(s)).to_be 'Scanner'
+      expect(s.text).to_be 'abc def'
+      expect(s.pos).to_be(1)
+  - it takes the name of the source:
+      expect(Scanner('x', 'file.lua').name).to_be 'file.lua'
+  - it scans an empty text:
+      expect(Scanner(''):eof()).to_be(true)
+  - it serves as a prototype for new types: |
+      Lexer = Scanner {_type='Lexer'}
+      expect(objtype(Lexer)).to_be 'Lexer'
+      lexer = Lexer 'text'
+      expect(objtype(lexer)).to_be 'Lexer'
+      expect(lexer:next()).to_be 't'
+  - it copies a scanner, with a cursor of its own: |
+      s:next(2)
+      copy = s {}
+      copy:next(3)
+      expect(objtype(copy)).to_be 'Scanner'
+      expect(s.pos).to_be(3)
+      expect(copy.pos).to_be(6)
+      expect(copy.text).to_be(s.text)
+  - it raises an error for a missing text: |
+      expect(Scanner()).to_raise "bad argument #1 to 'Scanner' (string expected, got no value)"
+  - it raises an error for a text that is not a string: |
+      expect(Scanner(5)).to_raise "bad argument #1 to 'Scanner' (string expected, got number)"
+      expect(Scanner(nil)).to_raise 'string expected, got nil'
+  - it raises an error for a name that is not a string: |
+      expect(Scanner('x', 5)).to_raise "bad argument #2 to 'Scanner' (string expected, got number)"
+  - it raises an error for a field of a type that is not for its metatable:
+      expect(Scanner {x = 1}).to_raise "Scanner field 'x' is not allowed"
+
+
+- describe eof:
+  - before:
+      fn = Scanner.eof
+
+  - it is false before the end:
+      expect(s:eof()).to_be(false)
+  - it is true after the last character is read:
+      s:next(7)
+      expect(s:eof()).to_be(true)
+  - it is false with one character left:
+      s:next(6)
+      expect(s:eof()).to_be(false)
+  - it is true for an empty text:
+      expect(Scanner(''):eof()).to_be(true)
+
+
+- describe peek:
+  - before:
+      fn = Scanner.peek
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.peek(table, [?int])', fn)
+
+  - it looks at the next character without reading it:
+      expect(s:peek()).to_be 'a'
+      expect(s:peek()).to_be 'a'
+      expect(s.pos).to_be(1)
+  - it looks ahead by an offset:
+      expect(s:peek(0)).to_be 'a'
+      expect(s:peek(2)).to_be 'c'
+  - it looks behind with a negative offset:
+      s:next(3)
+      expect(s:peek(-1)).to_be 'c'
+      expect(s:peek(-3)).to_be 'a'
+  - it is nil beyond either end:
+      expect(s:peek(7)).to_be(nil)
+      expect(s:peek(-1)).to_be(nil)
+      s:next(7)
+      expect(s:peek()).to_be(nil)
+
+
+- describe next:
+  - before:
+      fn = Scanner.next
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.next(table, [?int])', fn)
+
+  - it reads a character:
+      expect(s:next()).to_be 'a'
+      expect(s:next()).to_be 'b'
+      expect(s.pos).to_be(3)
+  - it reads several characters:
+      expect(s:next(4)).to_be 'abc '
+      expect(s.pos).to_be(5)
+  - it reads what is left, when there is less than asked for:
+      s:next(5)
+      expect(s:next(10)).to_be 'ef'
+      expect(s:eof()).to_be(true)
+  - it is nil at the end:
+      s:next(7)
+      expect(s:next()).to_be(nil)
+      expect(s.pos).to_be(8)
+
+
+- describe back:
+  - before:
+      fn = Scanner.back
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.back(table, [?int])', fn)
+
+  - it unreads a character, to be read again:
+      s:next(2)
+      s:back()
+      expect(s:next()).to_be 'b'
+  - it unreads several:
+      s:next(5)
+      s:back(3)
+      expect(s:next()).to_be 'c'
+  - it stops at the start of the text:
+      s:next(2)
+      s:back(10)
+      expect(s.pos).to_be(1)
+  - it returns the scanner:
+      expect(s:back()).to_be(s)
+  - it unreads the end of the text:
+      s:next(7)
+      s:back()
+      expect(s:next()).to_be 'f'
+
+
+- describe lookahead:
+  - before:
+      fn = Scanner.lookahead
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.lookahead(table, string)', fn)
+
+  - it is true if the text is next:
+      expect(s:lookahead 'abc').to_be(true)
+      expect(s:lookahead 'a').to_be(true)
+  - it is false if it is not:
+      expect(s:lookahead 'abd').to_be(false)
+      expect(s:lookahead 'bc').to_be(false)
+  - it is true for the empty string:
+      expect(s:lookahead '').to_be(true)
+  - it is false for text beyond the end:
+      s:next(5)
+      expect(s:lookahead 'efg').to_be(false)
+  - it does not read the text:
+      s:lookahead 'abc'
+      expect(s.pos).to_be(1)
+
+
+- describe match:
+  - before:
+      fn = Scanner.match
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.match(table, string)', fn)
+
+  - it reads what the pattern matches next:
+      expect(s:match '%a+').to_be 'abc'
+      expect(s.pos).to_be(4)
+  - it matches only where the cursor is:
+      expect(s:match '%a+ ').to_be 'abc '
+      expect(s:match 'ef').to_be(nil)
+  - it is nil, and reads nothing, when it does not match:
+      expect(s:match '%d+').to_be(nil)
+      expect(s.pos).to_be(1)
+  - it returns the captures, when it has them:
+      expect({s:match '(%a)(%a)'}).to_equal {'a', 'b'}
+      expect(s:match '()').to_be(3)
+  - it reads nothing, when what matches is empty:
+      expect(s:match '%d*').to_be ''
+      expect(s.pos).to_be(1)
+  - it can read to the end:
+      expect(s:match '.*').to_be 'abc def'
+      expect(s:eof()).to_be(true)
+
+
+- describe take:
+  - before:
+      fn = Scanner.take
+      letters = charset 'abcdef'
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.take(table, table|function|string)', fn)
+
+  - it reads a run of the characters in a Set:
+      expect(s:take(letters)).to_be 'abc'
+      expect(s.pos).to_be(4)
+  - it reads a run of the characters in a string:
+      expect(s:take 'ab').to_be 'ab'
+      expect(s:next()).to_be 'c'
+  - it reads a run of the characters that a function is true for:
+      expect(s:take(function(c) return c ~= ' ' end)).to_be 'abc'
+  - it reads a run of the characters in a table:
+      expect(s:take {a = true, b = true}).to_be 'ab'
+  - it reads nothing for a character that is not in the class:
+      expect(s:take '123').to_be ''
+      expect(s.pos).to_be(1)
+  - it reads to the end of the text:
+      expect(s:take(letters + charset ' ')).to_be 'abc def'
+      expect(s:eof()).to_be(true)
+  - it works at the end of the text:
+      s:next(7)
+      expect(s:take(letters)).to_be ''
+
+
+- describe skip:
+  - before:
+      fn = Scanner.skip
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.skip(table, table|function|string)', fn)
+
+  - it reads the run of characters, and drops it:
+      s:skip 'abc'
+      expect(s.pos).to_be(4)
+  - it returns the scanner:
+      expect(s:skip 'abc').to_be(s)
+  - it skips nothing if the next character is not in the class:
+      s:skip ' '
+      expect(s.pos).to_be(1)
+
+
+- describe line:
+  - before:
+      fn = Scanner.line
+      t = Scanner('one\ntwo\n\nfour', 'lines.txt')
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.line(table, [?int])', fn)
+
+  - it is 1 for the first line:
+      expect(t:line()).to_be(1)
+  - it counts the newlines that are read:
+      t:next(4)
+      expect(t:line()).to_be(2)
+      t:next(4)
+      expect(t:line()).to_be(3)
+      t:next(1)
+      expect(t:line()).to_be(4)
+  - it puts a newline on the line that it ends:
+      t:next(3)
+      expect(t:peek()).to_be '\n'
+      expect(t:line()).to_be(1)
+  - it takes an index:
+      expect(t:line(1)).to_be(1)
+      expect(t:line(5)).to_be(2)
+      expect(t:line(13)).to_be(4)
+  - it can be asked for an index before the one it was last asked for:
+      expect(t:line(13)).to_be(4)
+      expect(t:line(5)).to_be(2)
+      expect(t:line(1)).to_be(1)
+      expect(t:line(9)).to_be(3)
+  - it is right whatever the order of the questions: |
+      text = 'a\nb\n\nc\nd'
+      u = Scanner(text)
+      expected = {}
+      for i = 1, #text + 1 do
+         local _, n = text:sub(1, i - 1):gsub('\n', '')
+         expected[i] = n + 1
+      end
+      for _, i in ipairs {9, 3, 1, 5, 2, 9, 4, 8, 6, 7} do
+         expect(u:line(i)).to_be(expected[i])
+      end
+  - it does not move the cursor:
+      t:line(13)
+      expect(t.pos).to_be(1)
+
+
+- describe error:
+  - before:
+      fn = Scanner.error
+      t = Scanner('one\ntwo', 'lines.txt')
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.error(table, string, [?int])', fn)
+
+  - it raises an error with the name, line and message: |
+      expect(t:error 'boom').to_raise 'lines.txt:1: boom'
+  - it says the line of the cursor: |
+      t:next(5)
+      expect(t:error 'boom').to_raise 'lines.txt:2: boom'
+  - it says the line of an index that it is given: |
+      expect(t:error('boom', 6)).to_raise 'lines.txt:2: boom'
+  - it has no name to leave out for a scanner without one: |
+      expect(Scanner('one\ntwo'):error('boom', 6)).to_raise '2: boom'
+  - it has nothing else in the message: |
+      ok, err = pcall(t.error, t, 'boom')
+      expect(err).to_be 'lines.txt:1: boom'
+
+
+- describe __tostring:
+  - it shows only the type, for the prototype: |
+      expect(tostring(Scanner)).to_be 'Scanner'
+  - it shows the type, the name and the line: |
+      t = Scanner('one\ntwo', 'lines.txt')
+      t:next(5)
+      expect(tostring(t)).to_be 'Scanner lines.txt:2'
+  - it leaves out a name that it does not have: |
+      expect(tostring(s)).to_be 'Scanner 1'
+
+
+- describe charset:
+  - before:
+      fn = scanner.charset
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.scanner.charset(string)', fn)
+
+  - it returns a Set of the characters:
+      expect(objtype(fn 'abc')).to_be 'Set'
+      expect(fn 'abc').to_have_member 'b'
+      expect(fn 'abc').not_to_have_member 'd'
+  - it is indexed by the characters:
+      set = fn 'ab'
+      expect(set['a']).to_be(true)
+      expect(set['c']).to_be(nil)
+  - it is empty for the empty string:
+      expect(fn '').to_equal(require('std.prototype.set').prototype {})
+  - it repeats no character:
+      expect(fn 'aab').to_equal(fn 'ba')
+  - it joins with other sets, as sets do: |
+      joined = fn 'ab' + fn 'bc'
+      expect(joined).to_equal(fn 'abc')
+
+
+- describe a lexer:
+  - before: |
+      -- A lexer for a small language of s-expressions, as the one in
+      -- sexpr is written, but in terms of a Scanner.
+      isspace = charset ' \t\r\n'
+      isdelimiter = charset '()"' + isspace
+
+      function lex(scanner)
+         scanner:skip(isspace)
+         local c = scanner:peek()
+         if c == nil then
+            return nil
+         elseif c == ';' then
+            scanner:match '[^\n]*'
+            return lex(scanner)
+         elseif c == '(' or c == ')' then
+            scanner:next()
+            return {c}
+         elseif c == '"' then
+            local start = scanner.pos
+            scanner:next()
+            local text = scanner:match '([^"]*)"'
+            if text == nil then
+               scanner:error('incomplete string', start)
+            end
+            return {'string', text}
+         end
+         local word = scanner:take(function(ch) return not isdelimiter[ch] end)
+         if word:match '^%d+$' then
+            return {'number', tonumber(word)}
+         end
+         return {'symbol', word}
+      end
+
+      function tokens(text)
+         local scanner, r = Scanner(text, 'test.lsp'), {}
+         for token in function() return lex(scanner) end do
+            r[#r + 1] = token[1] .. (token[2] ~= nil and ':' .. tostring(token[2]) or '')
+         end
+         return table.concat(r, ' ')
+      end
+  - it reads tokens: |
+      expect(tokens '(add 1 (mul 22 "two words"))').
+         to_be '( symbol:add number:1 ( symbol:mul number:22 string:two words ) )'
+  - it skips white space and comments: |
+      expect(tokens '  a ; the rest of this line\n b ;\n\tc').
+         to_be 'symbol:a symbol:b symbol:c'
+  - it finds no tokens in no text: |
+      expect(tokens '').to_be ''
+      expect(tokens ' ; only a comment').to_be ''
+  - it reports the line of an error: |
+      expect(tokens '(a\n b\n "unfinished').to_raise 'test.lsp:3: incomplete string'

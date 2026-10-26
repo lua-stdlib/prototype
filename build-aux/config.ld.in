@@ -62,6 +62,7 @@ file = {
    '../lib/std/prototype/container.lua',
    '../lib/std/prototype/object.lua',
    '../lib/std/prototype/orderedmap.lua',
+   '../lib/std/prototype/scanner.lua',
    '../lib/std/prototype/set.lua',
    '../lib/std/prototype/strbuf.lua',
    '../lib/std/prototype/trie.lua',
