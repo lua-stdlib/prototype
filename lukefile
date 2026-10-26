@@ -11,14 +11,15 @@ version  = '$USER'
 ldocs    = 'build-aux/config.ld.in'
 
 modules  = {
-   {['std.prototype']           = 'lib/std/prototype/init.lua'},
-   {['std.prototype._base']     = 'lib/std/prototype/_base.lua'},
-   {['std.prototype.container'] = 'lib/std/prototype/container.lua'},
-   {['std.prototype.object']    = 'lib/std/prototype/object.lua'},
-   {['std.prototype.set']       = 'lib/std/prototype/set.lua'},
-   {['std.prototype.strbuf']    = 'lib/std/prototype/strbuf.lua'},
-   {['std.prototype.trie']      = 'lib/std/prototype/trie.lua'},
-   {['std.prototype.version']   = 'lib/std/prototype/version.lua.in'},
+   {['std.prototype']            = 'lib/std/prototype/init.lua'},
+   {['std.prototype._base']      = 'lib/std/prototype/_base.lua'},
+   {['std.prototype.container']  = 'lib/std/prototype/container.lua'},
+   {['std.prototype.object']     = 'lib/std/prototype/object.lua'},
+   {['std.prototype.orderedmap'] = 'lib/std/prototype/orderedmap.lua'},
+   {['std.prototype.set']        = 'lib/std/prototype/set.lua'},
+   {['std.prototype.strbuf']     = 'lib/std/prototype/strbuf.lua'},
+   {['std.prototype.trie']       = 'lib/std/prototype/trie.lua'},
+   {['std.prototype.version']    = 'lib/std/prototype/version.lua.in'},
 }
 
 release  = {

@@ -2,6 +2,19 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+### New features
+
+  - New `std.prototype.orderedmap` has an `OrderedMap` container, a table
+    that remembers the order in which its keys were added.  Write the
+    entries of a new one as a list of tables of one pair each,
+    `OrderedMap {{core = 'core.c'}, {util = 'util.c'}}`, read and write its
+    fields as for any table, and iterate in order with `elems`.  New keys
+    go to the end, a key keeps its place when its value changes, and
+    `nil` removes it.  A map is a table and not a list, so `#` and `len`
+    are not its number of keys: `size` counts them.  The module also has
+    `get`, `set`, `delete`, `keys`, `values`, `entries`, `merged`,
+    `pluck` and `mapvalues`.
+
 
 ## Noteworthy changes in release 2 (2026-10-20) [stable]
 

@@ -1,0 +1,454 @@
+# Prototype Oriented Programming for Lua 5.1, 5.2, 5.3, 5.4 & 5.5
+# Copyright (C) 2014-2026 std.prototype authors
+
+before:
+  this_module = 'std.prototype.orderedmap'
+
+  orderedmap = require(this_module)
+  OrderedMap = orderedmap.prototype
+  len = require 'std.normalize'.len
+  om = OrderedMap {{b = 1}, {a = 2}, {c = 3}}
+
+  -- The keys of *m*, in order, by the module function.
+  function keyorder(m)
+     local r = orderedmap.keys(m)
+     return {unpack(r, 1, r.n)}
+  end
+
+specify std.prototype.orderedmap:
+- describe require:
+  - it does not perturb the global namespace:
+      expect(show_apis {added_to='_G', by=this_module}).
+         to_equal {}
+  - context via the prototype module:
+    - it does not perturb the global namespace:
+        expect(show_apis {added_to='_G', by='std.prototype'}).to_equal {}
+
+
+- describe construction:
+  - it constructs a new map:
+      m = OrderedMap {}
+      expect(m).not_to_be(OrderedMap)
+      expect(objtype(m)).to_be 'OrderedMap'
+  - it keeps the order of the entries:
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+  - it keeps the values of the entries:
+      expect(om.a).to_be(2)
+      expect(om.b).to_be(1)
+      expect(om.c).to_be(3)
+  - it keeps a false value:
+      expect(OrderedMap({{a = false}}).a).to_be(false)
+  - it replaces the value of a repeated key, in place:
+      m = OrderedMap {{a = 1}, {b = 2}, {a = 3}}
+      expect(keyorder(m)).to_equal {'a', 'b'}
+      expect(m.a).to_be(3)
+  - it takes keys of any type:
+      key = {}
+      m = OrderedMap {{[key] = 'table'}, {[3] = 'three'}, {[true] = 'yes'}}
+      expect(m[key]).to_be 'table'
+      expect(m[3]).to_be 'three'
+      expect(m[true]).to_be 'yes'
+      expect(orderedmap.keys(m)).to_equal {key, 3, true, n = 3}
+  - it serves as a prototype for new instances:
+      obj = om {}
+      expect(objtype(obj)).to_be 'OrderedMap'
+      expect(keyorder(obj)).to_equal {'b', 'a', 'c'}
+      expect(getmetatable(obj)).not_to_be(getmetatable(om))
+      expect(getmetatable(obj)._type).to_be(getmetatable(om)._type)
+      expect(getmetatable(obj).__call).to_be(getmetatable(om).__call)
+  - it does not share entries with the prototype it was made from:
+      obj = om {}
+      obj.d = 4
+      obj.a = nil
+      obj.b = 'changed'
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+      expect(om.b).to_be(1)
+      expect(om.d).to_be(nil)
+  - it serves as a prototype for new types:
+      Config = OrderedMap {_type='Config'}
+      expect(objtype(Config)).to_be 'Config'
+      config = Config {{x = 1}}
+      expect(objtype(config)).to_be 'Config'
+      expect(config.x).to_be(1)
+  - it keeps the entries of a prototype in a derived type:
+      Config = OrderedMap {_type='Config', {x = 1}}
+      expect(tostring(Config {{y = 2}})).to_be 'Config {x=1, y=2}'
+  - it raises an error for a missing argument: |
+      expect(OrderedMap()).to_raise "bad argument #1 to 'OrderedMap' (table expected, got no value)"
+  - it raises an error for an argument that is not a table: |
+      expect(OrderedMap(5)).to_raise "bad argument #1 to 'OrderedMap' (table expected, got number)"
+      expect(OrderedMap(nil)).to_raise 'table expected, got nil'
+  - it raises an error for too many arguments:
+      expect(OrderedMap({}, {})).to_raise 'no more than 1 argument expected, got 2'
+  - it names a derived type in the error: |
+      Config = OrderedMap {_type='Config'}
+      expect(Config(5)).to_raise "bad argument #1 to 'Config'"
+  - it raises an error for an entry that is not a table of one pair: |
+      expect(OrderedMap {{a = 1, b = 2}}).to_raise 'entry #1 must be a table of one pair'
+      expect(OrderedMap {{}}).to_raise 'entry #1 must be a table of one pair'
+      expect(OrderedMap {'a'}).to_raise 'entry #1 must be a table of one pair'
+  - it ignores an n field:
+      expect(keyorder(OrderedMap {n = 1, {a = 1}})).to_equal {'a'}
+  - it raises an error for a field that is not an entry:
+      expect(OrderedMap {a = 1}).to_raise "entry expected, got field 'a'"
+
+
+- describe construction with an _init function:
+  - before: |
+      Config = OrderedMap {_type='Config', _init = function(new, name, size)
+         new.name = name
+         new.size = size
+         return new
+      end}
+  - it calls the function with the new map and all the arguments:
+      cfg = Config('demo', 3)
+      expect(objtype(cfg)).to_be 'Config'
+      expect(tostring(cfg)).to_be 'Config {name=demo, size=3}'
+  - it does not take entries from a list in its place:
+      expect(tostring(Config({{a = 1}}))).to_contain 'name='
+      expect(Config({{a = 1}}).a).to_be(nil)
+  - it gives the new map the entries and order of the map called: |
+      cfg = Config('demo', 3)
+      cfg.extra = true
+      other = cfg('other', 4)
+      expect(tostring(other)).to_be 'Config {name=other, size=4, extra=true}'
+  - it does not change the map that was called:
+      cfg = Config('demo', 3)
+      cfg('other', 4)
+      expect(tostring(cfg)).to_be 'Config {name=demo, size=3}'
+  - it is given the table of a derived type, to handle: |
+      Handler = OrderedMap {_type='Handler', _init = function(new, first)
+         if type(first) == 'table' then
+            for k, v in next, first do
+               if type(k) == 'string' and k:sub(1, 1) == '_' then
+                  getmetatable(new)[k] = v
+               end
+            end
+         else
+            new.name = first
+         end
+         return new
+      end}
+      Derived = Handler {_type='Derived'}
+      expect(objtype(Derived)).to_be 'Derived'
+      expect(tostring(Derived('x'))).to_be 'Derived {name=x}'
+  - it can leave the return to the map that it was given:
+      Plain = OrderedMap {_type='Plain', _init = function(new, v) new.v = v end}
+      expect(tostring(Plain(1))).to_be 'Plain {v=1}'
+
+
+- describe indexing:
+  - it reads the value of a key:
+      expect(om.a).to_be(2)
+      expect(om['b']).to_be(1)
+  - it reads nil for a key that is not there:
+      expect(om.zzz).to_be(nil)
+  - it reads nil from an empty map:
+      expect(OrderedMap({}).a).to_be(nil)
+  - it puts a new key at the end:
+      om.d = 4
+      expect(keyorder(om)).to_equal {'b', 'a', 'c', 'd'}
+  - it keeps the place of a key that is written again:
+      om.b = 'new'
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+      expect(om.b).to_be 'new'
+  - it removes a key written as nil:
+      om.a = nil
+      expect(keyorder(om)).to_equal {'b', 'c'}
+      expect(om.a).to_be(nil)
+  - it ignores removing a key that is not there:
+      om.zzz = nil
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+  - it puts a key that was removed and then written at the end:
+      om.b = nil
+      om.b = 1
+      expect(keyorder(om)).to_equal {'a', 'c', 'b'}
+  - it keeps a false value, and does not treat it as removal:
+      om.a = false
+      expect(om.a).to_be(false)
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+  - it raises an error for a nil key:
+      expect(getmetatable(om).__newindex(om, nil, 1)).to_raise 'key expected, got nil'
+  - it keeps the entries as fields of the object:
+      expect(rawget(om, 'a')).to_be(2)
+      n = 0
+      for _ in next, om do n = n + 1 end
+      expect(n).to_be(3)
+  - it can be copied with its entries:
+      copy = {}
+      for k, v in next, om do copy[k] = v end
+      expect(copy).to_equal {a = 2, b = 1, c = 3}
+  - it can have keys that look like its own fields:
+      m = OrderedMap {{_keys = 'x'}, {_pos = 'y'}, {_type = 'z'}, {n = 'n'}}
+      m._keys = 'new'
+      expect(m._keys).to_be 'new'
+      expect(m._pos).to_be 'y'
+      expect(m.n).to_be 'n'
+      expect(keyorder(m)).to_equal {'_keys', '_pos', '_type', 'n'}
+      expect(tostring(m)).to_be 'OrderedMap {_keys=new, _pos=y, _type=z, n=n}'
+      expect(objtype(m)).to_be 'OrderedMap'
+  - it forgets a key that is removed with rawset, and puts it at the end if it comes back:
+      rawset(om, 'a', nil)
+      expect(keyorder(om)).to_equal {'b', 'c'}
+      expect(orderedmap.size(om)).to_be(2)
+      om.a = 9
+      expect(keyorder(om)).to_equal {'b', 'c', 'a'}
+      expect(orderedmap.size(om)).to_be(3)
+  - it keeps the order of the keys that are left, when keys are removed in any order:
+      m = OrderedMap {{a = 1}, {b = 2}, {c = 3}, {d = 4}}
+      m.b = nil
+      rawset(m, 'c', nil)
+      m.e = 5
+      m.b = 6
+      expect(keyorder(m)).to_equal {'a', 'd', 'e', 'b'}
+
+
+- describe length:
+  - it is not the number of keys, which is as for any table:
+      expect(len(om)).to_be(0)
+      expect(len(OrderedMap {{[1] = 'x'}, {[2] = 'y'}, {[4] = 'z'}})).to_be(2)
+  - it has no __len metamethod:
+      expect(getmetatable(om).__len).to_be(nil)
+
+
+- describe __pairs:
+  - it iterates in order with the pairs of std.normalize, in every Lua: |
+      normalized = require 'std.normalize'.pairs
+      r = {}
+      for k, v in normalized(om) do r[#r + 1] = k .. '=' .. v end
+      expect(r).to_equal {'b=1', 'a=2', 'c=3'}
+
+
+- describe __tostring:
+  - it returns a string:
+      expect(type(tostring(om))).to_be 'string'
+  - it shows the type name and the entries in order:
+      expect(tostring(om)).to_be 'OrderedMap {b=1, a=2, c=3}'
+  - it shows the type name of a derived type:
+      expect(tostring(OrderedMap {_type='Config', {x = 1}})).to_be 'Config {x=1}'
+  - it shows an empty map:
+      expect(tostring(OrderedMap {})).to_be 'OrderedMap {}'
+
+
+- describe delete:
+  - before:
+      fn = orderedmap.delete
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.delete(OrderedMap, any)', fn)
+
+  - it removes a key:
+      fn(om, 'a')
+      expect(keyorder(om)).to_equal {'b', 'c'}
+  - it returns the map:
+      expect(fn(om, 'a')).to_be(om)
+  - it ignores a key that is not there:
+      fn(om, 'zzz')
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+
+
+- describe elems:
+  - before:
+      fn = orderedmap.elems
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.elems(OrderedMap)', fn)
+
+  - it iterates over the keys and values, in order:
+      r = {}
+      for k, v in fn(om) do r[#r + 1] = k .. '=' .. v end
+      expect(r).to_equal {'b=1', 'a=2', 'c=3'}
+  - it does not iterate over an empty map:
+      for _ in fn(OrderedMap {}) do error 'iterated' end
+  - it iterates over a false value:
+      r = {}
+      for k, v in fn(OrderedMap {{a = false}}) do r[#r + 1] = k .. tostring(v) end
+      expect(r).to_equal {'afalse'}
+  - it iterates over a map that is the prototype of another:
+      r = {}
+      for k in fn(om {{d = 4}}) do r[#r + 1] = k end
+      expect(r).to_equal {'b', 'a', 'c', 'd'}
+
+
+- describe entries:
+  - before:
+      fn = orderedmap.entries
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.entries(OrderedMap)', fn)
+
+  - it lists tables of one pair each, in order, with n:
+      expect(fn(om)).to_equal {n = 3, {b = 1}, {a = 2}, {c = 3}}
+  - it lists nothing for an empty map:
+      expect(fn(OrderedMap {})).to_equal {n = 0}
+  - it makes the map again, as the constructor takes it:
+      expect(tostring(OrderedMap(fn(om)))).to_be(tostring(om))
+
+
+- describe get:
+  - before:
+      fn = orderedmap.get
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.get(OrderedMap, any)', fn)
+
+  - it returns the value of a key:
+      expect(fn(om, 'a')).to_be(2)
+  - it returns nil for a key that is not there:
+      expect(fn(om, 'zzz')).to_be(nil)
+  - it returns a false value:
+      expect(fn(OrderedMap {{a = false}}, 'a')).to_be(false)
+
+
+- describe keys:
+  - before:
+      fn = orderedmap.keys
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.keys(OrderedMap)', fn)
+
+  - it lists the keys in order, with n:
+      expect(fn(om)).to_equal {n = 3, 'b', 'a', 'c'}
+  - it lists no keys for an empty map:
+      expect(fn(OrderedMap {})).to_equal {n = 0}
+  - it lists the key of a false value:
+      expect(fn(OrderedMap {{a = false}})).to_equal {n = 1, 'a'}
+
+
+- describe merged:
+  - before:
+      fn = orderedmap.merged
+      other = OrderedMap {{c = 30}, {d = 40}, {b = 10}}
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.merged(<?OrderedMap...>)', fn)
+
+  - it returns an empty map for no arguments:
+      expect(objtype(fn())).to_be 'OrderedMap'
+      expect(keyorder(fn())).to_equal {}
+  - it returns a new map:
+      r = fn(om)
+      expect(r).not_to_be(om)
+      expect(keyorder(r)).to_equal {'b', 'a', 'c'}
+  - it puts new keys after the keys it has:
+      expect(keyorder(fn(om, other))).to_equal {'b', 'a', 'c', 'd'}
+  - it gives a key the value of the last map, in the place of the first:
+      r = fn(om, other)
+      expect(r.b).to_be(10)
+      expect(r.c).to_be(30)
+      expect(r.a).to_be(2)
+  - it skips nil arguments:
+      expect(keyorder(fn(nil, om, nil, other))).to_equal {'b', 'a', 'c', 'd'}
+  - it leaves its arguments as they were:
+      fn(om, other)
+      expect(om.b).to_be(1)
+      expect(keyorder(other)).to_equal {'c', 'd', 'b'}
+  - it lets a later false replace an earlier value:
+      expect(fn(om, OrderedMap {{a = false}}).a).to_be(false)
+
+
+- describe mapvalues:
+  - before:
+      fn = orderedmap.mapvalues
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.mapvalues(OrderedMap, callable)', fn)
+
+  - it returns a new map of the values, keeping the order:
+      r = fn(om, function(v) return v * 10 end)
+      expect(r).not_to_be(om)
+      expect(tostring(r)).to_be 'OrderedMap {b=10, a=20, c=30}'
+  - it calls the function with the value and then its key:
+      r = fn(om, function(v, k) return k .. v end)
+      expect(tostring(r)).to_be 'OrderedMap {b=b1, a=a2, c=c3}'
+  - it leaves out a key whose result is nil:
+      r = fn(om, function(v) if v ~= 2 then return v end end)
+      expect(keyorder(r)).to_equal {'b', 'c'}
+  - it keeps a false result:
+      expect(fn(om, function() return false end).a).to_be(false)
+  - it leaves its argument as it was:
+      fn(om, function() return 0 end)
+      expect(om.b).to_be(1)
+
+
+- describe pluck:
+  - before:
+      fn = orderedmap.pluck
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.pluck(OrderedMap, table)', fn)
+
+  - it keeps the entries for the keys given, in the order of the map:
+      expect(tostring(fn(om, {'c', 'b'}))).to_be 'OrderedMap {b=1, c=3}'
+  - it ignores keys that are not there:
+      expect(keyorder(fn(om, {'zzz', 'a'}))).to_equal {'a'}
+  - it keeps nothing for an empty list:
+      expect(keyorder(fn(om, {}))).to_equal {}
+  - it returns a new map:
+      expect(fn(om, {'a'})).not_to_be(om)
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+  - it takes a list that keeps holes in its length n:
+      expect(keyorder(fn(om, {n = 3, 'a', nil, 'c'}))).to_equal {'a', 'c'}
+
+
+- describe set:
+  - before:
+      fn = orderedmap.set
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.set(OrderedMap, any, ?any)', fn)
+
+  - it sets the value of a new key, at the end:
+      fn(om, 'd', 4)
+      expect(keyorder(om)).to_equal {'b', 'a', 'c', 'd'}
+      expect(om.d).to_be(4)
+  - it keeps the place of a key that is there:
+      fn(om, 'b', 'new')
+      expect(keyorder(om)).to_equal {'b', 'a', 'c'}
+      expect(om.b).to_be 'new'
+  - it removes a key given nil:
+      fn(om, 'a', nil)
+      expect(keyorder(om)).to_equal {'b', 'c'}
+  - it returns the map:
+      expect(fn(om, 'd', 4)).to_be(om)
+
+
+- describe size:
+  - before:
+      fn = orderedmap.size
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.size(OrderedMap)', fn)
+
+  - it counts the keys:
+      expect(fn(om)).to_be(3)
+      om.d = 4
+      expect(fn(om)).to_be(4)
+  - it is 0 for an empty map:
+      expect(fn(OrderedMap {})).to_be(0)
+  - it counts keys that are not integers, and ones that are:
+      expect(fn(OrderedMap {{[1] = 'x'}, {a = 'y'}, {[true] = 'z'}})).to_be(3)
+  - it counts a false value:
+      expect(fn(OrderedMap {{a = false}})).to_be(1)
+  - it does not count a key that was removed:
+      om.a = nil
+      expect(fn(om)).to_be(2)
+      rawset(om, 'b', nil)
+      expect(fn(om)).to_be(1)
+      orderedmap.delete(om, 'c')
+      expect(fn(om)).to_be(0)
+
+
+- describe values:
+  - before:
+      fn = orderedmap.values
+
+  - context with bad arguments:
+      badargs.diagnose('std.prototype.orderedmap.values(OrderedMap)', fn)
+
+  - it lists the values in the order of the keys, with n:
+      expect(fn(om)).to_equal {n = 3, 1, 2, 3}
+  - it lists no values for an empty map:
+      expect(fn(OrderedMap {})).to_equal {n = 0}
+  - it lists a false value:
+      expect(fn(OrderedMap {{a = false}})).to_equal {n = 1, false}
