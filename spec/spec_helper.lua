@@ -26,10 +26,14 @@ function copy (t)
 end
 
 
--- In case we're not using a bleeding edge release of Specl...
-_diagnose = badargs.diagnose
+-- In case we're not using a bleeding edge release of Specl...  Specl
+-- gives the environment of the examples to `diagnose` by replacing its
+-- own, so the function that does the work needs the environment of this
+-- wrapper, the one that is called from the examples, instead.
+local _diagnose = badargs.diagnose
 badargs.diagnose = function (...)
   if have_typecheck then
+    std.setfenv (_diagnose, std.getfenv (1))
     return _diagnose (...)
   end
 end
