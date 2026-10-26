@@ -25,6 +25,17 @@
     function `charset` makes a Set of the characters of a string, and
     sets join with `+`.
 
+  - New `std.prototype.contextmanager` has a `ContextManager` object that
+    holds a resource until it is released, and passes the methods that it
+    does not have to the resource, with `File`, `Pipe` and `TmpFile`
+    managers of an open file, a pipe and a temporary file that is removed
+    afterwards.  `with(manager..., function)` calls the function with
+    the managers and releases them last first, even when the function
+    raises an error, which is raised again once they are released, and
+    `slurp(manager)` reads all that a file or a pipe has and releases it.
+    A resource that cannot be acquired makes `nil` and the reason, as
+    `io.open` does, which `with` and `slurp` pass on.
+
 
 ## Noteworthy changes in release 2 (2026-10-20) [stable]
 

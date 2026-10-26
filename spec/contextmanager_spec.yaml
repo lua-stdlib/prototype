@@ -1,0 +1,259 @@
+# Prototype Oriented Programming for Lua 5.1, 5.2, 5.3, 5.4 & 5.5
+# Copyright (C) 2014-2026 std.prototype authors
+
+before: |
+  this_module = 'std.prototype.contextmanager'
+
+  contextmanager = require(this_module)
+  ContextManager = contextmanager.prototype
+  File, Pipe, TmpFile = contextmanager.File, contextmanager.Pipe, contextmanager.TmpFile
+  slurp, with = contextmanager.slurp, contextmanager.with
+
+  unpack = table.unpack or unpack
+  pack = table.pack or function(...) return {n = select('#', ...), ...} end
+
+  -- A callable that records the arguments of each call.
+  function record(name)
+     return setmetatable({n = 0, name = name}, {
+        __call = function(self, ...)
+           self.n = self.n + 1
+           self[self.n] = pack(...)
+           return {}
+        end,
+     })
+  end
+
+  -- A manager of nothing in particular, that adds its name to *log* when
+  -- it is released.
+  function manager(name, log, fail)
+     return ContextManager(function()
+        log[#log + 1] = name
+        if fail then error(fail, 0) end
+     end, function() return {} end)
+  end
+
+  function exists(path)
+     local fh = io.open(path)
+     return fh ~= nil and fh:close()
+  end
+
+specify std.prototype.contextmanager:
+- describe require:
+  - it does not perturb the global namespace:
+      expect(show_apis {added_to='_G', by=this_module}).
+         to_equal {}
+  - context via the prototype module:
+    - it does not perturb the global namespace:
+        expect(show_apis {added_to='_G', by='std.prototype'}).to_equal {}
+
+
+- describe ContextManager:
+  - before:
+      acquire = record 'acquire'
+      release = record 'release'
+      cm = ContextManager(release, acquire, 'arg1', 'arg2')
+
+  - it returns a context manager:
+      expect(objtype(cm)).to_be 'ContextManager'
+  - it can be made by calling the module:
+      expect(objtype(contextmanager(release, acquire))).to_be 'ContextManager'
+  - it acquires a resource once:
+      expect(acquire.n).to_be(1)
+  - it passes additional parameters to acquire:
+      expect(acquire[1]).to_equal(pack('arg1', 'arg2'))
+  - it keeps the resource that acquire returned:
+      expect(cm.context).to_equal {}
+  - it keeps the arguments, and their number:
+      expect(cm[1]).to_be 'arg1'
+      expect(cm[2]).to_be 'arg2'
+      expect(cm.n).to_be(2)
+  - it counts an argument that is nil:
+      expect(ContextManager(release, acquire, nil, nil).n).to_be(2)
+  - it releases the resource once, passing the manager:
+      cm:release()
+      expect(release.n).to_be(1)
+      expect(rawequal(release[1][1], cm)).to_be(true)
+  - it returns nil and the reason when nothing is acquired: |
+      expect({ContextManager(release, function() return nil, 'no such thing' end)}).
+         to_equal {nil, 'no such thing'}
+  - it passes the methods that it does not have to the resource: |
+      ctx = {name = 'ctx', hello = function(self, who) return self.name .. ' says hi to ' .. who end}
+      m = ContextManager(release, function() return ctx end)
+      expect(m:hello 'you').to_be 'ctx says hi to you'
+  - it does not pass on what is not a method of the resource:
+      ctx = {value = 42}
+      m = ContextManager(release, function() return ctx end)
+      expect(m.value).to_be(nil)
+      expect(m.missing).to_be(nil)
+  - it keeps its own fields, whatever the resource has: |
+      ctx = {release = 'not this', context = 'nor this', n = 'nor this'}
+      m = ContextManager(function() end, function() return ctx end, 'x')
+      expect(m.context).to_be(ctx)
+      expect(m.n).to_be(1)
+      expect(type(m.release)).to_be 'function'
+
+
+- describe File:
+  - before:
+      cm = File('lukefile', 'r')
+
+  - after:
+      cm:release()
+
+  - it returns a context manager:
+      expect(objtype(cm)).to_be 'ContextManager'
+  - it records the calling arguments:
+      expect(cm[1]).to_be 'lukefile'
+      expect(cm[2]).to_be 'r'
+  - it records the number of arguments:
+      expect(cm.n).to_be(2)
+  - it has the name of the file as filename:
+      expect(cm.filename).to_be 'lukefile'
+  - it reads and writes through the manager:
+      expect(cm:read(2)).to_be '--'
+  - it closes the file when it is released:
+      fh = cm.context
+      cm:release()
+      expect(io.type(fh)).to_be 'closed file'
+  - it propagates acquire errors: |
+      fname = 'this/file/does/not/exist!/nope :)'
+      expect(pack(File(fname, 'r'))).to_equal(pack(nil, fname .. ': No such file or directory'))
+  - it can be released twice:
+      cm:release()
+      expect(cm:release()).to_be(false)
+  - it takes no more than a name and a mode: |
+      expect(File('lukefile', 'r', 'extra')).to_raise 'no more than 2 arguments expected'
+
+
+- describe Pipe:
+  - it reads the output of a command:
+      expect(slurp(Pipe 'echo piped')).to_be 'piped\n'
+  - it has the command:
+      cm = Pipe 'echo piped'
+      expect(cm.command).to_be 'echo piped'
+      cm:release()
+  - it can write to a command: |
+      tmp = os.tmpname()
+      with(Pipe('cat > ' .. tmp, 'w'), function(p) p:write 'written' end)
+      expect(slurp(File(tmp))).to_be 'written'
+      os.remove(tmp)
+  - it closes the pipe when it is released:
+      cm = Pipe 'echo piped'
+      fh = cm.context
+      cm:release()
+      expect(io.type(fh)).to_be 'closed file'
+
+
+- describe TmpFile:
+  - it opens a new file for writing:
+      cm = TmpFile()
+      expect(exists(cm.filename)).to_be(true)
+      cm:write 'scratch'
+      cm:release()
+  - it removes the file when it is released:
+      cm = TmpFile()
+      cm:release()
+      expect(exists(cm.filename)).to_be(false)
+  - it uses the name that it is given:
+      name = os.tmpname()
+      cm = TmpFile(name)
+      expect(cm.filename).to_be(name)
+      cm:release()
+      expect(exists(name)).to_be(false)
+  - it opens in the mode that it is given: |
+      name = os.tmpname()
+      with(File(name, 'w'), function(f) f:write 'before' end)
+      with(TmpFile(name, 'r'), function(t) text = t:read '*a' end)
+      expect(text).to_be 'before'
+      expect(exists(name)).to_be(false)
+  - it leaves the file alone when it could not open it: |
+      expect(pack(TmpFile('this/is/not/a/directory/file'))[1]).to_be(nil)
+
+
+- describe slurp:
+  - it returns the entire contents of a file:
+      fh = io.open('lukefile', 'r')
+      content = fh:read '*a'
+      fh:close()
+      expect(slurp(File 'lukefile')).to_be(content)
+  - it releases the manager:
+      cm = File 'lukefile'
+      fh = cm.context
+      slurp(cm)
+      expect(io.type(fh)).to_be 'closed file'
+  - it propagates context manager errors: |
+      fname = 'this/file/does/not/exist/either =)O|'
+      expect(pack(slurp(File(fname, 'r')))).to_equal(pack(nil, fname .. ': No such file or directory'))
+  - it reads a pipe:
+      expect(slurp(Pipe 'echo hello')).to_be 'hello\n'
+
+
+- describe with:
+  - it calls the function with the managers:
+      log = {}
+      m1, m2 = manager('one', log), manager('two', log)
+      with(m1, m2, function(first, second)
+         received = {first, second}
+      end)
+      expect(received[1]).to_be(m1)
+      expect(received[2]).to_be(m2)
+  - it releases the managers, last first:
+      log = {}
+      with(manager('one', log), manager('two', log), manager('three', log), function() end)
+      expect(log).to_equal {'three', 'two', 'one'}
+  - it releases the managers after the function:
+      log = {}
+      with(manager('one', log), function() log[#log + 1] = 'block' end)
+      expect(log).to_equal {'block', 'one'}
+  - it returns what the function returns:
+      expect(pack(with(manager('one', {}), function() return 1, nil, 3 end))).
+         to_equal(pack(1, nil, 3))
+  - it returns nothing for a function that returns nothing:
+      expect(select('#', with(manager('one', {}), function() end))).to_be(0)
+  - it works with no managers:
+      expect(with(function() return 'alone' end)).to_be 'alone'
+  - it passes nil for a manager that could not be acquired, and releases nothing: |
+      fname = 'this/is/not/an/existing/file!'
+      with(File(fname, 'r'), File(fname, 'r'), function(...)
+         argu = pack(...)
+      end)
+      expect(argu).to_equal(pack(nil, nil))
+  - it releases only the managers that there are:
+      log = {}
+      with(manager('one', log), File('this/is/not/a/file'), manager('two', log), function() end)
+      expect(log).to_equal {'two', 'one'}
+  - it releases the managers when the function raises an error: |
+      log = {}
+      expect(with(manager('one', log), manager('two', log), function() error('boom', 0) end)).
+         to_raise 'boom'
+      expect(log).to_equal {'two', 'one'}
+  - it raises the error of the function again as it was: |
+      err = {code = 42}
+      ok, caught = pcall(with, manager('one', {}), function() error(err, 0) end)
+      expect(ok).to_be(false)
+      expect(caught).to_be(err)
+  - it releases a file when the function raises an error: |
+      cm = File('lukefile', 'r')
+      fh = cm.context
+      pcall(with, cm, function() error 'boom' end)
+      expect(io.type(fh)).to_be 'closed file'
+  - it releases the rest when a release raises an error: |
+      log = {}
+      expect(with(manager('one', log), manager('two', log, 'release failed'), manager('three', log), function() end)).
+         to_raise 'release failed'
+      expect(log).to_equal {'three', 'two', 'one'}
+  - it raises the error of the function, not of a release, if both fail: |
+      expect(with(manager('one', {}, 'release failed'), function() error('block failed', 0) end)).
+         to_raise 'block failed'
+  - it uses the release function that a manager has, so that it can be replaced:
+      log = {}
+      m = manager('one', log)
+      m.release = function() log[#log + 1] = 'replaced' end
+      with(m, function() end)
+      expect(log).to_equal {'replaced'}
+  - it can be nested:
+      log = {}
+      with(manager('outer', log), function()
+         with(manager('inner', log), function() log[#log + 1] = 'block' end)
+      end)
+      expect(log).to_equal {'block', 'inner', 'outer'}

@@ -60,6 +60,7 @@ dir = '../doc/'
 file = {
    '../lib/std/prototype/init.lua',
    '../lib/std/prototype/container.lua',
+   '../lib/std/prototype/contextmanager.lua',
    '../lib/std/prototype/object.lua',
    '../lib/std/prototype/orderedmap.lua',
    '../lib/std/prototype/scanner.lua',

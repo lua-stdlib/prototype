@@ -28,6 +28,7 @@ return {
   ["include"] = {
     "lib/std/prototype/_base$",
     "lib/std/prototype/container$",
+    "lib/std/prototype/contextmanager$",
     "lib/std/prototype/init$",
     "lib/std/prototype/object$",
     "lib/std/prototype/orderedmap$",
