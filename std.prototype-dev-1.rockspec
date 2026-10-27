@@ -25,17 +25,28 @@ dependencies = {
    'std.normalize >= 4',
 }
 
+build_dependencies = {
+   'luarocks-build-luke >= 0.2',
+}
+
 build = {
-   type = 'command',
-   build_command = '$(LUA) build-aux/luke'
-      .. ' package="' .. package .. '"'
-      .. ' version="' .. _MODREV .. '"'
-      .. ' PREFIX="$(PREFIX)"'
-      .. ' LUA="$(LUA)"'
-      ,
-   install_command = '$(LUA) build-aux/luke install --quiet'
-      .. ' INST_LUADIR="$(LUADIR)"'
-      ,
+   type = 'luke',
+
+   modules = {
+      {['std.prototype']                = 'lib/std/prototype/init.lua'},
+      {['std.prototype._base']          = 'lib/std/prototype/_base.lua'},
+      {['std.prototype.container']      = 'lib/std/prototype/container.lua'},
+      {['std.prototype.contextmanager'] = 'lib/std/prototype/contextmanager.lua'},
+      {['std.prototype.object']         = 'lib/std/prototype/object.lua'},
+      {['std.prototype.orderedmap']     = 'lib/std/prototype/orderedmap.lua'},
+      {['std.prototype.scanner']        = 'lib/std/prototype/scanner.lua'},
+      {['std.prototype.set']            = 'lib/std/prototype/set.lua'},
+      {['std.prototype.strbuf']         = 'lib/std/prototype/strbuf.lua'},
+      {['std.prototype.trie']           = 'lib/std/prototype/trie.lua'},
+      {['std.prototype.version']        = 'lib/std/prototype/version.lua.in'},
+   },
+
+   -- A release commits its LDocs to install.
    copy_directories = {'doc'},
 }
 
@@ -52,14 +63,14 @@ test = {
 
 if _MODREV == 'dev' then
    -- luarocks.org's ldoc fails on Lua 5.5; gvvaughan's works.
-   build_dependencies = {'gvvaughan/ldoc'}
+   build_dependencies[#build_dependencies + 1] = 'gvvaughan/ldoc'
+
+   -- Stamp a development build with who made it, and from which commit.
+   build.version = '$USER/$gitref'
 
    build.copy_directories = nil
 
    source = {
       url = 'git+https://github.com/lua-stdlib/prototype.git',
    }
-else
-   -- A release commits its LDocs, so don't build them again.
-   build.build_command = build.build_command .. ' LDOC=true'
 end

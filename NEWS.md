@@ -2,6 +2,14 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+### Incompatible changes
+
+  - std.prototype is built from the `build` table of its rockspec, by the
+    `luarocks-build-luke` LuaRocks build backend, which LuaRocks
+    installs for the build, so there is no `build-aux/luke` build to
+    run, and no build without LuaRocks.  Building LDocs, which a release
+    commits, no longer needs a build dependency of its own.
+
 ### New features
 
   - New `std.prototype.orderedmap` has an `OrderedMap` container, a table
