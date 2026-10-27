@@ -122,7 +122,9 @@ specify std.prototype.contextmanager:
       cm:release()
       expect(cm:release()).to_be(false)
   - it takes no more than a name and a mode: |
-      expect(File('lukefile', 'r', 'extra')).to_raise 'no more than 2 arguments expected'
+      if have_typecheck then
+         expect(File('lukefile', 'r', 'extra')).to_raise 'no more than 2 arguments expected'
+      end
 
 
 - describe Pipe:
