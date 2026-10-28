@@ -1,0 +1,750 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>std.prototype 2.1 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>std.prototype 2.1</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="../modules/std.prototype.contextmanager.html">std.prototype.contextmanager</a></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><strong>std.prototype.orderedmap</strong></li>
+  <li><a href="../modules/std.prototype.scanner.html">std.prototype.scanner</a></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>std.prototype.orderedmap</code></h1>
+<p>Ordered Map Prototype.</p>
+<p>
+
+
+<p> This module returns a table of ordered map operators, as well as the
+ prototype for an OrderedMap container object.</p>
+
+<p> An OrderedMap is a table that remembers the order in which its keys were
+ first added.  Fields are read and written as for any table, and a new
+ key goes to the end, while writing the value of a key that is already
+ there keeps it in its place.</p>
+
+<p> A map is not a list and it has no length: <code>#</code> and <code>len</code> give the length
+ of the sequence part of its fields, not the number of actual keys.
+ Count the keys with <a href="../modules/std.prototype.orderedmap.html#size">size</a>.</p>
+
+<p> To remove a key, use <a href="../modules/std.prototype.orderedmap.html#delete">delete</a>.  The remaining keys keep their order,
+ and a key that is appended again is put at the end.  Writing <code>nil</code> to
+ a field or using <code>rawset</code> bypasses the OrderedMap metadata bookkeeping
+ leaving stale keys until updated by appending again or the whole map
+ is copied.</p>
+
+<p> A key can be any value but <code>nil</code>, and its value can be any value but
+ <code>nil</code>.  While the entries are the fields of the object itself, the entry
+ order is held in the metatable of each object.</p>
+
+<p> Write the entries of a new map as a list of tables of one pair each:</p>
+
+
+<pre>
+<span class="keyword">local</span> OrderedMap = <span class="global">require</span> <span class="string">'std.prototype.orderedmap'</span>.prototype
+<span class="keyword">local</span> build = <span class="function-name">OrderedMap</span> {{core = <span class="string">'core.c'</span>}, {util = <span class="string">'util.c'</span>}}
+build.extra = <span class="string">'extra.c'</span>
+<span class="keyword">for</span> name, source <span class="keyword">in</span> <span class="function-name">elems</span>(build) <span class="keyword">do</span>
+   <span class="global">print</span>(name, source)      <span class="comment">--&gt; core core.c, util util.c, extra extra.c
+</span><span class="keyword">end</span>
+</pre>
+
+<p> In addition to the functionality described here, OrderedMap containers
+ also have all the methods and metamethods of the
+ <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a> (except where overridden here).</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; OrderedMap
+</pre>
+
+</p>
+
+
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">OrderedMap prototype object.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#__call">__call (t)</a></td>
+	<td class="summary">OrderedMap object initialisation.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__newindex">__newindex (key, value)</a></td>
+	<td class="summary">Set the value of a key that is new to the map.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__pairs">__pairs ()</a></td>
+	<td class="summary">Iterate over the keys and values, in order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#__tostring">__tostring ()</a></td>
+	<td class="summary">Return a string representation of this map.</td>
+	</tr>
+</table>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#delete">delete (om, key)</a></td>
+	<td class="summary">Remove a key from a map.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#entries">entries (om)</a></td>
+	<td class="summary">The entries of a map, as a list of tables of one pair each.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#elems">elems (om)</a></td>
+	<td class="summary">Iterate over the keys and values of a map, in order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#get">get (om, key)</a></td>
+	<td class="summary">The value of a key.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#keys">keys (om)</a></td>
+	<td class="summary">The keys of a map, in order.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#merged">merged (...)</a></td>
+	<td class="summary">Make a new map of the entries of the maps given.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#mapvalues">mapvalues (om, fn)</a></td>
+	<td class="summary">Make a new map of the values of a map, with a function applied.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pluck">pluck (om, keylist)</a></td>
+	<td class="summary">Make a new map of just some of the entries of a map.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#set">set (om, key, value)</a></td>
+	<td class="summary">Set the value of a key, or remove it with <code>nil</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#size">size (om)</a></td>
+	<td class="summary">The number of keys in a map.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#values">values (om)</a></td>
+	<td class="summary">The values of a map, in the order of its keys.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    OrderedMap prototype object.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         object name
+         (<em>default</em> 'OrderedMap')
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/std.prototype.container.html#prototype">prototype.container.prototype</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> OrderedMap = <span class="global">require</span> <span class="string">'std.prototype.orderedmap'</span>.prototype
+<span class="global">assert</span>(prototype.<span class="global">type</span>(OrderedMap) == <span class="string">'OrderedMap'</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "__call"></a>
+    <strong>__call (t)</strong>
+    </dt>
+    <dd>
+    OrderedMap object initialisation. </p>
+
+<p> Returns a new OrderedMap with the entries of this one, and then
+ those of the list <em>t</em> of tables of one pair each, in order; where
+ a key is written more than once the last value replaces the first,
+ in place.  A field of <em>t</em> that is named with a leading underscore,
+ such as <code>_type</code>, is a field of the metatable instead, its <code>n</code>
+ field, as <a href="../modules/std.prototype.orderedmap.html#entries">entries</a> makes, is ignored, and any other is an error.</p>
+
+<p> A type that is derived with an <code>_init</code> function is called with the
+ new map, which has the entries of the one called, and then all the
+ arguments, as Container's <code>_init</code> is, in place of all that, and
+ returns the map.  As for Container, deriving another type from one
+ with an <code>_init</code> calls it with the table that describes the new
+ type, so it must handle fields that start with an underscore.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">t</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+         entries, and fields of the metatable
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        a new map
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> build = <span class="function-name">OrderedMap</span> {{core = <span class="string">'core.c'</span>}, {util = <span class="string">'util.c'</span>}}
+<span class="keyword">local</span> Config = <span class="function-name">OrderedMap</span> {_type = <span class="string">'Config'</span>, _init = <span class="keyword">function</span>(new, name)
+   new.name = name
+   <span class="keyword">return</span> new
+<span class="keyword">end</span>}
+<span class="keyword">local</span> config = <span class="function-name">Config</span> <span class="string">'demo'</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "__newindex"></a>
+    <strong>__newindex (key, value)</strong>
+    </dt>
+    <dd>
+    Set the value of a key that is new to the map.
+ A new key goes to the end.  A field that is already there is
+ written without this, and keeps its place.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         a key
+        </li>
+        <li><span class="parameter">value</span>
+         the value
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">om[key] = value</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "__pairs"></a>
+    <strong>__pairs ()</strong>
+    </dt>
+    <dd>
+    Iterate over the keys and values, in order.
+ The <code>pairs</code> of std.normalize honors it in every Lua, and the host's
+ <code>pairs</code> in Lua 5.2 and later; <a href="../modules/std.prototype.orderedmap.html#elems">elems</a> does the same.
+
+
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">for</span> key, value <span class="keyword">in</span> <span class="global">pairs</span>(om) <span class="keyword">do</span> <span class="global">print</span>(key, value) <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "__tostring"></a>
+    <strong>__tostring ()</strong>
+    </dt>
+    <dd>
+    Return a string representation of this map.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+        the keys and values in order
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; OrderedMap {b=1, a=2}
+</span><span class="global">print</span>(<span class="function-name">OrderedMap</span> {{b = <span class="number">1</span>}, {a = <span class="number">2</span>}})</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "delete"></a>
+    <strong>delete (om, key)</strong>
+    </dt>
+    <dd>
+    Remove a key from a map.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+        <li><span class="parameter">key</span>
+         a key
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        <em>om</em>, without <em>key</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="function-name">delete</span>(om, <span class="string">'old'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "entries"></a>
+    <strong>entries (om)</strong>
+    </dt>
+    <dd>
+    The entries of a map, as a list of tables of one pair each.
+ This is the form that the constructor takes.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+        the entries in order, with their number in field <code>n</code>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; {{b = 1}, {a = 2}, n = 2}
+</span><span class="function-name">entries</span>(<span class="function-name">OrderedMap</span> {{b = <span class="number">1</span>}, {a = <span class="number">2</span>}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "elems"></a>
+    <strong>elems (om)</strong>
+    </dt>
+    <dd>
+    Iterate over the keys and values of a map, in order.
+ Don't add or remove keys while iterating.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        an iterator that returns a key and its value</li>
+        <li>
+           <span class="types"><span class="type">OrderedMap</span></span>
+        <em>om</em></li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">for</span> key, value <span class="keyword">in</span> <span class="function-name">elems</span>(om) <span class="keyword">do</span> <span class="global">print</span>(key, value) <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "get"></a>
+    <strong>get (om, key)</strong>
+    </dt>
+    <dd>
+    The value of a key.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+        <li><span class="parameter">key</span>
+         a key
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        the value of <em>key</em>, or <code>nil</code>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> value = <span class="function-name">get</span>(om, <span class="string">'key'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "keys"></a>
+    <strong>keys (om)</strong>
+    </dt>
+    <dd>
+    The keys of a map, in order.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+        the keys in order, with their number in field <code>n</code>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; {'b', 'a', n = 2}
+</span><span class="function-name">keys</span>(<span class="function-name">OrderedMap</span> {{b = <span class="number">1</span>}, {a = <span class="number">2</span>}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "merged"></a>
+    <strong>merged (...)</strong>
+    </dt>
+    <dd>
+    Make a new map of the entries of the maps given.
+ Keys are in the order they first appear, and a key that is in more
+ than one map keeps its first place and the value of the last.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         maps to merge, where <code>nil</code> is skipped
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        a new map
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; OrderedMap {a=3, b=2, c=4}
+</span><span class="function-name">merged</span>(<span class="function-name">OrderedMap</span> {{a = <span class="number">1</span>}, {b = <span class="number">2</span>}}, <span class="function-name">OrderedMap</span> {{c = <span class="number">4</span>}, {a = <span class="number">3</span>}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "mapvalues"></a>
+    <strong>mapvalues (om, fn)</strong>
+    </dt>
+    <dd>
+    Make a new map of the values of a map, with a function applied.
+ Keys keep their order, and a key whose function result is <code>nil</code> is
+ left out.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+        <li><span class="parameter">fn</span>
+            <span class="types"><span class="type">callable</span></span>
+         called with a value and then its key
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        a new map
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; OrderedMap {a=10, b=20}
+</span><span class="function-name">mapvalues</span>(<span class="function-name">OrderedMap</span> {{a = <span class="number">1</span>}, {b = <span class="number">2</span>}}, <span class="keyword">function</span>(v) <span class="keyword">return</span> v * <span class="number">10</span> <span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "pluck"></a>
+    <strong>pluck (om, keylist)</strong>
+    </dt>
+    <dd>
+    Make a new map of just some of the entries of a map.
+ The entries are in the order of the map, and not of the keys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+        <li><span class="parameter">keylist</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+         the keys to keep
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        a new map
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; OrderedMap {a=1, c=3}
+</span><span class="function-name">pluck</span>(<span class="function-name">OrderedMap</span> {{a = <span class="number">1</span>}, {b = <span class="number">2</span>}, {c = <span class="number">3</span>}}, {<span class="string">'c'</span>, <span class="string">'a'</span>})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "set"></a>
+    <strong>set (om, key, value)</strong>
+    </dt>
+    <dd>
+    Set the value of a key, or remove it with <code>nil</code>.
+ A new key goes to the end of the map.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+        <li><span class="parameter">key</span>
+         a key
+        </li>
+        <li><span class="parameter">value</span>
+         the new value, or <code>nil</code> to remove <em>key</em>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">OrderedMap</span></span>
+        <em>om</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="function-name">set</span>(om, <span class="string">'key'</span>, <span class="string">'value'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "size"></a>
+    <strong>size (om)</strong>
+    </dt>
+    <dd>
+    The number of keys in a map.
+ Not its length, which is that of the sequence part of its fields:
+ the keys are counted every time, so keep the result if you want it
+ again.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">int</span></span>
+        the number of keys
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; 2
+</span><span class="function-name">size</span>(<span class="function-name">OrderedMap</span> {{b = <span class="number">1</span>}, {a = <span class="number">2</span>}})</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "values"></a>
+    <strong>values (om)</strong>
+    </dt>
+    <dd>
+    The values of a map, in the order of its keys.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">om</span>
+            <span class="types"><span class="type">OrderedMap</span></span>
+         a map
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+        the values in order, with their number in field <code>n</code>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="comment">--&gt; {1, 2, n = 2}
+</span><span class="function-name">values</span>(<span class="function-name">OrderedMap</span> {{b = <span class="number">1</span>}, {a = <span class="number">2</span>}})</pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-28 10:28:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
