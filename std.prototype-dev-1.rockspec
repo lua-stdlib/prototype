@@ -1,3 +1,6 @@
+-- Prototype Oriented Programming for Lua 5.1, 5.2, 5.3, 5.4 & 5.5
+-- Copyright (C) 2000-2026 std.prototype authors
+
 local _MODREV, _SPECREV = 'dev', '-1'
 
 package = 'std.prototype'
@@ -26,7 +29,7 @@ dependencies = {
 }
 
 build_dependencies = {
-   'luarocks-build-luke >= 0.2',
+   'luarocks-build-luke >= 0.3.1',
 }
 
 build = {
@@ -53,7 +56,7 @@ build = {
 test_dependencies = {
    'ansicolors',
    'luacov',
-   'specl >= 16',
+   'specl >= 17',
 }
 
 test = {
