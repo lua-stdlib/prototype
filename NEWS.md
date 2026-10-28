@@ -2,6 +2,9 @@
 
 ## Noteworthy changes in release ?.? (????-??-??) [?]
 
+
+## Noteworthy changes in release 2.1 (2026-10-28) [stable]
+
 ### New features
 
   - std.prototype is built from the `build` table of its rockspec, by the
