@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>std.prototype 2.1 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>std.prototype 2.1</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
+<li><a href="#Fields">Fields </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><strong>std.prototype.contextmanager</strong></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="../modules/std.prototype.orderedmap.html">std.prototype.orderedmap</a></li>
+  <li><a href="../modules/std.prototype.scanner.html">std.prototype.scanner</a></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>std.prototype.contextmanager</code></h1>
+<p>Context Manager Prototype.</p>
+<p>
+
+
+<p> This module returns a table of context manager helpers, as well as the
+ prototype for a ContextManager object.</p>
+
+<p> A context manager holds a resource, such as an open file, that has to be
+ released when the code that uses it is finished with it, whatever
+ happens.  <a href="../modules/std.prototype.contextmanager.html#with">with</a> runs a function with the managers that it is given
+ and releases them all afterwards, even when the function raises an
+ error, which it raises again once they are released:</p>
+
+
+<pre>
+<span class="keyword">local</span> contextmanager = <span class="global">require</span> <span class="string">'std.prototype.contextmanager'</span>
+<span class="keyword">local</span> File, with = contextmanager.File, contextmanager.with
+
+<span class="function-name">with</span>(<span class="function-name">File</span>(<span class="string">'input.txt'</span>, <span class="string">'r'</span>), <span class="function-name">File</span>(<span class="string">'output.txt'</span>, <span class="string">'w'</span>), <span class="keyword">function</span>(input, output)
+   output:<span class="function-name">write</span>(input:<span class="function-name">read</span> <span class="string">'*a'</span>)
+<span class="keyword">end</span>)
+</pre>
+
+<p> A manager passes the methods that it does not have to its resource, so
+ <code>input:read</code> above is the <code>read</code> of the open file.  When the resource
+ cannot be acquired, what makes the manager is <code>nil</code> and the reason, as
+ <code>io.open</code> returns them, and <code>with</code> passes the function a <code>nil</code> for it
+ and releases nothing.</p>
+
+<p> In addition to the functionality described here, ContextManager objects
+ also have all the methods and metamethods of the
+ <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a> (except where overridden here).</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; Object
+           `-&gt; ContextManager
+</pre>
+
+</p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype (release, acquire, ...)</a></td>
+	<td class="summary">ContextManager prototype object.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#__index">__index (key)</a></td>
+	<td class="summary">Pass methods that are not the manager's own on to its resource.</td>
+	</tr>
+</table>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#File">File (fname[, mode])</a></td>
+	<td class="summary">A manager of a file, that is closed when it is released.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Pipe">Pipe (cmd[, mode])</a></td>
+	<td class="summary">A manager of a pipe to or from a command, that is closed when it is
+ released.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#TmpFile">TmpFile ([fname[, mode='w']])</a></td>
+	<td class="summary">A manager of a temporary file, that is closed and removed when it is
+ released.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#slurp">slurp (cm, ...)</a></td>
+	<td class="summary">Read everything from a manager of a file or pipe, and release it.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#with">with (..., block)</a></td>
+	<td class="summary">Run a function, and release the managers that it was given after.</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#context">context</a></td>
+	<td class="summary">The resource that the manager holds.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#release">release ()</a></td>
+	<td class="summary">The function that releases the resource, called as <code>cm:release()</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#n">n</a></td>
+	<td class="summary">The number of arguments that the resource was acquired with, which
+ are in the list part of the manager.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype (release, acquire, ...)</strong>
+    </dt>
+    <dd>
+    ContextManager prototype object.
+ Call it, or the module, to make a manager of any resource.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">release</span>
+            <span class="types"><span class="type">callable</span></span>
+         called with the manager to release the
+   resource
+        </li>
+        <li><span class="parameter">acquire</span>
+            <span class="types"><span class="type">callable</span></span>
+         called with the arguments to get the resource
+        </li>
+        <li><span class="parameter">...</span>
+         arguments for <em>acquire</em>, which the manager keeps in its
+   list part, with their number in <code>n</code>
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+        a manager of what <em>acquire</em> returns, which
+   is also in its <code>context</code> field, or <code>nil</code> if it returns none</li>
+        <li>
+        the reason, if there is no manager, as <em>acquire</em> gave it</li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/std.prototype.contextmanager.html#File">File</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> cm = <span class="function-name">contextmanager</span>(<span class="keyword">function</span>(cm) cm.context:<span class="function-name">close</span>() <span class="keyword">end</span>, <span class="global">io</span>.open, <span class="string">'file'</span>, <span class="string">'r'</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "__index"></a>
+    <strong>__index (key)</strong>
+    </dt>
+    <dd>
+    Pass methods that are not the manager's own on to its resource.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         a method of the resource
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">function</span></span>
+        that calls the method of the resource
+    </ol>
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "File"></a>
+    <strong>File (fname[, mode])</strong>
+    </dt>
+    <dd>
+    A manager of a file, that is closed when it is released.
+ The name of the file is in the manager as <code>filename</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         the name of the file
+        </li>
+        <li><span class="parameter">mode</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         how to open it, as for <code>io.open</code>
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+        a manager of the open file, or <code>nil</code></li>
+        <li>
+        the reason, if there is no manager</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="function-name">with</span>(<span class="function-name">File</span>(<span class="string">'input.txt'</span>, <span class="string">'r'</span>), <span class="keyword">function</span>(input) <span class="keyword">return</span> input:<span class="function-name">read</span> <span class="string">'*a'</span> <span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "Pipe"></a>
+    <strong>Pipe (cmd[, mode])</strong>
+    </dt>
+    <dd>
+    A manager of a pipe to or from a command, that is closed when it is
+ released.
+ The command is in the manager as <code>command</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cmd</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         the command to run
+        </li>
+        <li><span class="parameter">mode</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         <code>'r'</code> to read its output, or <code>'w'</code> to write to its
+   input, as for <code>io.popen</code>
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+        a manager of the pipe, or <code>nil</code></li>
+        <li>
+        the reason, if there is no manager</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> date = <span class="function-name">slurp</span>(<span class="function-name">Pipe</span> <span class="string">'date'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "TmpFile"></a>
+    <strong>TmpFile ([fname[, mode='w']])</strong>
+    </dt>
+    <dd>
+    A manager of a temporary file, that is closed and removed when it is
+ released.
+ The name of the file is in the manager as <code>filename</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fname</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         the name of the file, which is one that <code>os.tmpname</code>
+   makes by default
+         (<em>optional</em>)
+        </li>
+        <li><span class="parameter">mode</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         how to open it, as for <code>io.open</code>
+         (<em>default</em> 'w')
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+        a manager of the open file, or <code>nil</code></li>
+        <li>
+        the reason, if there is no manager</li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="function-name">with</span>(<span class="function-name">TmpFile</span>(), <span class="keyword">function</span>(tmp) tmp:<span class="function-name">write</span> <span class="string">'scratch'</span> <span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "slurp"></a>
+    <strong>slurp (cm, ...)</strong>
+    </dt>
+    <dd>
+    Read everything from a manager of a file or pipe, and release it.
+ A <code>nil</code> that there is no manager is passed on, with the reason that
+ there is none, so that <code>slurp(File(fname))</code> is the contents of the
+ file or else <code>nil</code> and why not.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">cm</span>
+            <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+         a manager of something to read
+        </li>
+        <li><span class="parameter">...</span>
+         the reason there is no manager, to return with it
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a> or <span class="type">nil</span></span>
+        what was read
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> text, err = <span class="function-name">slurp</span>(<span class="function-name">File</span> <span class="string">'input.txt'</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "with"></a>
+    <strong>with (..., block)</strong>
+    </dt>
+    <dd>
+    Run a function, and release the managers that it was given after.
+ The function is called with the managers, and its results are the
+ results of <code>with</code>.  The managers are released last first, even if the
+ function raises an error, and that error is raised again afterwards;
+ or else the first error of a release.  A <code>nil</code> for a resource that
+ could not be acquired is passed to the function, and not released.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">...</span>
+            <span class="types"><span class="type">ContextManager</span> or <span class="type">nil</span></span>
+         the managers to release afterwards
+        </li>
+        <li><span class="parameter">block</span>
+            <span class="types"><span class="type">callable</span></span>
+         the function to call with them
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        the results of <em>block</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="function-name">with</span>(<span class="function-name">File</span>(<span class="string">'a'</span>, <span class="string">'w'</span>), <span class="function-name">File</span>(<span class="string">'b'</span>, <span class="string">'w'</span>), <span class="keyword">function</span>(a, b)
+   a:<span class="function-name">write</span> <span class="string">'to a'</span>
+   b:<span class="function-name">write</span> <span class="string">'to b'</span>
+<span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "context"></a>
+    <strong>context</strong>
+    </dt>
+    <dd>
+    The resource that the manager holds.
+
+
+    <ul>
+        <li><span class="parameter">context</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "release"></a>
+    <strong>release ()</strong>
+    </dt>
+    <dd>
+    The function that releases the resource, called as <code>cm:release()</code>.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "n"></a>
+    <strong>n</strong>
+    </dt>
+    <dd>
+    The number of arguments that the resource was acquired with, which
+ are in the list part of the manager.
+
+
+    <ul>
+        <li><span class="parameter">n</span>
+            <span class="types"><span class="type">integer</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-28 10:28:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

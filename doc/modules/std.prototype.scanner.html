@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>std.prototype 2.1 Reference</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>std.prototype 2.1</h1>
+
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Objects">Objects</a></li>
+<li><a href="#Initialisation">Initialisation</a></li>
+<li><a href="#Metamethods">Metamethods </a></li>
+<li><a href="#Module_Functions">Module Functions </a></li>
+<li><a href="#Fields">Fields </a></li>
+<li><a href="#Methods">Methods </a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/std.prototype.html">std.prototype</a></li>
+  <li><a href="../modules/std.prototype.container.html">std.prototype.container</a></li>
+  <li><a href="../modules/std.prototype.contextmanager.html">std.prototype.contextmanager</a></li>
+  <li><a href="../modules/std.prototype.object.html">std.prototype.object</a></li>
+  <li><a href="../modules/std.prototype.orderedmap.html">std.prototype.orderedmap</a></li>
+  <li><strong>std.prototype.scanner</strong></li>
+  <li><a href="../modules/std.prototype.set.html">std.prototype.set</a></li>
+  <li><a href="../modules/std.prototype.strbuf.html">std.prototype.strbuf</a></li>
+  <li><a href="../modules/std.prototype.trie.html">std.prototype.trie</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>std.prototype.scanner</code></h1>
+<p>Scanner Prototype.</p>
+<p>
+
+
+<p> This module returns a table of scanner helpers, as well as the prototype
+ for a Scanner object.</p>
+
+<p> A Scanner reads a string of text one character at a time, for the
+ lexer of a parser to build its tokens from.  It always knows where the
+ next character is, and <code>peek</code> looks at characters that are not read yet,
+ <code>next</code> reads them, <code>back</code> unreads them, and <code>take</code>, <code>skip</code> and <code>match</code>
+ read a whole run of them in one call.</p>
+
+<p> Classes of character are sets, which join with <code>+</code>, and make a lexer
+ read like its grammar:</p>
+
+
+<pre>
+<span class="keyword">local</span> Scanner = <span class="global">require</span> <span class="string">'std.prototype.scanner'</span>.prototype
+<span class="keyword">local</span> charset = <span class="global">require</span> <span class="string">'std.prototype.scanner'</span>.charset
+
+<span class="keyword">local</span> isspace = <span class="function-name">charset</span> <span class="string">' \t\r\n'</span>
+<span class="keyword">local</span> isdelimiter = <span class="function-name">charset</span> <span class="string">'()"'</span> + isspace
+
+<span class="keyword">local</span> scanner = <span class="function-name">Scanner</span>(<span class="string">'(add 1 2)'</span>, <span class="string">'sum.lsp'</span>)
+scanner:<span class="global">next</span>()                      <span class="comment">--&gt; '('
+</span>scanner:<span class="function-name">take</span>(<span class="keyword">function</span>(c)            <span class="comment">--&gt; 'add'
+</span>   <span class="keyword">return</span> <span class="keyword">not</span> isdelimiter[c]
+<span class="keyword">end</span>)
+scanner:<span class="function-name">skip</span>(isspace)
+scanner:<span class="function-name">match</span> <span class="string">'%d+'</span>                 <span class="comment">--&gt; '1'
+</span>scanner:<span class="global">error</span> <span class="string">'unexpected end'</span>      <span class="comment">--&gt; error: sum.lsp:1: unexpected end</span>
+</pre>
+
+<p> An index is the position of a character in the text, counting from 1.
+ Where the cursor stands is the index of the next character to read, so
+ <code>pos</code> is 1 before anything is read and one more than the length of the
+ text at the end.</p>
+
+<p> In addition to the functionality described here, Scanner objects also
+ have all the methods and metamethods of the <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a>
+ (except where overridden here).</p>
+
+<h2> Prototype Chain</h2>
+
+
+<pre>
+<span class="global">table</span>
+ <span class="backtick">`-&gt; Container
+      `</span>-&gt; Object
+           `-&gt; Scanner
+</pre>
+
+</p>
+
+
+<h2><a href="#Objects">Objects</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype">prototype</a></td>
+	<td class="summary">Scanner prototype object.</td>
+	</tr>
+</table>
+<h2><a href="#Initialisation">Initialisation</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype._init">prototype._init</a></td>
+	<td class="summary">Scanner object initialisation.</td>
+	</tr>
+</table>
+<h2><a href="#Metamethods">Metamethods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:__tostring">prototype:__tostring ()</a></td>
+	<td class="summary">Return a string representation of this scanner.</td>
+	</tr>
+</table>
+<h2><a href="#Module_Functions">Module Functions </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#charset">charset (s)</a></td>
+	<td class="summary">The characters of a string, as a Set.</td>
+	</tr>
+</table>
+<h2><a href="#Fields">Fields </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#text">text</a></td>
+	<td class="summary">The text that is scanned.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#pos">pos</a></td>
+	<td class="summary">Where the cursor is, the index of the next character to read.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#name">name</a></td>
+	<td class="summary">What the source is called in errors, if anything.</td>
+	</tr>
+</table>
+<h2><a href="#Methods">Methods </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#prototype:eof">prototype:eof ()</a></td>
+	<td class="summary">Whether the cursor is at the end of the text.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:peek">prototype:peek ([offset=0])</a></td>
+	<td class="summary">Look at a character that is not read yet.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:next">prototype:next ([n=1])</a></td>
+	<td class="summary">Read characters.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:back">prototype:back ([n=1])</a></td>
+	<td class="summary">Unread characters, to read them again.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:lookahead">prototype:lookahead (s)</a></td>
+	<td class="summary">Whether the next characters are the text given.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:match">prototype:match (pattern)</a></td>
+	<td class="summary">Read what a Lua pattern matches, if it matches next.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:take">prototype:take (set)</a></td>
+	<td class="summary">Read the run of characters that are in a class.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:skip">prototype:skip (set)</a></td>
+	<td class="summary">Read the run of characters that are in a class, and drop them.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:line">prototype:line ([index])</a></td>
+	<td class="summary">The line number of an index in the text.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#prototype:error">prototype:error (msg[, index])</a></td>
+	<td class="summary">Raise an error that says where in the text it is.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Objects"></a>Objects</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype"></a>
+    <strong>prototype</strong>
+    </dt>
+    <dd>
+    Scanner prototype object.
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">_type</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         object name
+         (<em>default</em> 'Scanner')
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/std.prototype.object.html#prototype">prototype.object.prototype</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> Scanner = <span class="global">require</span> <span class="string">'std.prototype.scanner'</span>.prototype
+<span class="global">assert</span>(prototype.<span class="global">type</span>(Scanner) == <span class="string">'Scanner'</span>)
+<span class="keyword">local</span> scanner = <span class="function-name">Scanner</span>(<span class="string">'text to scan'</span>, <span class="string">'name of the source'</span>)</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Initialisation"></a>Initialisation</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype._init"></a>
+    <strong>prototype._init</strong>
+    </dt>
+    <dd>
+    Scanner object initialisation. </p>
+
+<p> Returns a Scanner for <em>text</em>, with the cursor at the start.
+ A table, as a type derived from this one is described with,
+ has any field with a leading underscore, such as <code>_type</code>, put in
+ the metatable, and no other fields.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">new</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a></span>
+         uninitialised Scanner container object
+        </li>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         the text to scan
+        </li>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         what to call the source of <em>text</em> in errors
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Metamethods"></a>Metamethods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:__tostring"></a>
+    <strong>prototype:__tostring ()</strong>
+    </dt>
+    <dd>
+    Return a string representation of this scanner.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+        the name of the source and the line of the cursor,
+   or only the type, for a prototype that has no text
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="global">print</span>(scanner) <span class="comment">--&gt; Scanner sum.lsp:1</span></pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Module_Functions"></a>Module Functions </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "charset"></a>
+    <strong>charset (s)</strong>
+    </dt>
+    <dd>
+    The characters of a string, as a Set.
+ Sets join with <code>+</code>, so classes of characters are made from others.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         a string of characters
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">Set</span></span>
+        the set of the characters in <em>s</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> isspace = <span class="function-name">charset</span> <span class="string">' \t\r\n'</span>
+<span class="keyword">local</span> isdelimiter = <span class="function-name">charset</span> <span class="string">'()'</span> + isspace</pre>
+    </ul>
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Fields"></a>Fields </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "text"></a>
+    <strong>text</strong>
+    </dt>
+    <dd>
+    The text that is scanned.
+
+
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "pos"></a>
+    <strong>pos</strong>
+    </dt>
+    <dd>
+    Where the cursor is, the index of the next character to read.
+ Set it with <a href="../modules/std.prototype.scanner.html#prototype:back">prototype:back</a>, and not directly, so that it
+ stays within the text.
+
+
+    <ul>
+        <li><span class="parameter">pos</span>
+            <span class="types"><span class="type">integer</span></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "name"></a>
+    <strong>name</strong>
+    </dt>
+    <dd>
+    What the source is called in errors, if anything.
+
+
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods </h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "prototype:eof"></a>
+    <strong>prototype:eof ()</strong>
+    </dt>
+    <dd>
+    Whether the cursor is at the end of the text.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if every character has been read
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">while</span> <span class="keyword">not</span> scanner:<span class="function-name">eof</span>() <span class="keyword">do</span> ... <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:peek"></a>
+    <strong>prototype:peek ([offset=0])</strong>
+    </dt>
+    <dd>
+    Look at a character that is not read yet.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">offset</span>
+            <span class="types"><span class="type">integer</span></span>
+         0 is the next character, 1 the one after,
+   and a negative offset a character that is read already
+         (<em>default</em> 0)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a> or <span class="type">nil</span></span>
+        the character, or <code>nil</code> if there is none
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> scanner:<span class="function-name">peek</span>(<span class="number">1</span>) == <span class="string">'-'</span> <span class="keyword">then</span> ... <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:next"></a>
+    <strong>prototype:next ([n=1])</strong>
+    </dt>
+    <dd>
+    Read characters.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">n</span>
+            <span class="types"><span class="type">integer</span></span>
+         how many to read
+         (<em>default</em> 1)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a> or <span class="type">nil</span></span>
+        the characters read, fewer than <em>n</em> at the
+   end of the text, or <code>nil</code> if there were none
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> c = scanner:<span class="global">next</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:back"></a>
+    <strong>prototype:back ([n=1])</strong>
+    </dt>
+    <dd>
+    Unread characters, to read them again.
+ The cursor stops at the start of the text.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">n</span>
+            <span class="types"><span class="type">integer</span></span>
+         how many to unread
+         (<em>default</em> 1)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../modules/std.prototype.scanner.html#prototype">prototype</a></span>
+        <em>scanner</em>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> scanner:<span class="global">next</span>() ~= <span class="string">','</span> <span class="keyword">then</span> scanner:<span class="function-name">back</span>() <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:lookahead"></a>
+    <strong>prototype:lookahead (s)</strong>
+    </dt>
+    <dd>
+    Whether the next characters are the text given.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">s</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         the text to look for
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">boolean</span></span>
+        <code>true</code> if the text is next
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">if</span> scanner:<span class="function-name">lookahead</span> <span class="string">'--[['</span> <span class="keyword">then</span> ... <span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:match"></a>
+    <strong>prototype:match (pattern)</strong>
+    </dt>
+    <dd>
+    Read what a Lua pattern matches, if it matches next.
+ The pattern is matched as if it started with <code>^</code>, from the
+ cursor.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">pattern</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         a Lua pattern
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        the captures of the pattern, or what it matched if it
+   has none, and <code>nil</code> if it does not match
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> digits = scanner:<span class="function-name">match</span> <span class="string">'%d+'</span></pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:take"></a>
+    <strong>prototype:take (set)</strong>
+    </dt>
+    <dd>
+    Read the run of characters that are in a class.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a>, <span class="type">function</span> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         a class of character, as a
+   table with a true value for each, such as a Set, or a
+   function that is true for each, or a string of them
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+        the characters read, possibly none
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> name = scanner:<span class="function-name">take</span>(isidentifier)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:skip"></a>
+    <strong>prototype:skip (set)</strong>
+    </dt>
+    <dd>
+    Read the run of characters that are in a class, and drop them.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">set</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.7">table</a>, <span class="type">function</span> or <a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         a class of character
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="../modules/std.prototype.scanner.html#prototype">prototype</a></span>
+        <em>scanner</em>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../modules/std.prototype.scanner.html#prototype:take">prototype:take</a>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">scanner:<span class="function-name">skip</span>(isspace)</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:line"></a>
+    <strong>prototype:line ([index])</strong>
+    </dt>
+    <dd>
+    The line number of an index in the text.
+ The first line is 1.  Line numbers are not counted until asked
+ for, so they cost nothing to a scanner that is never asked.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+            <span class="types"><span class="type">integer</span></span>
+         defaults to the cursor
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">int</span></span>
+        the line that the character at <em>index</em> is on
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example"><span class="keyword">local</span> l = scanner:<span class="function-name">line</span>()</pre>
+    </ul>
+
+</dd>
+    <dt>
+    <a name = "prototype:error"></a>
+    <strong>prototype:error (msg[, index])</strong>
+    </dt>
+    <dd>
+    Raise an error that says where in the text it is.
+ The message is <code>name:line: msg</code>, or <code>line: msg</code> for a scanner
+ with no name, and has no Lua position added to it.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">msg</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.5/manual.html#6.5">string</a></span>
+         what is wrong
+        </li>
+        <li><span class="parameter">index</span>
+            <span class="types"><span class="type">integer</span></span>
+         defaults to the cursor
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">scanner:<span class="global">error</span> <span class="string">"missing ')'"</span></pre>
+    </ul>
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/lunarmodules/ldoc">LDoc 1.5.0</a></i>
+<i style="float:right;">Last updated 2026-10-28 10:28:35 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
